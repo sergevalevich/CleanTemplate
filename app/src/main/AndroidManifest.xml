@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.valevich.umori"
+<manifest package="com.valevich.clean"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".UmoriApplication"
+        android:name="com.valevich.clean.UmoriApplication"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".presentation.ui.activities.MainActivity">
+        <activity android:name="com.valevich.clean.presentation.ui.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
