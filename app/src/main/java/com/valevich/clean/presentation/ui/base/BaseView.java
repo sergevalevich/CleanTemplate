@@ -1,4 +1,4 @@
-package com.valevich.clean.presentation.ui;
+package com.valevich.clean.presentation.ui.base;
 
 /**
  * <p>

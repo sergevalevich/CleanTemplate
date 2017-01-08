@@ -3,9 +3,11 @@ import com.valevich.clean.domain.interactors.base.Interactor;
 
 public interface IWelcomingInteractor extends Interactor {
 
-    //result Handler
+    //result Handler//Presenter
     interface Callback {
-        // TODO: Add interactor callback methods here
+        void onMessageRetrieved(String message);
+
+        void onRetrievalFailed(String error);
     }
 
     // TODO: Add interactor methods here

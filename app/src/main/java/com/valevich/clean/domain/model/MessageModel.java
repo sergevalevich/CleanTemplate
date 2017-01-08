@@ -3,11 +3,11 @@ package com.valevich.clean.domain.model;
 /**
  * A sample model. Replace this with your own.
  */
-public class SampleModel {
+public class MessageModel {
 
     private int mValue;
 
-    public SampleModel(int value) {
+    public MessageModel(int value) {
         mValue = value;
     }
 
