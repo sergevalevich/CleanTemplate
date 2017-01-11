@@ -1,89 +1,67 @@
 package com.valevich.clean.presentation.presenters.impl;
 
-import com.valevich.clean.domain.executor.Executor;
-import com.valevich.clean.domain.executor.IMainThread;
+import android.os.Bundle;
+
+import com.valevich.clean.domain.interactors.IGoodByeInteractor;
 import com.valevich.clean.domain.interactors.IWelcomingInteractor;
+import com.valevich.clean.domain.interactors.impl.GoodByeInteractor;
 import com.valevich.clean.domain.interactors.impl.WelcomingInteractor;
+import com.valevich.clean.domain.repository.IMessageRepository;
 import com.valevich.clean.domain.repository.impl.MessageRepository;
-import com.valevich.clean.presentation.presenters.IMainPresenter;
-import com.valevich.clean.presentation.presenters.base.IRecoverablePresenter;
-import com.valevich.clean.presentation.presenters.base.RecoverablePresenter;
-import com.valevich.clean.presentation.ui.MainView;
+import com.valevich.clean.presentation.presenters.base.BasePresenter;
+import com.valevich.clean.presentation.ui.activities.MainActivity;
 
 import icepick.State;
 import timber.log.Timber;
 
-public class MainPresenter extends RecoverablePresenter<MainView> implements
-        IMainPresenter<MainView>,
-        IWelcomingInteractor.Callback,
-        IRecoverablePresenter.Callback {
+public class MainPresenter extends BasePresenter<MainActivity> {
 
-    @State String mLogin;
+    private static final int HELLO_MESSAGE_TASK_ID = 1;
 
-    @State String mPassword;
+    private static final int BYE_MESSAGE_TASK_ID = 2;
 
-    private MainView mView;
+    @State
+    String mUserName;
 
-    private String mMessage;
+    private IMessageRepository mMessageRepository = new MessageRepository();
 
+    private IWelcomingInteractor<String> mWelcomingInteractor = new WelcomingInteractor(mMessageRepository);
 
-    public MainPresenter(Executor executor,
-                         IMainThread mainThread,
-                         MainView view) {
-        super(executor, mainThread,this);
-        mView = view;
-    }
+    private IGoodByeInteractor<String> mGoodByeInteractor = new GoodByeInteractor(mMessageRepository);
 
     @Override
-    public void login(String login,String password) {
-        Timber.d("Credentials: %s %s",login,password);
-        mLogin = login;
-        mPassword = password;
-        mView.showProgress();
-        // initialize the interactor
-        WelcomingInteractor interactor = new WelcomingInteractor(
-                mExecutor,
-                mMainThread,
-                this,
-                new MessageRepository()
-        );
-        // run the interactor
-        interactor.execute();
-    }
+    protected void onCreate(Bundle savedState) {
+        super.onCreate(savedState);
 
-    @Override
-    public void onError(String message) {
-
-    }
-
-    @Override
-    public void onRestored() {
-        login(mLogin,mPassword);
-    }
-
-    @Override
-    public void setView(MainView view) {
-        mView = view;
-        publish();
-    }
-
-    @Override
-    public void onMessageRetrieved(String message) {
-        mMessage = message;
-        publish();
-    }
-
-    @Override
-    public void onRetrievalFailed(String error) {
-        if (mView != null) mView.hideProgress();
-        onError(error);
-    }
-
-    private void publish() {
-        if (mView != null) {
-            mView.hideProgress();
-            if (mMessage != null)
-                mView.displayMessage(mMessage);
+        if(savedState != null) {
+            Timber.d("Restoring name");
+            mWelcomingInteractor.setUserName(mUserName);
+            mGoodByeInteractor.setUserName(mUserName);
         }
+
+        restartableLatestCache(
+                HELLO_MESSAGE_TASK_ID,
+                () -> mWelcomingInteractor.buildUseCaseObservable(),
+                MainActivity::onMessageReceived,
+                MainActivity::onError);
+
+        restartableLatestCache(
+                BYE_MESSAGE_TASK_ID,
+                () -> mGoodByeInteractor.buildUseCaseObservable(),
+                MainActivity::onMessageReceived,
+                MainActivity::onError);
     }
+
+    public void loadHelloMessage(String userName) {
+        mUserName = userName;
+        mWelcomingInteractor.setUserName(mUserName);
+        start(HELLO_MESSAGE_TASK_ID);
+    }
+
+    public void loadByeMessage(String userName) {
+        mUserName = userName;
+        mGoodByeInteractor.setUserName(mUserName);
+        start(BYE_MESSAGE_TASK_ID);
+    }
+
 }

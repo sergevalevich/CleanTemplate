@@ -1,19 +1,18 @@
 package com.valevich.clean.domain.interactors.impl;
 
-
-import com.valevich.clean.domain.interactors.IWelcomingInteractor;
+import com.valevich.clean.domain.interactors.IGoodByeInteractor;
 import com.valevich.clean.domain.repository.IMessageRepository;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class WelcomingInteractor implements IWelcomingInteractor<String> {
+public class GoodByeInteractor implements IGoodByeInteractor<String> {
 
     private IMessageRepository mRepository;
     private String mUserName;
 
-    public WelcomingInteractor(IMessageRepository repository) {
+    public GoodByeInteractor(IMessageRepository repository) {
         mRepository = repository;
     }
 
@@ -24,7 +23,7 @@ public class WelcomingInteractor implements IWelcomingInteractor<String> {
 
     @Override
     public Observable<String> buildUseCaseObservable() {
-        return mRepository.getHelloMessage(mUserName)
+        return mRepository.getByeMessage(mUserName)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

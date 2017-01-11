@@ -1,10 +1,24 @@
 package com.valevich.clean.presentation.presenters.base;
 
-import com.valevich.clean.presentation.ui.base.BaseView;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 
-public interface BasePresenter<T extends BaseView> {
+import icepick.Icepick;
+import nucleus.presenter.RxPresenter;
+import nucleus.view.ViewWithPresenter;
 
-    void onError(String message);
+public class BasePresenter<V extends ViewWithPresenter> extends RxPresenter<V> {
 
-    void setView(T view);
+    @Override
+    protected void onCreate(Bundle savedState) {
+        super.onCreate(savedState);
+        Icepick.restoreInstanceState(this, savedState);
+    }
+
+    @Override
+    protected void onSave(@NonNull Bundle state) {
+        super.onSave(state);
+        Icepick.saveInstanceState(this, state);
+    }
+
 }

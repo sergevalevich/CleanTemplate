@@ -1,29 +1,43 @@
 package com.valevich.clean.presentation.ui.activities;
 
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.valevich.clean.R;
-import com.valevich.clean.domain.executor.impl.ThreadExecutor;
-import com.valevich.clean.presentation.presenters.IMainPresenter;
 import com.valevich.clean.presentation.presenters.impl.MainPresenter;
-import com.valevich.clean.presentation.ui.MainView;
-import com.valevich.clean.presentation.ui.base.BaseActivity;
-import com.valevich.clean.threading.MainThread;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
+import nucleus.factory.RequiresPresenter;
+import nucleus.view.NucleusActivity;
 import timber.log.Timber;
 
-public class MainActivity extends BaseActivity implements MainView {
+@RequiresPresenter(MainPresenter.class)
+public class MainActivity extends NucleusActivity<MainPresenter> {
 
     @BindView(R.id.hello)
     TextView mWelcomeTextView;
 
-    private static IMainPresenter<MainView> mPresenter;
+    @BindView(R.id.input)
+    EditText mEditText;
 
     private Unbinder mUnbinder;
+
+    public void onMessageReceived(String message) {
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+        hideLoading();
+        showMessage(message);
+    }
+
+    public void onError(Throwable error) {
+        hideLoading();
+        showError(error.getMessage());
+    }
 
 
     @Override
@@ -32,49 +46,44 @@ public class MainActivity extends BaseActivity implements MainView {
         setContentView(R.layout.activity_main);
         mUnbinder = ButterKnife.bind(this);
 
-        if (mPresenter == null) {
-            mPresenter = new MainPresenter(ThreadExecutor.getInstance(), MainThread.getInstance(),this);
-            if (savedInstanceState != null) {
-                mPresenter.restore(savedInstanceState);
-            } else {
-                mPresenter.login("testLogin","testPassword");
-            }
-        } else {
-            mPresenter.setView(this);
-        }
+
     }
 
     @Override
     protected void onDestroy() {
-        mPresenter.setView(null);
         mUnbinder.unbind();
         super.onDestroy();
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        mPresenter.save(outState);
-        Timber.d("ONSAVEINSTANCESTATE");
+    @OnClick(R.id.task_one)
+    void execTaskOne() {
+        showLoading();
+        String message = mEditText.getText().toString();
+        Timber.d(message);
+        getPresenter().loadHelloMessage(message);
     }
 
-    @Override
-    public void displayMessage(String message) {
+    @OnClick(R.id.task_two)
+    void execTaskTwo() {
+        showLoading();
+        String message = mEditText.getText().toString();
+        Timber.d(message);
+        getPresenter().loadByeMessage(message);
+    }
+
+    private void showMessage(String message) {
         mWelcomeTextView.setText(message);
     }
 
-    @Override
-    public void showProgress() {
-
+    private void showError(String error) {
+        mWelcomeTextView.setText(error);
     }
 
-    @Override
-    public void hideProgress() {
-
+    private void showLoading() {
+        mEditText.setTextColor(ContextCompat.getColor(this,R.color.colorAccent));
     }
 
-    @Override
-    public void showError(String message) {
-
+    private void hideLoading() {
+        mEditText.setTextColor(ContextCompat.getColor(this,android.R.color.holo_green_light));
     }
 }

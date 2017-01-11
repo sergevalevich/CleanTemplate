@@ -3,6 +3,6 @@ package com.valevich.clean.domain.interactors;
 import com.valevich.clean.domain.interactors.base.Interactor;
 
 
-public interface IWelcomingInteractor<T> extends Interactor<T> {
-    void setUserName(String userName);
+public interface IStoriesInteractor<T> extends Interactor<T> {
+
 }
