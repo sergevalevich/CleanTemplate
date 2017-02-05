@@ -10,8 +10,6 @@ import timber.log.Timber;
 
 public class UmoriApplication extends Application {
 
-    //// TODO: 04.01.2017 Add ViewModel
-
     @Override
     public void onCreate() {
         super.onCreate();

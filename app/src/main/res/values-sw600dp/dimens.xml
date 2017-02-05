@@ -1,0 +1,7 @@
+<resources>
+    <dimen name="primary_text_size">18sp</dimen>
+    <dimen name="list_item_padding">16dp</dimen>
+    <dimen name="toolbar_height">64dp</dimen>
+    <dimen name="drawer_header_layout_height">124dp</dimen>
+    <dimen name="menu_header_padding">24dp</dimen>
+</resources>

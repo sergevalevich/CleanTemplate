@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">Umori</string>
+    <string name="default_error_message">Ошибка</string>
+    <string name="no_net_error_message">Нет сети</string>
+    <string name="selected_action_share">Поделиться</string>
+    <string name="selected_action_bookmark">В избранное</string>
+    <string name="share_action">Поделиться!</string>
+    <string name="app_sign">Отправлено из приложения Umori</string>
+    <string name="nav_drawer_settings">Настройки</string>
+    <string name="nav_drawer_categories">Категории</string>
+    <string name="nav_drawer_bookmarks">Закладки</string>
+    <string name="nav_drawer_search">Поиск</string>
+    <string name="navigation_drawer_open" translatable="false">Open Navigation</string>
+    <string name="navigation_drawer_close" translatable="false">Close Navigation</string>
+    <string name="booked">Запись добавлена в избранное</string>
+    <string name="unbooked">Запись удалена из избранного</string>
+    <string name="update_error_message">Не удалось обновить запись</string>
+    <string name="umori_li_api">UMORI.LI/API</string>
+    <string name="request_timeout">Время ожидания вышло. Проблемы с подключением к сети</string>
 </resources>

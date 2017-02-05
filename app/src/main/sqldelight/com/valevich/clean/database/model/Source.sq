@@ -1,0 +1,6 @@
+CREATE TABLE source (
+    site TEXT NOT NULL PRIMARY KEY ON CONFLICT IGNORE
+);
+
+insert_row:
+INSERT INTO source(site) VALUES (?);

@@ -1,0 +1,26 @@
+CREATE TABLE story (
+    text TEXT NOT NULL PRIMARY KEY,
+    isBookMarked INTEGER AS Boolean DEFAULT 0,
+    site TEXT NOT NULL,
+    category_name TEXT NOT NULL,
+    FOREIGN KEY(site) REFERENCES source(site),
+    FOREIGN KEY(category_name) REFERENCES category(name)
+  );
+
+-- Further SQL statements are proceeded by an identifier.
+select_by_category:
+SELECT * FROM story
+WHERE site = ? and category_name = ? LIMIT ?;
+
+select_bookmarks:
+SELECT * FROM story WHERE isBookMarked = 1;
+
+select_by_filter:
+SELECT * FROM story WHERE text LIKE ?;
+
+update_row:
+UPDATE story SET isBookMarked = ? WHERE text = ?;
+
+insert_row:
+INSERT OR REPLACE INTO story(text,site,category_name,isBookMarked)
+VALUES (?,?,?,COALESCE((SELECT isBookMarked FROM story WHERE text = ?),0));

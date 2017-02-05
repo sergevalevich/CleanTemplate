@@ -1,0 +1,13 @@
+CREATE TABLE category (
+    name TEXT NOT NULL PRIMARY KEY,
+    description TEXT NOT NULL,
+    site TEXT NOT NULL,
+    FOREIGN KEY(site) REFERENCES source(site)
+  );
+
+-- Further SQL statements are proceeded by an identifier.
+select_all:
+SELECT * FROM category;
+
+insert_row:
+INSERT OR REPLACE INTO category(name,description,site) VALUES (?,?,?);

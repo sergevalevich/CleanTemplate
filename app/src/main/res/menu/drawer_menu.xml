@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/group_feature"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/drawer_categories"
+            android:title="@string/nav_drawer_categories"
+            android:icon="@drawable/ic_categories"
+            android:checked="true">
+        </item>
+
+        <item
+            android:id="@+id/drawer_bookmarks"
+            android:title="@string/nav_drawer_bookmarks"
+            android:icon="@drawable/ic_menu_book">
+        </item>
+
+        <item
+            android:id="@+id/drawer_search"
+            android:title="@string/nav_drawer_search"
+            android:icon="@android:drawable/ic_menu_search">
+        </item>
+
+    </group>
+
+    <group
+        android:id="@+id/group_settings"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/drawer_settings"
+            android:title="@string/nav_drawer_settings"
+            android:icon="@drawable/ic_settings">
+        </item>
+    </group>
+</menu>
