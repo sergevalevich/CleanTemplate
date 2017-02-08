@@ -2,9 +2,10 @@
 <resources>
     <!--<attr name="colorPrimary" format="reference|color" />-->
     <!--<attr name="colorPrimaryDark" format="reference|color" />-->
-    <!--<attr name="colorAccent" format="reference|color" />-->
     <attr name="colorText" format="reference|color" />
     <attr name="colorTextSecondary" format="reference|color" />
     <attr name="colorBack" format="reference|color" />
     <attr name="colorMenu" format="reference|color" />
+    <attr name="colorSelected" format="reference|color"/>
+    <attr name="colorDialogAccent" format="reference|color"/>
 </resources>

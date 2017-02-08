@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.valevich.clean.R;
 import com.valevich.clean.domain.model.Category;
+import com.valevich.clean.presentation.ui.utils.AttributesHelper;
 import com.valevich.clean.presentation.ui.utils.ItemClickListener;
 import com.valevich.clean.presentation.ui.utils.StateListDrawableHelper;
 
@@ -16,6 +17,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.CategoryHolder> {
 
@@ -59,14 +61,17 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
 
         CategoryHolder(View itemView) {
             super(itemView);
-            if (android.os.Build.VERSION.SDK_INT >= 16) {
-                itemView.setBackground(StateListDrawableHelper.getDrawable("#CEF6CE00", "#4C9D32"));
-            } else {
-                itemView.setBackgroundDrawable(StateListDrawableHelper.getDrawable("#CEF6CE00", "#4C9D32"));
-            }
             ButterKnife.bind(this, itemView);
+            setColorStateDrawable(itemView);
             itemView.setOnClickListener(view ->
                     listener.onItemClicked(categories.get(getAdapterPosition())));
+        }
+
+        private void setColorStateDrawable(View itemView) {
+            int pressedColor = AttributesHelper.getColorAttribute(itemView.getContext(), R.attr.colorMenu);
+            int normalColor = AttributesHelper.getColorAttribute(itemView.getContext(), R.attr.colorBack);
+            Timber.d("%d %d" ,normalColor,pressedColor);
+            itemView.setBackground(StateListDrawableHelper.getDrawable(pressedColor, normalColor));
         }
     }
 }

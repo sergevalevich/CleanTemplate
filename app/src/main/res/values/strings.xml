@@ -27,7 +27,7 @@
         translatable="false">font</string>
 
     <string name="pref_theme_label">Тема</string>
-    <string name="pref_theme_default">Темная</string>
+    <string name="pref_theme_default">true</string>
     <string
         name="pref_theme_key"
         translatable="false">theme</string>

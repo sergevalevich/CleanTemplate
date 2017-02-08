@@ -43,9 +43,12 @@ public abstract class DrawerActivity<P extends Presenter> extends BaseActivity<P
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_drawer);
-        ButterKnife.bind(this);
         setupViews();
+    }
+
+    @Override
+    int getLayoutRes() {
+        return R.layout.activity_drawer;
     }
 
     private void setupViews() {

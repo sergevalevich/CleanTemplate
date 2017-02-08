@@ -7,8 +7,8 @@
     </string-array>
 
     <string-array name="entry_values_theme_preference">
-        <item>Темная</item>
-        <item>Светлая</item>
+        <item>true</item>
+        <item>false</item>
     </string-array>
 
     <string-array name="entries_font_preference">

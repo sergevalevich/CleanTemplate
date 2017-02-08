@@ -3,7 +3,6 @@ package com.valevich.clean.presentation.ui.utils;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -12,15 +11,14 @@ import android.graphics.drawable.StateListDrawable;
 import android.util.StateSet;
 
 public class StateListDrawableHelper {
-    public static StateListDrawable getDrawable(String pressedColor, String normalColor){
+    public static StateListDrawable getDrawable(int pressedColor, int normalColor){
         /*Creating bitmap for color which will be used at pressed state*/
         Rect rectPressed = new Rect(0, 0, 1, 1);
 
         Bitmap imagePressed = Bitmap.createBitmap(rectPressed.width(), rectPressed.height(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(imagePressed);
-        int colorPressed = Color.parseColor(pressedColor);
         Paint paintPressed = new Paint();
-        paintPressed.setColor(colorPressed);
+        paintPressed.setColor(pressedColor);
         canvas.drawRect(rectPressed, paintPressed);
         RectF bounds = new RectF();
         bounds.round(rectPressed);
@@ -29,9 +27,8 @@ public class StateListDrawableHelper {
         Rect rectNormal = new Rect(0, 0, 1, 1);
         Bitmap imageNormal = Bitmap.createBitmap(rectNormal.width(), rectNormal.height(), Bitmap.Config.ARGB_8888);
         Canvas canvasNormal = new Canvas(imageNormal);
-        int colorNormal = Color.parseColor(normalColor);
         Paint paintNormal = new Paint();
-        paintNormal.setColor(colorNormal);
+        paintNormal.setColor(normalColor);
         canvasNormal.drawRect(rectNormal, paintNormal);
 
 

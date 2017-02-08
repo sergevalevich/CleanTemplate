@@ -13,25 +13,30 @@
         <item name="colorPrimary">#424242</item>
         <item name="colorPrimaryDark">#212121</item>
         <item name="colorAccent">#FFF176</item>
+        <item name="colorDialogAccent">#FFF176</item>
         <item name="colorText">#ffffff</item>
         <item name="colorTextSecondary">#E0E0E0</item>
         <item name="colorBack">#616161</item>
         <item name="colorMenu">#757575</item>
+        <item name="colorSelected">#40FFFFFF</item>
     </style>
 
     <style name="Light" parent="AppTheme">
-        <item name="colorPrimary">#EEEEEE</item>
-        <item name="colorPrimaryDark">#E0E0E0</item>
-        <item name="colorAccent">#FFEB3B</item>
+        <item name="colorPrimary">#BDBDBD</item>
+        <item name="colorPrimaryDark">#9E9E9E</item>
+        <item name="colorAccent">#FF7043</item>
+        <item name="colorDialogAccent">#FF7043</item>
         <item name="colorText">#000000</item>
         <item name="colorTextSecondary">#212121</item>
         <item name="colorBack">#F5F5F5</item>
         <item name="colorMenu">#FAFAFA</item>
+        <item name="colorSelected">#0D000000</item>
     </style>
 
     <style name="TextView">
         <item name="android:textSize">@dimen/primary_text_size</item>
         <item name="android:padding">@dimen/list_item_padding</item>
+        <item name="android:alpha">0.9</item>
     </style>
 
     <style name="PreferenceThemeOverlay.v14">
@@ -42,7 +47,7 @@
     </style>
 
     <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="colorAccent">?colorAccent</item>
+        <item name="colorAccent">?colorDialogAccent</item>
         <item name="android:textColorPrimary">?colorText</item>
         <item name="android:textColorAlertDialogListItem">?colorText</item>
         <item name="android:background">?colorMenu</item>

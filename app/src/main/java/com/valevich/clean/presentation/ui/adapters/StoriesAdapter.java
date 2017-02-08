@@ -9,7 +9,9 @@ import android.widget.TextView;
 
 import com.valevich.clean.R;
 import com.valevich.clean.domain.model.Story;
+import com.valevich.clean.presentation.ui.utils.AttributesHelper;
 import com.valevich.clean.presentation.ui.utils.ItemClickListener;
+import com.valevich.clean.presentation.ui.utils.StateListDrawableHelper;
 
 import java.util.List;
 
@@ -52,11 +54,6 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.StoryHol
         notifyDataSetChanged();
     }
 
-    // FIXME: 05.02.2017 Remove
-    public List<Story> getStories() {
-        return stories;
-    }
-
     class StoryHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.story_text)
@@ -65,10 +62,17 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.StoryHol
         StoryHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            setColorStateDrawable(itemView);
             itemView.setOnLongClickListener(view ->
                     listenter.onItemLongClicked(stories.get(getAdapterPosition())));
             //// FIXME: 17.01.2017 Orientation, process restart
             // FIXME: 16.01.2017 LEAK???
+        }
+
+        private void setColorStateDrawable(View itemView) {
+            int pressedColor = AttributesHelper.getColorAttribute(itemView.getContext(), R.attr.colorMenu);
+            int normalColor = AttributesHelper.getColorAttribute(itemView.getContext(), R.attr.colorBack);
+            itemView.setBackground(StateListDrawableHelper.getDrawable(pressedColor, normalColor));
         }
     }
 }

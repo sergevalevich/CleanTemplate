@@ -14,14 +14,20 @@ import timber.log.Timber;
 public class SettingsFragment extends PreferenceFragmentCompat
     implements Preference.OnPreferenceChangeListener {
 
+//    @BindString(R.string.pref_theme_key)
+//    String themeKey;
+//
+//    @BindString(R.string.pref_font_key)
+//    String fontKey;
+
     private boolean mBindingPreference = true;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         // Load the preferences from an XML resource
         setPreferencesFromResource(R.xml.pref_general, rootKey);
-        bindSummaryToValue(findPreference(getString(R.string.pref_font_key)));
         bindSummaryToValue(findPreference(getString(R.string.pref_theme_key)));
+        bindSummaryToValue(findPreference(getString(R.string.pref_font_key)));
         mBindingPreference = false;
     }
 
@@ -39,14 +45,8 @@ public class SettingsFragment extends PreferenceFragmentCompat
         Timber.d("onPreferenceChanged %s",preference);
 
         if(!mBindingPreference) {
-//            if(preference.getKey().equals(getString(R.string.pref_location_key))) {
-//                String location = value;
-//                new FetchWeatherTask(getActivity()).execute(location);
-//            } else {
-//                getActivity().getContentResolver().notifyChange(WeatherContract.WeatherEntry.CONTENT_URI,null);
-//            }
             if (preference.getKey().equals(getString(R.string.pref_theme_key))) {
-                getActivity().getApplication().setTheme(R.style.AppTheme);
+                getActivity().recreate();
             }
 
         }
@@ -62,11 +62,4 @@ public class SettingsFragment extends PreferenceFragmentCompat
         }
         return true;
     }
-
-//    private int getThemeId(String value) {
-//        String[] values = getContext()
-//                .getResources()
-//                .getStringArray(R.array.entry_values_theme_preference);
-//
-//    }
 }
