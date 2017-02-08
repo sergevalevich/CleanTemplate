@@ -28,7 +28,7 @@ public class StoriesWrapperActivity extends DrawerActivity<StoriesWrapperPresent
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
             Category category = getIntent().getParcelableExtra(CATEGORY_KEY);
-            title = category.description();
+            title = category.getDescription();
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_container, getFragment())

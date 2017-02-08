@@ -38,7 +38,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.StoryHol
 
     @Override
     public void onBindViewHolder(StoryHolder holder, int position) {
-        holder.textView.setText(stories.get(position).text());
+        holder.textView.setText(stories.get(position).getText());
     }
 
     @Override
@@ -50,6 +50,11 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.StoryHol
         this.stories.clear();
         this.stories.addAll(stories);
         notifyDataSetChanged();
+    }
+
+    // FIXME: 05.02.2017 Remove
+    public List<Story> getStories() {
+        return stories;
     }
 
     class StoryHolder extends RecyclerView.ViewHolder {

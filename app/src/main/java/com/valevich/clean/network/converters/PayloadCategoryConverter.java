@@ -13,7 +13,7 @@ public class PayloadCategoryConverter {
     public static List<Category> getCategoriesByPayload(List<CategoryPayload> payload) {
         List<Category> categories = new ArrayList<>();
         for (CategoryPayload categoryPayload : payload) {
-            categories.add(Category.create(
+            categories.add(new Category(
                     categoryPayload.name(),
                     categoryPayload.site(),
                     categoryPayload.desc()));

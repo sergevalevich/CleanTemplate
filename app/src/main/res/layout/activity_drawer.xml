@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
-    android:background="@color/colorBack">
+    android:background="?colorBack">
 
     <include layout="@layout/content_drawer"/>
 
@@ -19,7 +19,7 @@
         app:menu = "@menu/drawer_menu"
         app:itemIconTint="@color/drawer_item"
         app:itemTextColor="@color/drawer_item"
-        android:background="@color/colorMenu">
+        android:background="?colorMenu">
 
     </android.support.design.widget.NavigationView>
 

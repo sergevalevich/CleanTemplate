@@ -19,6 +19,7 @@ import com.valevich.clean.presentation.presenters.impl.CategoriesPresenter;
 import com.valevich.clean.presentation.ui.activities.MainActivity;
 import com.valevich.clean.presentation.ui.activities.StoriesWrapperActivity;
 import com.valevich.clean.presentation.ui.adapters.CategoriesAdapter;
+import com.valevich.clean.presentation.ui.utils.DividerItemDecoration;
 import com.valevich.clean.presentation.ui.utils.ItemClickListener;
 
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public class CategoriesFragment extends BaseFragment<CategoriesPresenter>
         super.onCreate(bundle);
         Timber.d("on create. bundle is %s", bundle);
         if (bundle == null) {
-            getCategories();
+            subscribeToUpdates();
             refreshCategories();
         }
     }
@@ -64,6 +65,7 @@ public class CategoriesFragment extends BaseFragment<CategoriesPresenter>
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         categoriesList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        categoriesList.addItemDecoration(new DividerItemDecoration(getActivity(),LinearLayoutManager.VERTICAL));
         swipe.setOnRefreshListener(this::refreshCategories);
         showLoading(true);
     }
@@ -93,10 +95,12 @@ public class CategoriesFragment extends BaseFragment<CategoriesPresenter>
     }
 
     public void onCategories(List<Category> categories) {
-        Timber.d("on categories got %d categories", categories.size());
         CategoriesAdapter adapter = (CategoriesAdapter) categoriesList.getAdapter();
         if (adapter == null) categoriesList.setAdapter(new CategoriesAdapter(categories, this));
         else adapter.refresh(new ArrayList<>(categories));
+    }
+
+    public void onCategoriesUpToDate() {
         showLoading(false);
     }
 
@@ -107,7 +111,7 @@ public class CategoriesFragment extends BaseFragment<CategoriesPresenter>
         Timber.e(message);
     }
 
-    private void getCategories() {
+    private void subscribeToUpdates() {
         getPresenter().loadCategories();
     }
 

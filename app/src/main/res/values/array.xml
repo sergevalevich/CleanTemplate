@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="entries_theme_preference">
+        <item>Темная</item>
+        <item>Светлая</item>
+    </string-array>
+
+    <string-array name="entry_values_theme_preference">
+        <item>Темная</item>
+        <item>Светлая</item>
+    </string-array>
+
+    <string-array name="entries_font_preference">
+        <item>0.5x</item>
+        <item>1x</item>
+        <item>1.5x</item>
+        <item>2.x</item>
+    </string-array>
+
+    <string-array name="entry_values_font_preference">
+        <item>0.5x</item>
+        <item>1x</item>
+        <item>1.5x</item>
+        <item>2.x</item>
+    </string-array>
+
+</resources>

@@ -34,6 +34,9 @@ public abstract class DrawerActivity<P extends Presenter> extends BaseActivity<P
     @BindString(R.string.nav_drawer_bookmarks)
     String bookMarksTitle;
 
+    @BindString(R.string.nav_drawer_settings)
+    String settingsTitle;
+
     @State
     String title;
 

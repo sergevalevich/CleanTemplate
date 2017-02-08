@@ -11,12 +11,9 @@ import com.valevich.clean.domain.interactors.ICategoriesLoadingInteractor;
 import com.valevich.clean.domain.interactors.ICategoriesRefreshingInteractor;
 import com.valevich.clean.domain.interactors.impl.CategoriesLoadingInteractor;
 import com.valevich.clean.domain.interactors.impl.CategoriesRefreshingInteractor;
-import com.valevich.clean.domain.model.Source;
 import com.valevich.clean.network.RestService;
 import com.valevich.clean.presentation.presenters.base.BasePresenter;
 import com.valevich.clean.presentation.ui.fragments.CategoriesFragment;
-
-import timber.log.Timber;
 
 
 public class CategoriesPresenter extends BasePresenter<CategoriesFragment> {
@@ -46,13 +43,7 @@ public class CategoriesPresenter extends BasePresenter<CategoriesFragment> {
         restartableLatestCache(
                 UPDATE_CATEGORIES_TASK_ID,
                 () -> refreshingInteractor.refreshCategories(),
-                ((f, sources) -> {
-                    int count = 0;
-                    for (Source source:sources) {
-                        count += source.categories().size();
-                    }
-                    Timber.d("got %d categories",count);
-                }),
+                ((f, s) -> f.onCategoriesUpToDate()),
                 CategoriesFragment::onError);
     }
 

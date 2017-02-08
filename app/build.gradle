@@ -89,6 +89,8 @@ dependencies {
     compile "com.android.support:recyclerview-v7:$supportLibsVer"
     compile "com.android.support:cardview-v7:$supportLibsVer"
     compile "com.android.support:design:$supportLibsVer"
+    compile "com.android.support:preference-v14:$supportLibsVer"
+    compile "com.android.support:preference-v7:$supportLibsVer"
 
     apt "com.squareup:javapoet:$javaPoet"
     compile "com.google.dagger:dagger:$daggerVer"

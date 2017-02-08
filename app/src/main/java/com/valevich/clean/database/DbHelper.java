@@ -51,7 +51,7 @@ public class DbHelper {
         } finally {
             transaction.end();
         }
-
+        Timber.d("Stories inserted");
     }
 
     public void insertSources(List<Source> sources) {
@@ -61,7 +61,7 @@ public class DbHelper {
             for (int i = 0; i < sources.size(); i++) {
                 Source source = sources.get(i);
                 insertSource(source);
-                for(Category category:source.categories()) insertCategory(category);
+                for(Category category:source.getCategories()) insertCategory(category);
             }
             transaction.markSuccessful();
         } finally {
@@ -73,7 +73,7 @@ public class DbHelper {
         return Observable.defer(() -> {
             Timber.d("Updating story on %s", Thread.currentThread().getName());
             StoryEntity.Update_row statement = new StoryModel.Update_row(db.getWritableDatabase());
-            statement.bind(story.isBookMarked(),story.text());
+            statement.bind(story.isBookMarked(),story.getText());
             int rows = db.executeUpdateDelete(StoryEntity.TABLE_NAME, statement.program);
             return rows == 0
                     ? Observable.error(new UpdateRowException())
@@ -83,19 +83,19 @@ public class DbHelper {
 
     private void insertSource (Source source) {
         SourceEntity.Insert_row statement = new SourceModel.Insert_row(db.getWritableDatabase());
-        statement.bind(source.site());
+        statement.bind(source.getSite());
         db.executeInsert(SourceEntity.TABLE_NAME,statement.program);
     }
 
     private void insertCategory(Category category) {
         CategoryEntity.Insert_row statement = new CategoryModel.Insert_row(db.getWritableDatabase());
-        statement.bind(category.name(), category.description(), category.site());
+        statement.bind(category.getName(), category.getDescription(), category.getSite());
         db.executeInsert(CategoryEntity.TABLE_NAME, statement.program);
     }
 
     private void insertStory(Story story) {
         StoryEntity.Insert_row statement = new StoryModel.Insert_row(db.getWritableDatabase());
-        statement.bind(story.text(), story.site(),story.categoryName(),story.text());
+        statement.bind(story.getText(), story.getSite(),story.getCategoryName(),story.getText());
         db.executeInsert(StoryEntity.TABLE_NAME, statement.program);
     }
 }

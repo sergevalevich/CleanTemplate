@@ -13,6 +13,7 @@ import com.valevich.clean.R;
 import com.valevich.clean.presentation.presenters.impl.MainPresenter;
 import com.valevich.clean.presentation.ui.fragments.BookMarksFragment;
 import com.valevich.clean.presentation.ui.fragments.CategoriesFragment;
+import com.valevich.clean.presentation.ui.fragments.SettingsFragment;
 
 import nucleus.factory.RequiresPresenter;
 
@@ -71,6 +72,8 @@ public class MainActivity extends DrawerActivity<MainPresenter>
                 return new CategoriesFragment();
             case R.id.drawer_bookmarks:
                 return new BookMarksFragment();
+            case R.id.drawer_settings:
+                return new SettingsFragment();
         }
         throw new RuntimeException("No such menu item");
     }
@@ -112,6 +115,9 @@ public class MainActivity extends DrawerActivity<MainPresenter>
         } else if (backStackEntryName.equals(BookMarksFragment.class.getName())) {
             setTitle(bookMarksTitle);
             navigationView.setCheckedItem(R.id.drawer_bookmarks);
+        } else if (backStackEntryName.equals(SettingsFragment.class.getName())) {
+            setTitle(settingsTitle);
+            navigationView.setCheckedItem(R.id.drawer_settings);
         }
         title = getTitle().toString();
     }

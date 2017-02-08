@@ -5,10 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.valevich.clean.domain.model.Category;
-import com.valevich.clean.domain.model.Story;
 import com.valevich.clean.presentation.presenters.impl.StoriesByCategoryPresenter;
-
-import java.util.List;
 
 import nucleus.factory.PresenterFactory;
 import nucleus.factory.RequiresPresenter;
@@ -32,9 +29,28 @@ public class StoriesByCategoryFragment extends StoriesFragment<StoriesByCategory
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
+        Timber.d("onCreate");
         if (bundle == null) {
             refreshStories();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Timber.d("onResume");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Timber.d("onStop");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Timber.d("onDestroy");
     }
 
     @Override
@@ -44,16 +60,7 @@ public class StoriesByCategoryFragment extends StoriesFragment<StoriesByCategory
     }
 
     @Override
-    public void onStories(List<Story> stories) {
-        super.onStories(stories);
-        String state = getPresenter().isUnsubscribed(StoriesByCategoryPresenter.UPDATE_STORIES_TASK_ID)
-                ? "unsubscribed"
-                : "subbed";
-        Timber.d("refresh task is %s",state);
-    }
-
-    @Override
-    void getStories() {
+    void subscribeToUpdates() {
         Bundle args = getArguments();
         getPresenter().loadStories(
                 args.getParcelable(CATEGORY_KEY),
@@ -61,8 +68,18 @@ public class StoriesByCategoryFragment extends StoriesFragment<StoriesByCategory
     }
 
     @Override
+    void showLoading() {
+        swipe.setRefreshing(true);
+    }
+
+    @Override
+    void hideLoading() {
+        swipe.setRefreshing(false);
+    }
+
+    @Override
     PresenterFactory<StoriesByCategoryPresenter> createPresenterFactory() {
-        return () -> new StoriesByCategoryPresenter(getActivity().getApplicationContext(),getActivity());
+        return () -> new StoriesByCategoryPresenter(getActivity().getApplicationContext());
     }
 
     private void refreshStories() {

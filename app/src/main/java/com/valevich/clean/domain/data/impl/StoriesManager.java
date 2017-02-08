@@ -33,7 +33,7 @@ public class StoriesManager implements IStoriesManager {
 
     @Override
     public Observable<List<Story>> getStoriesByCategory(Category category, int count) {
-        SqlDelightStatement statement = StoryEntity.FACTORY.select_by_category(category.site(),category.name(),count);
+        SqlDelightStatement statement = StoryEntity.FACTORY.select_by_category(category.getSite(),category.getName(),count);
         return dbHelper.getStories(statement.statement,
                 statement.args,
                 StoryEntity.FACTORY.select_by_categoryMapper())
@@ -43,7 +43,7 @@ public class StoriesManager implements IStoriesManager {
 
     @Override
     public Observable<List<Story>> refreshStoriesByCategory(Category category, int count) {
-        return getFreshStoriesByCategory(category.site(), category.name(), count)
+        return getFreshStoriesByCategory(category.getSite(),category.getName(), count)
                 .doOnNext(this::cacheStories)
                 .compose(SchedulersTransformer.INSTANCE.applySchedulers());
     }

@@ -11,11 +11,9 @@ public class PayloadSourcesConverter {
     public static List<Source> getSourcesByPayload(List<List<CategoryPayload>> sourcesPayload) {
         List<Source> sources = new ArrayList<>();
         for (List<CategoryPayload> source:sourcesPayload) {
-            sources.add(
-                    Source.create(
-                            source.get(0).site(),
-                            PayloadCategoryConverter.getCategoriesByPayload(source))
-            );
+            sources.add(new Source(
+                    source.get(0).site(),
+                    PayloadCategoryConverter.getCategoriesByPayload(source)));
         }
         return sources;
     }

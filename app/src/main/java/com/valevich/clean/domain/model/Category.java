@@ -1,15 +1,70 @@
 package com.valevich.clean.domain.model;
 
+import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.auto.value.AutoValue;
+public class Category implements Parcelable {
+    private String name;
+    private String site;
+    private String description;
 
-@AutoValue
-public abstract class Category implements Parcelable{
-    public static Category create(String name, String site, String description) {
-        return new AutoValue_Category(name,site,description);
+    public Category(String name, String site, String description) {
+        this.name = name;
+        this.site = site;
+        this.description = description;
     }
-    public abstract String name();
-    public abstract String site();
-    public abstract String description();
+
+    protected Category(Parcel in) {
+        name = in.readString();
+        site = in.readString();
+        description = in.readString();
+    }
+
+    public static final Creator<Category> CREATOR = new Creator<Category>() {
+        @Override
+        public Category createFromParcel(Parcel in) {
+            return new Category(in);
+        }
+
+        @Override
+        public Category[] newArray(int size) {
+            return new Category[size];
+        }
+    };
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSite() {
+        return site;
+    }
+
+    public void setSite(String site) {
+        this.site = site;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(name);
+        parcel.writeString(site);
+        parcel.writeString(description);
+    }
 }

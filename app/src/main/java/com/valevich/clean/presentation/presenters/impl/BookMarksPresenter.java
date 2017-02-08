@@ -15,8 +15,8 @@ public class BookMarksPresenter extends StoriesPresenter<BookMarksFragment> {
 
     private IBookMarksLoadingInteractor bookMarksInteractor;
 
-    public BookMarksPresenter(Context context,Context activityContext) {
-        super(context,activityContext);
+    public BookMarksPresenter(Context context) {
+        super(context);
         bookMarksInteractor = new BookMarksLoadingInteractor(getStoriesManager());
     }
 

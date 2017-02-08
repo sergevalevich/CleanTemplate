@@ -1,6 +1,7 @@
 <resources>
-    <dimen name="primary_text_size">16sp</dimen>
+    <dimen name="primary_text_size">18sp</dimen>
     <dimen name="list_item_padding">12dp</dimen>
     <dimen name="toolbar_height">56dp</dimen>
     <dimen name="menu_header_padding">12dp</dimen>
+    <dimen name="preference_padding">2dp</dimen>
 </resources>

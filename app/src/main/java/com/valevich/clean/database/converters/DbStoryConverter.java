@@ -11,12 +11,11 @@ public class DbStoryConverter {
     public static List<Story> getStoriesByDbEntity(List<StoryEntity> storyEntities) {
         List<Story> stories = new ArrayList<>();
         for (StoryEntity entity : storyEntities) {
-            stories.add(
-                    Story.create(entity.text(),
-                            entity.site(),
-                            entity.category_name(),
-                            entity.isBookMarked())
-            );
+            stories.add(new Story(
+                    entity.text(),
+                    entity.site(),
+                    entity.category_name(),
+                    entity.isBookMarked()));
         }
         return stories;
     }

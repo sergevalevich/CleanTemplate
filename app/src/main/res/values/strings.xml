@@ -17,4 +17,18 @@
     <string name="update_error_message">Не удалось обновить запись</string>
     <string name="umori_li_api">UMORI.LI/API</string>
     <string name="request_timeout">Время ожидания вышло. Проблемы с подключением к сети</string>
+
+    <!-- ui prefs-->
+    <string name="pref_ui_section">Интерфейс</string>
+    <string name="pref_font_label">Шрифт</string>
+    <string name="pref_font_default">1x</string>
+    <string
+        name="pref_font_key"
+        translatable="false">font</string>
+
+    <string name="pref_theme_label">Тема</string>
+    <string name="pref_theme_default">Темная</string>
+    <string
+        name="pref_theme_key"
+        translatable="false">theme</string>
 </resources>

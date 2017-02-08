@@ -1,5 +1,5 @@
 <resources>
-    <dimen name="primary_text_size">24sp</dimen>
+    <dimen name="primary_text_size">36sp</dimen>
     <dimen name="list_item_padding">20dp</dimen>
     <dimen name="toolbar_height">80dp</dimen>
     <dimen name="menu_header_padding">8dp</dimen>

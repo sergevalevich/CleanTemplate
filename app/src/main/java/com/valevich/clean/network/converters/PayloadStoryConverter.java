@@ -14,12 +14,11 @@ public class PayloadStoryConverter {
     public static List<Story> getStoriesByPayload(List<StoryPayload> payload) {
         List<Story> stories = new ArrayList<>();
         for (StoryPayload storyPayload : payload) {
-            stories.add(
-                    Story.create(fromHtml(storyPayload.elementPureHtml()),
-                            storyPayload.site(),
-                            storyPayload.name(),
-                            false)
-            );
+            stories.add(new Story(
+                    fromHtml(storyPayload.elementPureHtml()),
+                    storyPayload.site(),
+                    storyPayload.name(),
+                    false));
         }
         return stories;
     }

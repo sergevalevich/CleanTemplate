@@ -2,18 +2,54 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorControlNormal">@color/colorText</item>
-        <item name="windowActionModeOverlay">true</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar">
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+        <item name="alertDialogTheme">@style/AppCompatAlertDialogStyle</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionModeOverlay">true</item>
+    </style>
+
+    <style name="Dark" parent="AppTheme">
+        <item name="colorPrimary">#424242</item>
+        <item name="colorPrimaryDark">#212121</item>
+        <item name="colorAccent">#FFF176</item>
+        <item name="colorText">#ffffff</item>
+        <item name="colorTextSecondary">#E0E0E0</item>
+        <item name="colorBack">#616161</item>
+        <item name="colorMenu">#757575</item>
+    </style>
+
+    <style name="Light" parent="AppTheme">
+        <item name="colorPrimary">#EEEEEE</item>
+        <item name="colorPrimaryDark">#E0E0E0</item>
+        <item name="colorAccent">#FFEB3B</item>
+        <item name="colorText">#000000</item>
+        <item name="colorTextSecondary">#212121</item>
+        <item name="colorBack">#F5F5F5</item>
+        <item name="colorMenu">#FAFAFA</item>
+    </style>
+
+    <style name="TextView">
+        <item name="android:textSize">@dimen/primary_text_size</item>
+        <item name="android:padding">@dimen/list_item_padding</item>
+    </style>
+
+    <style name="PreferenceThemeOverlay.v14">
+        <item name="android:textColor">?colorText</item>
+        <item name="android:textColorSecondary">?colorTextSecondary</item>
+        <item name="android:padding">@dimen/preference_padding</item>
+        <item name="android:dividerHeight">0dp</item>
+    </style>
+
+    <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">?colorAccent</item>
+        <item name="android:textColorPrimary">?colorText</item>
+        <item name="android:textColorAlertDialogListItem">?colorText</item>
+        <item name="android:background">?colorMenu</item>
+
+        <item name="android:color">?colorText</item>
+        <item name="android:textColor">?colorText</item>
+        <item name="android:actionMenuTextColor">?colorText</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>

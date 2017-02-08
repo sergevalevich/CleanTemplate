@@ -10,12 +10,12 @@ import android.widget.TextView;
 import com.valevich.clean.R;
 import com.valevich.clean.domain.model.Category;
 import com.valevich.clean.presentation.ui.utils.ItemClickListener;
+import com.valevich.clean.presentation.ui.utils.StateListDrawableHelper;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.CategoryHolder> {
 
@@ -38,7 +38,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
 
     @Override
     public void onBindViewHolder(CategoryHolder holder, int position) {
-        holder.textView.setText(categories.get(position).description());
+        holder.textView.setText(categories.get(position).getDescription());
     }
 
     @Override
@@ -59,10 +59,14 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
 
         CategoryHolder(View itemView) {
             super(itemView);
+            if (android.os.Build.VERSION.SDK_INT >= 16) {
+                itemView.setBackground(StateListDrawableHelper.getDrawable("#CEF6CE00", "#4C9D32"));
+            } else {
+                itemView.setBackgroundDrawable(StateListDrawableHelper.getDrawable("#CEF6CE00", "#4C9D32"));
+            }
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(view ->
                     listener.onItemClicked(categories.get(getAdapterPosition())));
-            // FIXME: 16.01.2017 LEAK???
         }
     }
 }

@@ -13,7 +13,7 @@ public class DbCategoryConverter {
     public static List<Category> getCategoriesByDbEntity(List<CategoryEntity> entities) {
         List<Category> categories = new ArrayList<>();
         for (CategoryEntity categoryEntity : entities) {
-            categories.add(Category.create(
+            categories.add(new Category(
                     categoryEntity.name(),
                     categoryEntity.site(),
                     categoryEntity.description()));

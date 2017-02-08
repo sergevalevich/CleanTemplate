@@ -4,7 +4,7 @@
                 android:layout_height="@dimen/drawer_header_layout_height"
                 android:orientation="vertical"
                 android:gravity="start|bottom"
-                android:background="@drawable/menu_header_gradient"
+                android:background="?colorMenu"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
     <TextView

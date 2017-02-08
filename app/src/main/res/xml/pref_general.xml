@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.valevich.clean.presentation.ui.utils.MyPreferenceCategory
+        android:title="@string/pref_ui_section">
+
+        <ListPreference
+            android:title="@string/pref_font_label"
+            android:key="@string/pref_font_key"
+            android:defaultValue="@string/pref_font_default"
+            android:entries="@array/entries_font_preference"
+            android:entryValues="@array/entry_values_font_preference">
+        </ListPreference>
+
+        <ListPreference
+            android:title="@string/pref_theme_label"
+            android:key="@string/pref_theme_key"
+            android:defaultValue="@string/pref_theme_default"
+            android:entries="@array/entries_theme_preference"
+            android:entryValues="@array/entry_values_theme_preference">
+        </ListPreference>
+
+    </com.valevich.clean.presentation.ui.utils.MyPreferenceCategory>
+
+</PreferenceScreen>

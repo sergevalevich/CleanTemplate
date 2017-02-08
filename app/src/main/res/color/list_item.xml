@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="?attr/colorMenu"
+          android:state_pressed="true"
+          android:color="?attr/colorMenu">
+
+    </item>
+    <item android:color="?attr/colorBack"
+          android:drawable="?attr/colorBack"/>
+</selector>

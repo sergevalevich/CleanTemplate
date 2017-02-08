@@ -12,23 +12,25 @@ import com.valevich.clean.presentation.ui.fragments.StoriesByCategoryFragment;
 import com.valevich.clean.presentation.ui.fragments.StoriesFragment;
 
 import icepick.State;
+import timber.log.Timber;
 
 
 public class StoriesByCategoryPresenter extends StoriesPresenter<StoriesByCategoryFragment> {
 
-    public static final int UPDATE_STORIES_TASK_ID = 6;
+    private static final int UPDATE_STORIES_TASK_ID = 6;
     private static final int LOAD_STORIES_TASK_ID = 5;
 
     @State
     Category category;
+
     @State
-    int count;
+    int storiesCount;
 
     private IStoriesByCategoryLoadingInteractor loadingInteractor;
     private IStoriesByCategoryRefreshingInteractor refreshingInteractor;
 
-    public StoriesByCategoryPresenter(Context context,Context activityContext) {
-        super(context,activityContext);
+    public StoriesByCategoryPresenter(Context context) {
+        super(context);
         loadingInteractor = new StoriesLoadingInteractor(getStoriesManager());
         refreshingInteractor = new StoriesRefreshingInteractor(getStoriesManager());
     }
@@ -39,14 +41,14 @@ public class StoriesByCategoryPresenter extends StoriesPresenter<StoriesByCatego
 
         restartableLatestCache(
                 LOAD_STORIES_TASK_ID,
-                () -> loadingInteractor.loadStories(category, count),
+                () -> loadingInteractor.loadStories(category, storiesCount),
                 StoriesByCategoryFragment::onStories,
                 StoriesFragment::onError);
 
         restartableLatestCache(
                 UPDATE_STORIES_TASK_ID,
-                () -> refreshingInteractor.refreshStories(category,count),
-                (f,s) -> {},
+                () -> refreshingInteractor.refreshStories(category, storiesCount),
+                (f,s) -> f.onStoriesUpToDate(),
                 StoriesFragment::onError);
     }
 
@@ -56,7 +58,7 @@ public class StoriesByCategoryPresenter extends StoriesPresenter<StoriesByCatego
 
     public void loadStories(Category category, int count) {
         this.category = category;
-        this.count = count;
+        this.storiesCount = count;
         start(LOAD_STORIES_TASK_ID);
     }
 }
