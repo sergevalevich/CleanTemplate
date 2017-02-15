@@ -13,9 +13,11 @@ public class DbStoryConverter {
         for (StoryEntity entity : storyEntities) {
             stories.add(new Story(
                     entity.text(),
+                    entity.textLow(),
                     entity.site(),
                     entity.category_name(),
-                    entity.isBookMarked()));
+                    entity.isBookMarked(),
+                    entity.date()));
         }
         return stories;
     }

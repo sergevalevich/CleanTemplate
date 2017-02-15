@@ -11,6 +11,7 @@ import icepick.Icepick;
 import nucleus.factory.PresenterFactory;
 import nucleus.presenter.Presenter;
 import nucleus.view.NucleusSupportFragment;
+import timber.log.Timber;
 
 public abstract class BaseFragment<P extends Presenter> extends NucleusSupportFragment<P> {
 
@@ -18,6 +19,7 @@ public abstract class BaseFragment<P extends Presenter> extends NucleusSupportFr
 
     @Override
     public void onCreate(Bundle savedState) {
+        Timber.d("onCreate %s",getClass().getSimpleName());
         setPresenterFactory(createPresenterFactory());
         super.onCreate(savedState);
         Icepick.restoreInstanceState(this, savedState);
@@ -39,6 +41,25 @@ public abstract class BaseFragment<P extends Presenter> extends NucleusSupportFr
     public void onDestroyView() {
         unbinder.unbind();
         super.onDestroyView();
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Timber.d("onResume %s",getClass().getSimpleName());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Timber.d("onStop %s",getClass().getSimpleName());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Timber.d("onDestroy %s",getClass().getSimpleName());
     }
 
     abstract PresenterFactory<P> createPresenterFactory();

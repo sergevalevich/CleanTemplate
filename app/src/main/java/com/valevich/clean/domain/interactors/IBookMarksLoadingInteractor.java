@@ -8,5 +8,5 @@ import java.util.List;
 import rx.Observable;
 
 public interface IBookMarksLoadingInteractor extends Interactor {
-    Observable<List<Story>> getBookMarks();
+    Observable<List<Story>> getBookMarks(int count, int offset);
 }

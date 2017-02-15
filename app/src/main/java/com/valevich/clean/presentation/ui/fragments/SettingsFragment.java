@@ -8,17 +8,9 @@ import android.support.v7.preference.PreferenceManager;
 
 import com.valevich.clean.R;
 
-import timber.log.Timber;
-
 
 public class SettingsFragment extends PreferenceFragmentCompat
     implements Preference.OnPreferenceChangeListener {
-
-//    @BindString(R.string.pref_theme_key)
-//    String themeKey;
-//
-//    @BindString(R.string.pref_font_key)
-//    String fontKey;
 
     private boolean mBindingPreference = true;
 
@@ -41,8 +33,6 @@ public class SettingsFragment extends PreferenceFragmentCompat
     @Override
     public boolean onPreferenceChange(Preference preference, Object o) {
         String value = o.toString();
-
-        Timber.d("onPreferenceChanged %s",preference);
 
         if(!mBindingPreference) {
             if (preference.getKey().equals(getString(R.string.pref_theme_key))) {

@@ -18,13 +18,8 @@ public class BookMarksFragment extends StoriesFragment<BookMarksPresenter> {
     }
 
     @Override
-    public void onStoryUpdated(boolean isBookMarked) {
-        super.onStoryUpdated(isBookMarked);
-    }
-
-    @Override
     void subscribeToUpdates() {
-        getPresenter().loadStories();
+        getPresenter().loadStories(Story.DEFAULT_COUNT,Story.DEFAULT_OFFSET);
     }
 
     @Override

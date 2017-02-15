@@ -8,6 +8,6 @@ import java.util.List;
 
 import rx.Observable;
 
-public interface IStoriesByCategoryLoadingInteractor extends Interactor {
-    Observable<List<Story>> loadStories(Category category,int count,int offset);
+public interface IStoriesSearchingInteractor extends Interactor {
+    Observable<List<Story>> loadStories(String filter,int count, int offset);
 }

@@ -33,8 +33,8 @@ public class StoriesManager implements IStoriesManager {
 
     // TODO: 14.02.2017 Change to site,name,count
     @Override
-    public Observable<List<Story>> getStoriesByCategory(Category category, int count) {
-        SqlDelightStatement statement = StoryEntity.FACTORY.select_by_category(category.getSite(),category.getName(),count);
+    public Observable<List<Story>> getStoriesByCategory(Category category, int count,int offset) {
+        SqlDelightStatement statement = StoryEntity.FACTORY.select_by_category(category.getSite(),category.getName(),count,offset);
         return dbHelper.getStories(statement.statement,
                 statement.args,
                 StoryEntity.FACTORY.select_by_categoryMapper())
@@ -56,15 +56,21 @@ public class StoriesManager implements IStoriesManager {
     }
 
     @Override
-    public Observable<List<Story>> getBookMarks() {
-        return dbHelper.getStories(StoryEntity.SELECT_BOOKMARKS,new String[]{},StoryEntity.FACTORY.select_bookmarksMapper())
+    public Observable<List<Story>> getBookMarks(int count, int offset) {
+        SqlDelightStatement statement = StoryEntity.FACTORY.select_bookmarks(count,offset);
+        return dbHelper.getStories(statement.statement,statement.args,StoryEntity.FACTORY.select_bookmarksMapper())
                 .map(DbStoryConverter::getStoriesByDbEntity)
                 .compose(SchedulersTransformer.INSTANCE.applySchedulers());
     }
 
     @Override
-    public Observable<List<Story>> findStories(String filter) {
-        return null;
+    public Observable<List<Story>> findStories(String filter,int count, int offset) {
+        SqlDelightStatement statement = StoryEntity.FACTORY.select_by_filter("%" + filter.toLowerCase() + "%",count,offset);
+        return dbHelper.getStories(statement.statement,
+                statement.args,
+                StoryEntity.FACTORY.select_by_filterMapper())
+                .map(DbStoryConverter::getStoriesByDbEntity)
+                .compose(SchedulersTransformer.INSTANCE.applySchedulers());
     }
 
     private Observable<List<Story>> getFreshStoriesByCategory(String site, String name, int count) {

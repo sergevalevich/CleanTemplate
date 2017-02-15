@@ -5,4 +5,6 @@
     <dimen name="drawer_header_layout_height">96dp</dimen>
     <dimen name="menu_header_padding">8dp</dimen>
     <dimen name="preference_padding">0dp</dimen>
+    <dimen name="paging_button_height">32dp</dimen>
+    <dimen name="paging_button_width">96dp</dimen>
 </resources>

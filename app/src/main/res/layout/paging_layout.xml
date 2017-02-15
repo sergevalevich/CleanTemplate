@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="@dimen/paging_button_width"
+        android:layout_height="@dimen/paging_button_height"
+        android:background="?attr/colorPrimary"
+        android:text = "@string/loadMore"
+        android:textColor="?colorText"
+        android:textSize="@dimen/primary_text_size"
+        android:id="@+id/loadMoreButton"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+</Button>

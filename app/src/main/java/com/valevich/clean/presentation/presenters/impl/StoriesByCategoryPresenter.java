@@ -26,6 +26,9 @@ public class StoriesByCategoryPresenter extends StoriesPresenter<StoriesByCatego
     @State
     int storiesCount;
 
+    @State
+    int offset;
+
     private IStoriesByCategoryLoadingInteractor loadingInteractor;
     private IStoriesByCategoryRefreshingInteractor refreshingInteractor;
 
@@ -41,7 +44,7 @@ public class StoriesByCategoryPresenter extends StoriesPresenter<StoriesByCatego
 
         restartableLatestCache(
                 LOAD_STORIES_TASK_ID,
-                () -> loadingInteractor.loadStories(category, storiesCount),
+                () -> loadingInteractor.loadStories(category, storiesCount,offset),
                 StoriesByCategoryFragment::onStories,
                 StoriesFragment::onError);
 
@@ -56,9 +59,10 @@ public class StoriesByCategoryPresenter extends StoriesPresenter<StoriesByCatego
         start(UPDATE_STORIES_TASK_ID);
     }
 
-    public void loadStories(Category category, int count) {
+    public void loadStories(Category category, int count, int offset) {
         this.category = category;
         this.storiesCount = count;
+        this.offset = offset;
         start(LOAD_STORIES_TASK_ID);
     }
 }

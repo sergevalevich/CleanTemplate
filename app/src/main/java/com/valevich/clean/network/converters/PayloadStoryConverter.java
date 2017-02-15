@@ -8,17 +8,22 @@ import com.valevich.clean.domain.model.Story;
 import com.valevich.clean.network.model.StoryPayload;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class PayloadStoryConverter {
     public static List<Story> getStoriesByPayload(List<StoryPayload> payload) {
         List<Story> stories = new ArrayList<>();
+        long date = new Date().getTime();
         for (StoryPayload storyPayload : payload) {
+            String text = fromHtml(storyPayload.elementPureHtml());
             stories.add(new Story(
-                    fromHtml(storyPayload.elementPureHtml()),
+                    text,
+                    text.toLowerCase(),
                     storyPayload.site(),
                     storyPayload.name(),
-                    false));
+                    false,
+                    date));
         }
         return stories;
     }

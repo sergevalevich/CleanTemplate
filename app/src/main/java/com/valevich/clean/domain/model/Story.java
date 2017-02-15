@@ -3,29 +3,36 @@ package com.valevich.clean.domain.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.auto.value.AutoValue;
+import timber.log.Timber;
 
 public class Story implements Parcelable {
 
-    public static final int DEFAULT_COUNT = 3;
+    public static final int DEFAULT_COUNT = 50;
+    public static final int DEFAULT_OFFSET = 50;
 
     private String text;
+    private String textLow;
     private String site;
     private String categoryName;
     private boolean isBookMarked;
+    private long date;
 
-    public Story(String text, String site, String categoryName, Boolean isBookMarked) {
+    public Story(String text, String textLow, String site, String categoryName, Boolean isBookMarked,long date) {
         this.text = text;
+        this.textLow = textLow;
         this.site = site;
         this.categoryName = categoryName;
         this.isBookMarked = isBookMarked;
+        this.date = date;
     }
 
     protected Story(Parcel in) {
         text = in.readString();
+        textLow = in.readString();
         site = in.readString();
         categoryName = in.readString();
         isBookMarked = in.readByte() != 0;
+        date = in.readLong();
     }
 
     public static final Creator<Story> CREATOR = new Creator<Story>() {
@@ -72,6 +79,22 @@ public class Story implements Parcelable {
         isBookMarked = bookMarked;
     }
 
+    public long getDate() {
+        return date;
+    }
+
+    public void setDate(long date) {
+        this.date = date;
+    }
+
+    public String getTextLow() {
+        return textLow;
+    }
+
+    public void setTextLow(String textLow) {
+        this.textLow = textLow;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -80,8 +103,10 @@ public class Story implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(text);
+        parcel.writeString(textLow);
         parcel.writeString(site);
         parcel.writeString(categoryName);
         parcel.writeByte((byte) (isBookMarked ? 1 : 0));
+        parcel.writeLong(date);
     }
 }

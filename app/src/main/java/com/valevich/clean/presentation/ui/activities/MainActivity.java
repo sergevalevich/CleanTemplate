@@ -13,6 +13,7 @@ import com.valevich.clean.R;
 import com.valevich.clean.presentation.presenters.impl.MainPresenter;
 import com.valevich.clean.presentation.ui.fragments.BookMarksFragment;
 import com.valevich.clean.presentation.ui.fragments.CategoriesFragment;
+import com.valevich.clean.presentation.ui.fragments.SearchableFragment;
 import com.valevich.clean.presentation.ui.fragments.SettingsFragment;
 
 import nucleus.factory.RequiresPresenter;
@@ -72,6 +73,8 @@ public class MainActivity extends DrawerActivity<MainPresenter>
                 return new CategoriesFragment();
             case R.id.drawer_bookmarks:
                 return new BookMarksFragment();
+            case R.id.drawer_search:
+                return new SearchableFragment();
             case R.id.drawer_settings:
                 return new SettingsFragment();
         }
@@ -118,6 +121,9 @@ public class MainActivity extends DrawerActivity<MainPresenter>
         } else if (backStackEntryName.equals(SettingsFragment.class.getName())) {
             setTitle(settingsTitle);
             navigationView.setCheckedItem(R.id.drawer_settings);
+        } else if (backStackEntryName.equals(SearchableFragment.class.getName())) {
+            setTitle(searchTitle);
+            navigationView.setCheckedItem(R.id.drawer_search);
         }
         title = getTitle().toString();
     }

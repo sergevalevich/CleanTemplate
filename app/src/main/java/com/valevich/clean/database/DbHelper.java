@@ -25,7 +25,6 @@ public class DbHelper {
 
     private BriteDatabase db;
 
-
     public DbHelper(DbOpenHelper dbOpenHelper) {
         SqlBrite sqlBrite = new SqlBrite.Builder().build();
         db = sqlBrite.wrapDatabaseHelper(dbOpenHelper, Schedulers.io());
@@ -95,7 +94,7 @@ public class DbHelper {
 
     private void insertStory(Story story) {
         StoryEntity.Insert_row statement = new StoryModel.Insert_row(db.getWritableDatabase());
-        statement.bind(story.getText(), story.getSite(),story.getCategoryName(),story.getText());
+        statement.bind(story.getText(), story.getTextLow(), story.getSite(),story.getCategoryName(),story.getText(),story.getDate());
         db.executeInsert(StoryEntity.TABLE_NAME, statement.program);
     }
 }

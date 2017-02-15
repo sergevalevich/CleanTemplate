@@ -49,6 +49,7 @@ dependencies {
     //RxJava
     final rxJavaVer = '1.1.5'
     final rxAndroidVer = '1.2.0'
+    final rxBindingsVer = '1.0.0'
 
     //Rest
     final okHttpVer = '3.3.1'
@@ -99,6 +100,8 @@ dependencies {
 
     compile "io.reactivex:rxjava:$rxJavaVer"
     compile "io.reactivex:rxandroid:$rxAndroidVer"
+    compile "com.jakewharton.rxbinding:rxbinding-appcompat-v7:$rxBindingsVer"
+
 
     compile "com.squareup.okhttp3:okhttp:$okHttpVer"
     compile "com.squareup.okhttp3:logging-interceptor:$okHttpVer"

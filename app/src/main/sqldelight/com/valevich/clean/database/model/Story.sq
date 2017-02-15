@@ -1,8 +1,11 @@
 CREATE TABLE story (
-    text TEXT NOT NULL PRIMARY KEY,
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    text TEXT NOT NULL UNIQUE,
+    textLow TEXT NOT NULL UNIQUE,
     isBookMarked INTEGER AS Boolean DEFAULT 0,
     site TEXT NOT NULL,
     category_name TEXT NOT NULL,
+    date INTEGER NOT NULL,
     FOREIGN KEY(site) REFERENCES source(site),
     FOREIGN KEY(category_name) REFERENCES category(name)
   );
@@ -10,17 +13,24 @@ CREATE TABLE story (
 -- Further SQL statements are proceeded by an identifier.
 select_by_category:
 SELECT * FROM story
-WHERE site = ? and category_name = ? LIMIT ?;
+WHERE site = ? AND category_name = ?
+ORDER BY date DESC, id ASC
+LIMIT ?
+OFFSET ?;
 
 select_bookmarks:
-SELECT * FROM story WHERE isBookMarked = 1;
+SELECT * FROM story WHERE isBookMarked = 1
+LIMIT ?
+OFFSET ?;
 
 select_by_filter:
-SELECT * FROM story WHERE text LIKE ?;
+SELECT * FROM story WHERE textLow LIKE ?
+LIMIT ?
+OFFSET ?;
 
 update_row:
 UPDATE story SET isBookMarked = ? WHERE text = ?;
 
 insert_row:
-INSERT OR REPLACE INTO story(text,site,category_name,isBookMarked)
-VALUES (?,?,?,COALESCE((SELECT isBookMarked FROM story WHERE text = ?),0));
+INSERT OR REPLACE INTO story(text,textLow,site,category_name,isBookMarked,date)
+VALUES (?,?,?,?,COALESCE((SELECT isBookMarked FROM story WHERE text = ?),0),?);

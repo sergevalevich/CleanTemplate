@@ -16,7 +16,7 @@ public class BookMarksLoadingInteractor extends StoriesInteractor implements IBo
     }
 
     @Override
-    public Observable<List<Story>> getBookMarks() {
-        return storiesManager.getBookMarks();
+    public Observable<List<Story>> getBookMarks(int count, int offset) {
+        return storiesManager.getBookMarks(count, offset);
     }
 }

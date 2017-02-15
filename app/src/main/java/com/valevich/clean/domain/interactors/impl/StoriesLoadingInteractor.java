@@ -16,8 +16,8 @@ public class StoriesLoadingInteractor extends StoriesInteractor implements IStor
     }
 
     @Override
-    public Observable<List<Story>> loadStories(Category category,int count) {
-        return storiesManager.getStoriesByCategory(category,count);
+    public Observable<List<Story>> loadStories(Category category,int count,int offset) {
+        return storiesManager.getStoriesByCategory(category,count,offset);
         // warning: showing only last n number of items
         // TODO: 12.01.2017 Pagination
     }

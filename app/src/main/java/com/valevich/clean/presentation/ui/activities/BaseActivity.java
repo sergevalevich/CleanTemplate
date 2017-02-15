@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.preference.PreferenceManager;
 
 import com.valevich.clean.R;
+import com.valevich.clean.presentation.ui.utils.ThemeMapper;
 
 import butterknife.ButterKnife;
 import icepick.Icepick;
@@ -16,10 +17,10 @@ public abstract class BaseActivity<P extends Presenter> extends NucleusAppCompat
     @Override
     protected void onCreate(Bundle savedState) {
         super.onCreate(savedState);
-        boolean isDark = Boolean.parseBoolean(PreferenceManager
+        int themeId = Integer.parseInt(PreferenceManager
                 .getDefaultSharedPreferences(this)
-                .getString(getString(R.string.pref_theme_key),getString(R.string.pref_theme_default)));
-        setTheme(isDark ? R.style.Dark : R.style.Light);
+                .getString(getString(R.string.pref_theme_key), getString(R.string.pref_theme_default)));
+        setTheme(ThemeMapper.getTheme(themeId));
         setContentView(getLayoutRes());
         ButterKnife.bind(this);
         Icepick.restoreInstanceState(this, savedState);

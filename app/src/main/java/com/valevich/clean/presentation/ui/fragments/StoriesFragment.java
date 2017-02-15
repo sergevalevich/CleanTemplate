@@ -23,6 +23,7 @@ import com.valevich.clean.presentation.presenters.impl.StoriesPresenter;
 import com.valevich.clean.presentation.ui.adapters.StoriesAdapter;
 import com.valevich.clean.presentation.ui.utils.DividerItemDecoration;
 import com.valevich.clean.presentation.ui.utils.ItemClickListener;
+import com.valevich.clean.presentation.ui.utils.PageRequestListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,7 @@ import icepick.State;
 import timber.log.Timber;
 
 public abstract class StoriesFragment<P extends StoriesPresenter> extends BaseFragment<P>
-        implements ItemClickListener<Story>, ActionMode.Callback {
+        implements ItemClickListener<Story>, ActionMode.Callback, PageRequestListener {
 
     @BindView(R.id.root)
     CoordinatorLayout rootView;
@@ -147,10 +148,16 @@ public abstract class StoriesFragment<P extends StoriesPresenter> extends BaseFr
         selectedStory = null;
     }
 
+
+    @Override
+    public void onPageRequested() {
+
+    }
+
     public void onStories(List<Story> stories) {
         Timber.d("Got %d stories", stories.size());
         StoriesAdapter adapter = (StoriesAdapter) storiesList.getAdapter();
-        if (adapter == null) storiesList.setAdapter(new StoriesAdapter(stories, this));
+        if (adapter == null) storiesList.setAdapter(new StoriesAdapter(stories, this,this));
         else adapter.refresh(new ArrayList<>(stories));
     }
 

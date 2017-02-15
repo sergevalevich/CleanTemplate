@@ -20,14 +20,17 @@
 
     <!-- ui prefs-->
     <string name="pref_font_label">Шрифт</string>
-    <string name="pref_font_default">1x</string>
+    <string name="pref_font_default">1</string>
     <string
         name="pref_font_key"
         translatable="false">font</string>
 
     <string name="pref_theme_label">Тема</string>
-    <string name="pref_theme_default">true</string>
+    <string name="pref_theme_default">1</string>
     <string
         name="pref_theme_key"
         translatable="false">theme</string>
+    <string name="dummy">add</string>
+    <string name="search_action">Поиск</string>
+    <string name="loadMore">Показать ещё</string>
 </resources>

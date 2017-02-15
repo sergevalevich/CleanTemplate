@@ -8,12 +8,20 @@ import com.valevich.clean.domain.interactors.impl.BookMarksLoadingInteractor;
 import com.valevich.clean.presentation.ui.fragments.BookMarksFragment;
 import com.valevich.clean.presentation.ui.fragments.StoriesFragment;
 
+import icepick.State;
+
 
 public class BookMarksPresenter extends StoriesPresenter<BookMarksFragment> {
 
     private static final int LOAD_STORIES_TASK_ID = 2;
 
     private IBookMarksLoadingInteractor bookMarksInteractor;
+
+    @State
+    int count;
+
+    @State
+    int offset;
 
     public BookMarksPresenter(Context context) {
         super(context);
@@ -25,13 +33,15 @@ public class BookMarksPresenter extends StoriesPresenter<BookMarksFragment> {
         super.onCreate(savedState);
         restartableLatestCache(
                 LOAD_STORIES_TASK_ID,
-                () -> bookMarksInteractor.getBookMarks(),
+                () -> bookMarksInteractor.getBookMarks(count,offset),
                 StoriesFragment::onStories,
                 StoriesFragment::onError);
 
     }
 
-    public void loadStories() {
+    public void loadStories(int count, int offset) {
+        this.count = count;
+        this.offset = offset;
         start(LOAD_STORIES_TASK_ID);
     }
 }

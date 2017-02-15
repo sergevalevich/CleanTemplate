@@ -4,4 +4,6 @@
     <dimen name="toolbar_height">56dp</dimen>
     <dimen name="menu_header_padding">12dp</dimen>
     <dimen name="preference_padding">2dp</dimen>
+    <dimen name="paging_button_height">48dp</dimen>
+    <dimen name="paging_button_width">108dp</dimen>
 </resources>

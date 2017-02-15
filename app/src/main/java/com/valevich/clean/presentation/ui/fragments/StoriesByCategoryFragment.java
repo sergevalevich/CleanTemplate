@@ -9,19 +9,20 @@ import com.valevich.clean.presentation.presenters.impl.StoriesByCategoryPresente
 
 import nucleus.factory.PresenterFactory;
 import nucleus.factory.RequiresPresenter;
-import timber.log.Timber;
 
 @RequiresPresenter(StoriesByCategoryPresenter.class)
 public class StoriesByCategoryFragment extends StoriesFragment<StoriesByCategoryPresenter> {
 
     public static final String CATEGORY_KEY = "CATEGORY";
     public static final String STORIES_COUNT_KEY = "COUNT";
+    public static final String OFFSET_KEY = "OFFSET";
 
-    public static StoriesByCategoryFragment newInstance(Category category, int count) {
+    public static StoriesByCategoryFragment newInstance(Category category, int count,int offset) {
         StoriesByCategoryFragment f = new StoriesByCategoryFragment();
         Bundle args = new Bundle();
         args.putParcelable(CATEGORY_KEY,category);
         args.putInt(STORIES_COUNT_KEY, count);
+        args.putInt(OFFSET_KEY,offset);
         f.setArguments(args);
         return f;
     }
@@ -29,28 +30,9 @@ public class StoriesByCategoryFragment extends StoriesFragment<StoriesByCategory
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        Timber.d("onCreate");
         if (bundle == null) {
             refreshStories();
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Timber.d("onResume");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Timber.d("onStop");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Timber.d("onDestroy");
     }
 
     @Override
@@ -64,7 +46,8 @@ public class StoriesByCategoryFragment extends StoriesFragment<StoriesByCategory
         Bundle args = getArguments();
         getPresenter().loadStories(
                 args.getParcelable(CATEGORY_KEY),
-                args.getInt(STORIES_COUNT_KEY));
+                args.getInt(STORIES_COUNT_KEY),
+                args.getInt(OFFSET_KEY));
     }
 
     @Override

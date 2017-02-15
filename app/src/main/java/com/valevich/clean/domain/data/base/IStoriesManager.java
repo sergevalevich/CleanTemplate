@@ -8,13 +8,13 @@ import java.util.List;
 import rx.Observable;
 
 public interface IStoriesManager {
-    Observable<List<Story>> getStoriesByCategory(Category category, int count);
+    Observable<List<Story>> getStoriesByCategory(Category category, int count, int offset);
 
     Observable<List<Story>> refreshStoriesByCategory(Category category, int count);
 
     Observable<Boolean> update(Story story);
 
-    Observable<List<Story>> getBookMarks();
+    Observable<List<Story>> getBookMarks(int count, int offset);
 
-    Observable<List<Story>> findStories(String filter);
+    Observable<List<Story>> findStories(String filter, int count, int offset);
 }

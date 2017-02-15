@@ -37,6 +37,9 @@ public abstract class DrawerActivity<P extends Presenter> extends BaseActivity<P
     @BindString(R.string.nav_drawer_settings)
     String settingsTitle;
 
+    @BindString(R.string.nav_drawer_search)
+    String searchTitle;
+
     @State
     String title;
 

@@ -7,22 +7,30 @@
     </string-array>
 
     <string-array name="entry_values_theme_preference">
-        <item>true</item>
-        <item>false</item>
+        <item>1</item>
+        <item>2</item>
     </string-array>
 
     <string-array name="entries_font_preference">
-        <item>0.5x</item>
+        <item>0.9x</item>
         <item>1x</item>
+        <item>1.1x</item>
+        <item>1.2x</item>
+        <item>1.3x</item>
+        <item>1.4x</item>
         <item>1.5x</item>
-        <item>2.x</item>
+        <item>2x</item>
     </string-array>
 
     <string-array name="entry_values_font_preference">
-        <item>0.5x</item>
-        <item>1x</item>
-        <item>1.5x</item>
-        <item>2.x</item>
+        <item>0.9</item>
+        <item>1</item>
+        <item>1.1</item>
+        <item>1.2</item>
+        <item>1.3</item>
+        <item>1.4</item>
+        <item>1.5</item>
+        <item>2</item>
     </string-array>
 
 </resources>
