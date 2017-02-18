@@ -24,6 +24,7 @@ import com.valevich.clean.presentation.ui.adapters.StoriesAdapter;
 import com.valevich.clean.presentation.ui.utils.DividerItemDecoration;
 import com.valevich.clean.presentation.ui.utils.ItemClickListener;
 import com.valevich.clean.presentation.ui.utils.PageRequestListener;
+import com.valevich.clean.presentation.ui.utils.RxPager;
 
 import java.util.ArrayList;
 import java.util.List;

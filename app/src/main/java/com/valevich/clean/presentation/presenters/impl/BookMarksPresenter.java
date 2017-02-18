@@ -6,7 +6,6 @@ import android.os.Bundle;
 import com.valevich.clean.domain.interactors.IBookMarksLoadingInteractor;
 import com.valevich.clean.domain.interactors.impl.BookMarksLoadingInteractor;
 import com.valevich.clean.presentation.ui.fragments.BookMarksFragment;
-import com.valevich.clean.presentation.ui.fragments.StoriesFragment;
 
 import icepick.State;
 
@@ -34,8 +33,8 @@ public class BookMarksPresenter extends StoriesPresenter<BookMarksFragment> {
         restartableLatestCache(
                 LOAD_STORIES_TASK_ID,
                 () -> bookMarksInteractor.getBookMarks(count,offset),
-                StoriesFragment::onStories,
-                StoriesFragment::onError);
+                BookMarksFragment::onStories,
+                BookMarksFragment::onError);
 
     }
 

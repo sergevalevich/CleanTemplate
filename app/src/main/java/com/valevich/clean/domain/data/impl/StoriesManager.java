@@ -31,7 +31,6 @@ public class StoriesManager implements IStoriesManager {
         this.context = context;
     }
 
-    // TODO: 14.02.2017 Change to site,name,count
     @Override
     public Observable<List<Story>> getStoriesByCategory(Category category, int count,int offset) {
         SqlDelightStatement statement = StoryEntity.FACTORY.select_by_category(category.getSite(),category.getName(),count,offset);

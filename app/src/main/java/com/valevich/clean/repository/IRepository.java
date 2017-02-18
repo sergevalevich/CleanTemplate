@@ -1,14 +1,16 @@
 package com.valevich.clean.repository;
 
 
-import com.valevich.clean.repository.specifications.Specification;
-
 import java.util.List;
 
-public interface IRepository<T> {
+import rx.Observable;
+
+public interface IRepository<T,Specification> {
     void add(Iterable<T> items);
+
+    void add(T item);
 
     void update(T item);
 
-    List<T> read(Specification specification);
+    Observable<List<T>> read(Specification spec);
 }

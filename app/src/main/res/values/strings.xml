@@ -33,4 +33,5 @@
     <string name="dummy">add</string>
     <string name="search_action">Поиск</string>
     <string name="loadMore">Показать ещё</string>
+    <string name="insert_error_message">Не удалось создать запись</string>
 </resources>

@@ -13,7 +13,7 @@ import com.valevich.clean.database.model.StoryModel;
 import com.valevich.clean.domain.model.Category;
 import com.valevich.clean.domain.model.Source;
 import com.valevich.clean.domain.model.Story;
-import com.valevich.clean.errors.UpdateRowException;
+import com.valevich.clean.errors.UpdateDeleteException;
 
 import java.util.List;
 
@@ -75,7 +75,7 @@ public class DbHelper {
             statement.bind(story.isBookMarked(),story.getText());
             int rows = db.executeUpdateDelete(StoryEntity.TABLE_NAME, statement.program);
             return rows == 0
-                    ? Observable.error(new UpdateRowException())
+                    ? Observable.error(new UpdateDeleteException())
                     : Observable.just(story.isBookMarked());
         });
     }

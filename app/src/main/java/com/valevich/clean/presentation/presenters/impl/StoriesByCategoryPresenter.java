@@ -9,10 +9,8 @@ import com.valevich.clean.domain.interactors.impl.StoriesLoadingInteractor;
 import com.valevich.clean.domain.interactors.impl.StoriesRefreshingInteractor;
 import com.valevich.clean.domain.model.Category;
 import com.valevich.clean.presentation.ui.fragments.StoriesByCategoryFragment;
-import com.valevich.clean.presentation.ui.fragments.StoriesFragment;
 
 import icepick.State;
-import timber.log.Timber;
 
 
 public class StoriesByCategoryPresenter extends StoriesPresenter<StoriesByCategoryFragment> {
@@ -46,13 +44,13 @@ public class StoriesByCategoryPresenter extends StoriesPresenter<StoriesByCatego
                 LOAD_STORIES_TASK_ID,
                 () -> loadingInteractor.loadStories(category, storiesCount,offset),
                 StoriesByCategoryFragment::onStories,
-                StoriesFragment::onError);
+                StoriesByCategoryFragment::onError);
 
         restartableLatestCache(
                 UPDATE_STORIES_TASK_ID,
                 () -> refreshingInteractor.refreshStories(category, storiesCount),
                 (f,s) -> f.onStoriesUpToDate(),
-                StoriesFragment::onError);
+                StoriesByCategoryFragment::onError);
     }
 
     public void refreshStories() {
