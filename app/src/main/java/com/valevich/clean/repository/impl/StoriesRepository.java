@@ -1,7 +1,6 @@
 package com.valevich.clean.repository.impl;
 
 import com.squareup.sqlbrite.BriteDatabase;
-import com.squareup.sqldelight.SqlDelightStatement;
 import com.valevich.clean.database.DatabaseHelper;
 import com.valevich.clean.database.converters.DbStoryConverter;
 import com.valevich.clean.database.model.StoryEntity;
@@ -18,12 +17,12 @@ import timber.log.Timber;
 
 public class StoriesRepository implements IRepository<Story,SqlDelightSpecification<StoryEntity>> {
 
-    private DatabaseHelper<StoryEntity> databaseHelper;
+    private DatabaseHelper databaseHelper;
 
     private final StoryEntity.Update_row rowUpdateStatement;
     private final StoryEntity.Insert_row rowInsertStatement;
 
-    public StoriesRepository(DatabaseHelper<StoryEntity> databaseHelper) {
+    public StoriesRepository(DatabaseHelper databaseHelper) {
         this.databaseHelper = databaseHelper;
         this.rowUpdateStatement = new StoryEntity.Update_row(databaseHelper.getWritableDatabase());
         this.rowInsertStatement = new StoryEntity.Insert_row(databaseHelper.getWritableDatabase());
@@ -63,8 +62,7 @@ public class StoriesRepository implements IRepository<Story,SqlDelightSpecificat
 
     @Override
     public Observable<List<Story>> read(SqlDelightSpecification<StoryEntity> specification) {
-        SqlDelightStatement statement = specification.getStatement();
-        return databaseHelper.get(StoryEntity.TABLE_NAME, statement.statement, statement.args, specification.getMapper())
+        return databaseHelper.get(StoryEntity.TABLE_NAME, specification.getQuery(), specification.getArgs(), specification.getMapper())
                 .map(DbStoryConverter::getStoriesByDbEntity)
                 .compose(SchedulersTransformer.INSTANCE.applySchedulers());
     }

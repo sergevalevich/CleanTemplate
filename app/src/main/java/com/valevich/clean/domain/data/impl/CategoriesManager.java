@@ -2,6 +2,7 @@ package com.valevich.clean.domain.data.impl;
 
 import android.content.Context;
 
+import com.squareup.sqldelight.SqlDelightStatement;
 import com.valevich.clean.database.DbHelper;
 import com.valevich.clean.database.converters.DbCategoryConverter;
 import com.valevich.clean.database.model.CategoryEntity;

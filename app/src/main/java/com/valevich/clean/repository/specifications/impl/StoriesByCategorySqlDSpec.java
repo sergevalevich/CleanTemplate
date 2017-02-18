@@ -13,19 +13,27 @@ public class StoriesByCategorySqlDSpec implements SqlDelightSpecification<StoryE
     private int limit;
     private int offset;
 
+    private final SqlDelightStatement statement;
+
     public StoriesByCategorySqlDSpec(Category category, int limit, int offset) {
         this.category = category;
         this.limit = limit;
         this.offset = offset;
-    }
-
-    @Override
-    public SqlDelightStatement getStatement() {
-        return StoryEntity.FACTORY.select_by_category(
+        this.statement = StoryEntity.FACTORY.select_by_category(
                 category.getSite(),
                 category.getName(),
                 limit,
                 offset);
+    }
+
+    @Override
+    public String getQuery() {
+        return statement.statement;
+    }
+
+    @Override
+    public String[] getArgs() {
+        return statement.args;
     }
 
     @Override

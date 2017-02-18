@@ -15,7 +15,7 @@ import java.util.List;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
-public class DatabaseHelper<T> {
+public class DatabaseHelper {
     private BriteDatabase db;
 
     public DatabaseHelper(DbOpenHelper dbOpenHelper) {
@@ -23,7 +23,7 @@ public class DatabaseHelper<T> {
         db = sqlBrite.wrapDatabaseHelper(dbOpenHelper, Schedulers.io());
     }
 
-    public Observable<List<T>> get(String table,String query, String[] args, RowMapper<T> mapper) {
+    public <T> Observable<List<T>> get(String table,String query, String[] args, RowMapper<T> mapper) {
         return db.createQuery(table, query, args).mapToList(mapper::map);
     }
 
