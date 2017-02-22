@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,8 +22,6 @@ import com.valevich.clean.presentation.presenters.impl.StoriesPresenter;
 import com.valevich.clean.presentation.ui.adapters.StoriesAdapter;
 import com.valevich.clean.presentation.ui.utils.DividerItemDecoration;
 import com.valevich.clean.presentation.ui.utils.ItemClickListener;
-import com.valevich.clean.presentation.ui.utils.PageRequestListener;
-import com.valevich.clean.presentation.ui.utils.RxPager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,16 +33,13 @@ import icepick.State;
 import timber.log.Timber;
 
 public abstract class StoriesFragment<P extends StoriesPresenter> extends BaseFragment<P>
-        implements ItemClickListener<Story>, ActionMode.Callback, PageRequestListener {
+        implements ItemClickListener<Story>, ActionMode.Callback {
 
     @BindView(R.id.root)
     CoordinatorLayout rootView;
 
     @BindView(R.id.stories_list)
     RecyclerView storiesList;
-
-    @BindView(R.id.swipe)
-    SwipeRefreshLayout swipe;
 
     @BindString(R.string.booked)
     String bookedMessage;
@@ -61,16 +55,16 @@ public abstract class StoriesFragment<P extends StoriesPresenter> extends BaseFr
 
     private ActionMode actionMode;
 
-    abstract void subscribeToUpdates();
-    abstract void showLoading();
-    abstract void hideLoading();
+    private StoriesAdapter storiesAdapter;
+
+    abstract void getStories();
 
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         Timber.d("on create. bundle is %s", bundle);
         if (bundle == null) {
-            subscribeToUpdates();
+            getStories();
         } else {
             if (selectedStory != null) {
                 startActionMode();
@@ -82,9 +76,8 @@ public abstract class StoriesFragment<P extends StoriesPresenter> extends BaseFr
         // TODO: 15.01.2017 test what happens after rotation / process restart
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    View createView(LayoutInflater inflater, ViewGroup container) {
         return inflater.inflate(R.layout.fragment_stories, container, false);
     }
 
@@ -93,7 +86,9 @@ public abstract class StoriesFragment<P extends StoriesPresenter> extends BaseFr
         super.onViewCreated(view, savedInstanceState);
         storiesList.setLayoutManager(new LinearLayoutManager(getActivity()));
         storiesList.addItemDecoration(new DividerItemDecoration(getActivity(),LinearLayoutManager.VERTICAL));
-        showLoading();
+        storiesAdapter = new StoriesAdapter(this);
+        storiesList.setAdapter(storiesAdapter);
+        showProgress();
     }
 
     @Override
@@ -142,41 +137,35 @@ public abstract class StoriesFragment<P extends StoriesPresenter> extends BaseFr
     @Override
     public void onDestroyActionMode(ActionMode mode) {
         if (selectedStory.isBookMarked() != wasStoryBookMarked) {
-            showLoading();
             getPresenter().updateStory(selectedStory);
         }
         actionMode = null;
         selectedStory = null;
     }
 
-
-    @Override
-    public void onPageRequested() {
-
-    }
-
     public void onStories(List<Story> stories) {
         Timber.d("Got %d stories", stories.size());
-        StoriesAdapter adapter = (StoriesAdapter) storiesList.getAdapter();
-        if (adapter == null) storiesList.setAdapter(new StoriesAdapter(stories, this,this));
-        else adapter.refresh(new ArrayList<>(stories));
+        storiesAdapter.refresh(new ArrayList<>(stories));
+        hideProgress();
     }
 
-    public void onStoriesUpToDate() {
-        Timber.d("onStoriesUpToDate");
-        hideLoading();
-    }
-
-    public void onStoryUpdated(boolean isBookMarked) {
-        hideLoading();
-        showMessage(isBookMarked ? bookedMessage : unBookedMessage);
+    public void onStoryUpdated(Story updatedStory) {
+        showMessage(updatedStory.isBookMarked() ? bookedMessage : unBookedMessage);
     }
 
     public void onError(Throwable t) {
-        hideLoading();
+        hideProgress();
         String message = ErrorMessageFactory.createErrorMessage(getActivity(), t);
         showMessage(message);
         Timber.e("Error getting stories %s", t.toString());
+    }
+
+    void showProgress() {
+        storiesAdapter.showProgress();
+    }
+
+    void hideProgress() {
+        storiesAdapter.hideProgress();
     }
 
     private void showMessage(String message) {

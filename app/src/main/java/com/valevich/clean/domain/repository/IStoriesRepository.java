@@ -1,4 +1,4 @@
-package com.valevich.clean.repository;
+package com.valevich.clean.domain.repository;
 
 
 import com.valevich.clean.domain.model.Category;
@@ -8,14 +8,16 @@ import java.util.List;
 
 import rx.Observable;
 
-public interface StoriesRepository {
+public interface IStoriesRepository {
     void add(Iterable<Story> items);
 
     void add(Story item);
 
-    void update(Story item);
+    Observable<Story> update(Story item);
 
     Observable<List<Story>> getByCategory(Category category,int limit,int offset);
+
+    Observable<List<Story>> getByCategory(Category category,int limit);
 
     Observable<List<Story>> getBookMarked(int limit,int offset);
 

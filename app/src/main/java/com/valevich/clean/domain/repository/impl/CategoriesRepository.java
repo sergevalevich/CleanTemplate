@@ -1,21 +1,19 @@
-package com.valevich.clean.repository.impl;
+package com.valevich.clean.domain.repository.impl;
 
 import com.squareup.sqlbrite.BriteDatabase;
 import com.valevich.clean.database.DatabaseHelper;
 import com.valevich.clean.database.converters.DbCategoryConverter;
 import com.valevich.clean.database.model.CategoryEntity;
 import com.valevich.clean.domain.model.Category;
-import com.valevich.clean.repository.IRepository;
-import com.valevich.clean.repository.specifications.SqlDelightSpecification;
+import com.valevich.clean.domain.repository.ICategoriesRepository;
 import com.valevich.clean.rx.utils.SchedulersTransformer;
 
 import java.util.List;
 
 import rx.Observable;
-import timber.log.Timber;
 
 
-public class CategoriesRepository implements IRepository<Category,SqlDelightSpecification<CategoryEntity>> {
+public class CategoriesRepository implements ICategoriesRepository {
 
     private DatabaseHelper databaseHelper;
 
@@ -37,7 +35,6 @@ public class CategoriesRepository implements IRepository<Category,SqlDelightSpec
         } finally {
             transaction.end();
         }
-        Timber.d("Categories inserted");
     }
 
     @Override
@@ -50,14 +47,10 @@ public class CategoriesRepository implements IRepository<Category,SqlDelightSpec
     }
 
     @Override
-    public void update(Category category) {
-
-    }
-
-    @Override
-    public Observable<List<Category>> read(SqlDelightSpecification<CategoryEntity> specification) {
-        return databaseHelper.get(CategoryEntity.TABLE_NAME, specification.getQuery(), specification.getArgs(), specification.getMapper())
+    public Observable<List<Category>> get() {
+        return databaseHelper.get(CategoryEntity.TABLE_NAME, CategoryEntity.SELECT_ALL, new String[0], CategoryEntity.FACTORY.select_allMapper())
                 .map(DbCategoryConverter::getCategoriesByDbEntity)
                 .compose(SchedulersTransformer.INSTANCE.applySchedulers());
     }
+
 }

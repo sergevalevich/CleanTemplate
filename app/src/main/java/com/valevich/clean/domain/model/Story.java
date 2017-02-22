@@ -3,12 +3,10 @@ package com.valevich.clean.domain.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import timber.log.Timber;
-
 public class Story implements Parcelable {
 
     public static final int DEFAULT_COUNT = 50;
-    public static final int DEFAULT_OFFSET = 50;
+    public static final int DEFAULT_OFFSET = 0;
 
     private String text;
     private String textLow;

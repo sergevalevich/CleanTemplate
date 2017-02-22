@@ -57,7 +57,7 @@ public class CategoriesFragment extends BaseFragment<CategoriesPresenter>
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    View createView(LayoutInflater inflater, ViewGroup container) {
         return inflater.inflate(R.layout.fragment_categories, container, false);
     }
 
@@ -95,12 +95,13 @@ public class CategoriesFragment extends BaseFragment<CategoriesPresenter>
     }
 
     public void onCategories(List<Category> categories) {
+        Timber.d("onCategories %d",categories.size());
         CategoriesAdapter adapter = (CategoriesAdapter) categoriesList.getAdapter();
         if (adapter == null) categoriesList.setAdapter(new CategoriesAdapter(categories, this));
         else adapter.refresh(new ArrayList<>(categories));
     }
 
-    public void onCategoriesUpToDate() {
+    public void onSourcesUpToDate() {
         showLoading(false);
     }
 
@@ -112,7 +113,7 @@ public class CategoriesFragment extends BaseFragment<CategoriesPresenter>
     }
 
     private void subscribeToUpdates() {
-        getPresenter().loadCategories();
+        getPresenter().getCategories();
     }
 
     private void refreshCategories() {

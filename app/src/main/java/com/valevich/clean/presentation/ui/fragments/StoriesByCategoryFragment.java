@@ -2,16 +2,23 @@ package com.valevich.clean.presentation.ui.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.LayoutInflater;
 import android.view.View;
 
+import com.valevich.clean.R;
 import com.valevich.clean.domain.model.Category;
 import com.valevich.clean.presentation.presenters.impl.StoriesByCategoryPresenter;
 
+import butterknife.ButterKnife;
 import nucleus.factory.PresenterFactory;
 import nucleus.factory.RequiresPresenter;
+import timber.log.Timber;
 
 @RequiresPresenter(StoriesByCategoryPresenter.class)
 public class StoriesByCategoryFragment extends StoriesFragment<StoriesByCategoryPresenter> {
+
+    private SwipeRefreshLayout swipe;
 
     public static final String CATEGORY_KEY = "CATEGORY";
     public static final String STORIES_COUNT_KEY = "COUNT";
@@ -37,26 +44,33 @@ public class StoriesByCategoryFragment extends StoriesFragment<StoriesByCategory
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        View child = LayoutInflater.from(view.getContext()).inflate(R.layout.swipe, rootView, false);
+        rootView.addView(child);
+        rootView.removeView(storiesList);
+        swipe = ButterKnife.findById(child,R.id.swipe);
+        swipe.addView(storiesList);
         swipe.setOnRefreshListener(this::refreshStories);
+        swipe.setRefreshing(true);
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    public void onStoriesRefreshed() {
+        Timber.d("onStoriesRefreshed");
+        swipe.setRefreshing(false);
     }
 
     @Override
-    void subscribeToUpdates() {
+    void getStories() {
         Bundle args = getArguments();
-        getPresenter().loadStories(
+        getPresenter().getStories(
                 args.getParcelable(CATEGORY_KEY),
                 args.getInt(STORIES_COUNT_KEY),
                 args.getInt(OFFSET_KEY));
     }
 
     @Override
-    void showLoading() {
-        swipe.setRefreshing(true);
-    }
-
-    @Override
-    void hideLoading() {
+    public void onError(Throwable t) {
+        super.onError(t);
         swipe.setRefreshing(false);
     }
 

@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteStatement;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
 import com.squareup.sqldelight.RowMapper;
-import com.valevich.clean.errors.InsertException;
 import com.valevich.clean.errors.UpdateDeleteException;
 
 import java.util.List;
@@ -36,8 +35,7 @@ public class DatabaseHelper {
     }
 
     public void insert(String table, SQLiteStatement statement) {
-        long id =  db.executeInsert(table, statement);
-        if (id == -1) throw new InsertException();
+        db.executeInsert(table, statement);
     }
 
     public void updateDelete(String table, SQLiteStatement statement) {

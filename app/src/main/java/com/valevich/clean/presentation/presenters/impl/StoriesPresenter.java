@@ -3,13 +3,11 @@ package com.valevich.clean.presentation.presenters.impl;
 import android.content.Context;
 import android.os.Bundle;
 
-import com.valevich.clean.database.DbHelper;
+import com.valevich.clean.database.DatabaseHelper;
 import com.valevich.clean.database.DbOpenHelper;
-import com.valevich.clean.domain.data.base.IStoriesManager;
-import com.valevich.clean.domain.data.impl.StoriesManager;
-import com.valevich.clean.domain.interactors.IStoryUpdateInteractor;
-import com.valevich.clean.domain.interactors.impl.StoryUpdateInteractor;
 import com.valevich.clean.domain.model.Story;
+import com.valevich.clean.domain.repository.IStoriesRepository;
+import com.valevich.clean.domain.repository.impl.StoriesRepository;
 import com.valevich.clean.network.RestService;
 import com.valevich.clean.presentation.presenters.base.BasePresenter;
 import com.valevich.clean.presentation.ui.fragments.StoriesFragment;
@@ -23,12 +21,10 @@ public abstract class StoriesPresenter<V extends StoriesFragment> extends BasePr
     @State
     Story storyToUpdate;
 
-    private IStoriesManager storiesManager;
-    private IStoryUpdateInteractor storyUpdateInteractor;
+    private IStoriesRepository repository;
 
     StoriesPresenter(Context context) {
-        this.storiesManager = new StoriesManager(new DbHelper(new DbOpenHelper(context)), new RestService(), context);
-        this.storyUpdateInteractor = new StoryUpdateInteractor(this.storiesManager);
+        repository = new StoriesRepository(new DatabaseHelper(new DbOpenHelper(context)),new RestService(),context);
     }
 
     //called in getPresenter first time
@@ -38,7 +34,7 @@ public abstract class StoriesPresenter<V extends StoriesFragment> extends BasePr
 
         restartableFirst(
                 UPDATE_STORY_TASK_ID,
-                () -> storyUpdateInteractor.updateStory(storyToUpdate),
+                () -> repository.update(storyToUpdate),
                 StoriesFragment::onStoryUpdated,
                 StoriesFragment::onError);
     }
@@ -48,7 +44,7 @@ public abstract class StoriesPresenter<V extends StoriesFragment> extends BasePr
         start(UPDATE_STORY_TASK_ID);
     }
 
-    IStoriesManager getStoriesManager() {
-        return storiesManager;
+    IStoriesRepository getRepository() {
+        return repository;
     }
 }

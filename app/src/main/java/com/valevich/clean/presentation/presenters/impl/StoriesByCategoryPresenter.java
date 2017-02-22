@@ -3,10 +3,6 @@ package com.valevich.clean.presentation.presenters.impl;
 import android.content.Context;
 import android.os.Bundle;
 
-import com.valevich.clean.domain.interactors.IStoriesByCategoryLoadingInteractor;
-import com.valevich.clean.domain.interactors.IStoriesByCategoryRefreshingInteractor;
-import com.valevich.clean.domain.interactors.impl.StoriesLoadingInteractor;
-import com.valevich.clean.domain.interactors.impl.StoriesRefreshingInteractor;
 import com.valevich.clean.domain.model.Category;
 import com.valevich.clean.presentation.ui.fragments.StoriesByCategoryFragment;
 
@@ -15,7 +11,7 @@ import icepick.State;
 
 public class StoriesByCategoryPresenter extends StoriesPresenter<StoriesByCategoryFragment> {
 
-    private static final int UPDATE_STORIES_TASK_ID = 6;
+    private static final int REFRESH_STORIES_TASK_ID = 6;
     private static final int LOAD_STORIES_TASK_ID = 5;
 
     @State
@@ -27,13 +23,8 @@ public class StoriesByCategoryPresenter extends StoriesPresenter<StoriesByCatego
     @State
     int offset;
 
-    private IStoriesByCategoryLoadingInteractor loadingInteractor;
-    private IStoriesByCategoryRefreshingInteractor refreshingInteractor;
-
     public StoriesByCategoryPresenter(Context context) {
         super(context);
-        loadingInteractor = new StoriesLoadingInteractor(getStoriesManager());
-        refreshingInteractor = new StoriesRefreshingInteractor(getStoriesManager());
     }
 
     @Override
@@ -42,22 +33,23 @@ public class StoriesByCategoryPresenter extends StoriesPresenter<StoriesByCatego
 
         restartableLatestCache(
                 LOAD_STORIES_TASK_ID,
-                () -> loadingInteractor.loadStories(category, storiesCount,offset),
+                () -> getRepository().getByCategory(category, storiesCount,offset),
                 StoriesByCategoryFragment::onStories,
                 StoriesByCategoryFragment::onError);
 
         restartableLatestCache(
-                UPDATE_STORIES_TASK_ID,
-                () -> refreshingInteractor.refreshStories(category, storiesCount),
-                (f,s) -> f.onStoriesUpToDate(),
+                REFRESH_STORIES_TASK_ID,
+                () -> getRepository().getByCategory(category, storiesCount),
+                (f,s) -> f.onStoriesRefreshed(),
                 StoriesByCategoryFragment::onError);
+
     }
 
     public void refreshStories() {
-        start(UPDATE_STORIES_TASK_ID);
+        start(REFRESH_STORIES_TASK_ID);
     }
 
-    public void loadStories(Category category, int count, int offset) {
+    public void getStories(Category category, int count, int offset) {
         this.category = category;
         this.storiesCount = count;
         this.offset = offset;

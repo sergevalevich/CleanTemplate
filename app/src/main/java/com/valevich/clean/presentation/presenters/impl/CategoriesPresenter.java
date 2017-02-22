@@ -3,31 +3,29 @@ package com.valevich.clean.presentation.presenters.impl;
 import android.content.Context;
 import android.os.Bundle;
 
-import com.valevich.clean.database.DbHelper;
+import com.valevich.clean.database.DatabaseHelper;
 import com.valevich.clean.database.DbOpenHelper;
-import com.valevich.clean.domain.data.base.ICategoriesManager;
-import com.valevich.clean.domain.data.impl.CategoriesManager;
-import com.valevich.clean.domain.interactors.ICategoriesLoadingInteractor;
-import com.valevich.clean.domain.interactors.ICategoriesRefreshingInteractor;
-import com.valevich.clean.domain.interactors.impl.CategoriesLoadingInteractor;
-import com.valevich.clean.domain.interactors.impl.CategoriesRefreshingInteractor;
 import com.valevich.clean.network.RestService;
 import com.valevich.clean.presentation.presenters.base.BasePresenter;
 import com.valevich.clean.presentation.ui.fragments.CategoriesFragment;
+import com.valevich.clean.domain.repository.ICategoriesRepository;
+import com.valevich.clean.domain.repository.ISourcesRepository;
+import com.valevich.clean.domain.repository.impl.CategoriesRepository;
+import com.valevich.clean.domain.repository.impl.SourcesRepository;
 
 
 public class CategoriesPresenter extends BasePresenter<CategoriesFragment> {
 
     private static final int LOAD_CATEGORIES_TASK_ID = 1;
-    private static final int UPDATE_CATEGORIES_TASK_ID = 2;
+    private static final int UPDATE_SOURCES_TASK_ID = 2;
 
-    private ICategoriesLoadingInteractor loadingInteractor;
-    private ICategoriesRefreshingInteractor refreshingInteractor;
+    private ISourcesRepository sourcesRepository;
+    private ICategoriesRepository categoriesRepository;
 
     public CategoriesPresenter(Context context) {
-        ICategoriesManager categoriesManager = new CategoriesManager(new DbHelper(new DbOpenHelper(context)), new RestService(), context);
-        this.loadingInteractor = new CategoriesLoadingInteractor(categoriesManager);
-        this.refreshingInteractor = new CategoriesRefreshingInteractor(categoriesManager);
+        DatabaseHelper databaseHelper = new DatabaseHelper(new DbOpenHelper(context));
+        sourcesRepository = new SourcesRepository(databaseHelper, new RestService(), context);
+        categoriesRepository = new CategoriesRepository(databaseHelper);
     }
 
     @Override
@@ -36,22 +34,22 @@ public class CategoriesPresenter extends BasePresenter<CategoriesFragment> {
 
         restartableLatestCache(
                 LOAD_CATEGORIES_TASK_ID,
-                () -> loadingInteractor.loadCategories(),
+                () -> categoriesRepository.get(),
                 (CategoriesFragment::onCategories),
                 CategoriesFragment::onError);
 
         restartableLatestCache(
-                UPDATE_CATEGORIES_TASK_ID,
-                () -> refreshingInteractor.refreshCategories(),
-                ((f, s) -> f.onCategoriesUpToDate()),
+                UPDATE_SOURCES_TASK_ID,
+                () -> sourcesRepository.get(),
+                ((f, s) -> f.onSourcesUpToDate()),
                 CategoriesFragment::onError);
     }
 
-    public void loadCategories() {
+    public void getCategories() {
         start(LOAD_CATEGORIES_TASK_ID);
     }
 
     public void refreshCategories() {
-        start(UPDATE_CATEGORIES_TASK_ID);
+        start(UPDATE_SOURCES_TASK_ID);
     }
 }
