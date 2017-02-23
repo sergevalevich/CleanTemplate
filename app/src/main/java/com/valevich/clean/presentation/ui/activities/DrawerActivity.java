@@ -11,7 +11,6 @@ import com.valevich.clean.R;
 
 import butterknife.BindString;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import icepick.State;
 import nucleus.presenter.Presenter;
 

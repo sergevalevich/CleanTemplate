@@ -2,7 +2,7 @@ package com.valevich.clean.presentation.ui.utils;
 
 import rx.functions.Action1;
 
-public class RxPager {
+public class Pager {
 
     private static final int NOT_REQUESTED = -1;
 
@@ -11,7 +11,7 @@ public class RxPager {
     private int requested = NOT_REQUESTED;
     private Action1<Integer> onRequest;
 
-    public RxPager(int pageSize, Action1<Integer> onRequest) {
+    public Pager(int pageSize, Action1<Integer> onRequest) {
         this.pageSize = pageSize;
         this.onRequest = onRequest;
     }
@@ -19,7 +19,7 @@ public class RxPager {
     public void next() {
         if (size % pageSize == 0 && requested != size) {
             requested = size;
-            onRequest.call(size / pageSize);
+            onRequest.call(size);
         }
     }
 

@@ -1,41 +1,18 @@
 package com.valevich.clean.presentation.presenters.impl;
 
 import android.content.Context;
-import android.os.Bundle;
 
+import com.valevich.clean.domain.repository.specification.impl.BookMarksSqlDSpecification;
 import com.valevich.clean.presentation.ui.fragments.BookMarksFragment;
-
-import icepick.State;
 
 
 public class BookMarksPresenter extends StoriesPresenter<BookMarksFragment> {
-
-    private static final int LOAD_STORIES_TASK_ID = 2;
-
-    @State
-    int count;
-
-    @State
-    int offset;
 
     public BookMarksPresenter(Context context) {
         super(context);
     }
 
-    @Override
-    protected void onCreate(Bundle savedState) {
-        super.onCreate(savedState);
-        restartableLatestCache(
-                LOAD_STORIES_TASK_ID,
-                () -> getRepository().getBookMarked(count,offset),
-                BookMarksFragment::onStories,
-                BookMarksFragment::onError);
-
-    }
-
-    public void loadStories(int count, int offset) {
-        this.count = count;
-        this.offset = offset;
-        start(LOAD_STORIES_TASK_ID);
+    public void getBookmarkedStories(int limit, int offset) {
+        loadStories(BookMarksSqlDSpecification.create(limit, offset));
     }
 }

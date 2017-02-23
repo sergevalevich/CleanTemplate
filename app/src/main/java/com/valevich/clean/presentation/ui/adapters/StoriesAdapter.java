@@ -2,6 +2,7 @@ package com.valevich.clean.presentation.ui.adapters;
 
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
@@ -18,6 +19,7 @@ import com.valevich.clean.presentation.ui.utils.ItemClickListener;
 import com.valevich.clean.presentation.ui.utils.StateListDrawableHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -73,21 +75,26 @@ public class StoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return stories.size() + (progress ? 1 : 0);
     }
 
-    public void refresh(List<Story> stories) {
-        this.stories.clear();
-        this.stories.addAll(stories);
+    public void set(List<Story> stories) {
+        this.stories = Collections.unmodifiableList(new ArrayList<>(stories));
         notifyDataSetChanged();
     }
 
-    public void clear() {
-        this.stories.clear();
-        notifyItemRangeRemoved(0,stories.size());
+    public void add(List<Story> stories) {
+        int prevSize = this.stories.size();
+        List<Story> list = new ArrayList<>(prevSize + stories.size());
+        list.addAll(this.stories);
+        list.addAll(stories);
+        this.stories = Collections.unmodifiableList(list);
+        notifyItemRangeInserted(prevSize, stories.size());
     }
 
     public void showProgress() {
         if (!progress) {
             progress = true;
-            notifyItemInserted(getItemCount());
+            Handler handler = new Handler();
+            final Runnable r = () -> notifyItemInserted(getItemCount());
+            handler.post(r);
         }
     }
 

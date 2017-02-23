@@ -50,14 +50,14 @@ public class CategoriesFragment extends BaseFragment<CategoriesPresenter>
         super.onCreate(bundle);
         Timber.d("on create. bundle is %s", bundle);
         if (bundle == null) {
-            subscribeToUpdates();
+            getCachedCategories();
             refreshCategories();
         }
     }
 
     @Nullable
     @Override
-    View createView(LayoutInflater inflater, ViewGroup container) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_categories, container, false);
     }
 
@@ -112,8 +112,8 @@ public class CategoriesFragment extends BaseFragment<CategoriesPresenter>
         Timber.e(message);
     }
 
-    private void subscribeToUpdates() {
-        getPresenter().getCategories();
+    private void getCachedCategories() {
+        getPresenter().getAllCategories();
     }
 
     private void refreshCategories() {

@@ -1,11 +1,13 @@
 package com.valevich.clean.domain.repository.impl;
 
 import com.squareup.sqlbrite.BriteDatabase;
+import com.squareup.sqldelight.SqlDelightStatement;
 import com.valevich.clean.database.DatabaseHelper;
 import com.valevich.clean.database.converters.DbCategoryConverter;
 import com.valevich.clean.database.model.CategoryEntity;
 import com.valevich.clean.domain.model.Category;
-import com.valevich.clean.domain.repository.ICategoriesRepository;
+import com.valevich.clean.domain.repository.IRepository;
+import com.valevich.clean.domain.repository.specification.SqlDelightSpecification;
 import com.valevich.clean.rx.utils.SchedulersTransformer;
 
 import java.util.List;
@@ -13,7 +15,7 @@ import java.util.List;
 import rx.Observable;
 
 
-public class CategoriesRepository implements ICategoriesRepository {
+public class CategoriesRepository implements IRepository<Category,SqlDelightSpecification<CategoryEntity>> {
 
     private DatabaseHelper databaseHelper;
 
@@ -47,10 +49,15 @@ public class CategoriesRepository implements ICategoriesRepository {
     }
 
     @Override
-    public Observable<List<Category>> get() {
-        return databaseHelper.get(CategoryEntity.TABLE_NAME, CategoryEntity.SELECT_ALL, new String[0], CategoryEntity.FACTORY.select_allMapper())
+    public Observable<Category> update(Category category) {
+        return null;
+    }
+
+    @Override
+    public Observable<List<Category>> get(SqlDelightSpecification<CategoryEntity> specification) {
+        SqlDelightStatement statement = specification.getStatement();
+        return databaseHelper.get(CategoryEntity.TABLE_NAME, statement.statement, statement.args, CategoryEntity.FACTORY.select_allMapper())
                 .map(DbCategoryConverter::getCategoriesByDbEntity)
                 .compose(SchedulersTransformer.INSTANCE.applySchedulers());
     }
-
 }

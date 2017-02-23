@@ -1,38 +1,29 @@
 package com.valevich.clean.domain.repository.impl;
 
-import android.content.Context;
-
 import com.squareup.sqlbrite.BriteDatabase;
 import com.valevich.clean.database.DatabaseHelper;
+import com.valevich.clean.database.model.CategoryEntity;
 import com.valevich.clean.database.model.SourceEntity;
+import com.valevich.clean.domain.model.Category;
 import com.valevich.clean.domain.model.Source;
-import com.valevich.clean.errors.NetworkUnavailableException;
-import com.valevich.clean.network.RestService;
-import com.valevich.clean.network.converters.PayloadSourcesConverter;
-import com.valevich.clean.network.utils.ConnectivityInspector;
-import com.valevich.clean.domain.repository.ICategoriesRepository;
-import com.valevich.clean.domain.repository.ISourcesRepository;
-import com.valevich.clean.rx.utils.SchedulersTransformer;
+import com.valevich.clean.domain.repository.IRepository;
+import com.valevich.clean.domain.repository.specification.SqlDelightSpecification;
 
 import java.util.List;
 
 import rx.Observable;
 
 
-public class SourcesRepository implements ISourcesRepository {
+public class SourcesRepository implements IRepository<Source,SqlDelightSpecification<SourceEntity>> {
 
     private DatabaseHelper databaseHelper;
-    private RestService restService;
-    private Context context;
 
-    private ICategoriesRepository categoriesRepo;
+    private IRepository<Category,SqlDelightSpecification<CategoryEntity>> categoriesRepo;
 
     private final SourceEntity.Insert_row sourceInsertStatement;
 
-    public SourcesRepository(DatabaseHelper databaseHelper,RestService restService,Context context) {
+    public SourcesRepository(DatabaseHelper databaseHelper) {
         this.databaseHelper = databaseHelper;
-        this.restService = restService;
-        this.context = context;
         this.sourceInsertStatement = new SourceEntity.Insert_row(databaseHelper.getWritableDatabase());
         this.categoriesRepo = new CategoriesRepository(this.databaseHelper);
     }
@@ -58,15 +49,12 @@ public class SourcesRepository implements ISourcesRepository {
     }
 
     @Override
-    public Observable<List<Source>> get() {
-        if (!ConnectivityInspector.isNetworkAvailable(context)) {
-            return Observable.error(new NetworkUnavailableException());
-        } else {
-            return restService.getSources()
-                    .map(PayloadSourcesConverter::getSourcesByPayload)
-                    .doOnNext(this::add)
-                    .compose(SchedulersTransformer.INSTANCE.applySchedulers());
-        }
+    public Observable<Source> update(Source source) {
+        return null;
     }
 
+    @Override
+    public Observable<List<Source>> get(SqlDelightSpecification<SourceEntity> specification) {
+        return null;
+    }
 }

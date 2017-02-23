@@ -19,8 +19,6 @@ public abstract class BaseFragment<P extends Presenter> extends NucleusSupportFr
 
     private Unbinder unbinder;
 
-    abstract View createView(LayoutInflater inflater, ViewGroup container);
-
     @Override
     public void onCreate(Bundle savedState) {
         Timber.d("onCreate %s",getClass().getSimpleName());
@@ -35,12 +33,10 @@ public abstract class BaseFragment<P extends Presenter> extends NucleusSupportFr
         Icepick.saveInstanceState(this, outState);
     }
 
-    @Nullable
     @Override
-    public final View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = createView(inflater, container);
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this,view);
-        return view;
     }
 
     @Override

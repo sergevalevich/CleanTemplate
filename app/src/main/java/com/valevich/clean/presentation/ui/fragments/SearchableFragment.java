@@ -2,19 +2,27 @@ package com.valevich.clean.presentation.ui.fragments;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SearchView;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.jakewharton.rxbinding.support.v7.widget.RxSearchView;
 import com.valevich.clean.R;
 import com.valevich.clean.domain.model.Story;
 import com.valevich.clean.presentation.presenters.impl.SearchablePresenter;
+import com.valevich.clean.presentation.ui.utils.PageBundle;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import butterknife.BindView;
 import icepick.State;
 import nucleus.factory.PresenterFactory;
 import nucleus.factory.RequiresPresenter;
@@ -25,7 +33,8 @@ import timber.log.Timber;
 @RequiresPresenter(SearchablePresenter.class)
 public class SearchableFragment extends StoriesFragment<SearchablePresenter> {
 
-    private Subscription textChangeSubscription;
+    @BindView(R.id.swipe)
+    SwipeRefreshLayout swipe;
 
     @State
     String query;
@@ -33,10 +42,18 @@ public class SearchableFragment extends StoriesFragment<SearchablePresenter> {
     @State
     boolean wasExpanded;
 
+    private Subscription textChangeSubscription;
+
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setHasOptionsMenu(true);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_search,container,false);
     }
 
     @Override
@@ -44,6 +61,13 @@ public class SearchableFragment extends StoriesFragment<SearchablePresenter> {
         if (textChangeSubscription != null && !textChangeSubscription.isUnsubscribed())
             textChangeSubscription.unsubscribe();
         super.onDestroy();
+    }
+
+    @Override
+    public void onStories(PageBundle<List<Story>> pageBundle) {
+        super.onStories(pageBundle);
+        swipe.setRefreshing(false);
+        swipe.setEnabled(false);
     }
 
     @Override
@@ -65,11 +89,6 @@ public class SearchableFragment extends StoriesFragment<SearchablePresenter> {
     }
 
     @Override
-    void getStories() {
-        getPresenter().findStories("",Story.DEFAULT_COUNT, Story.DEFAULT_OFFSET);
-    }
-
-    @Override
     PresenterFactory<SearchablePresenter> createPresenterFactory() {
         return () -> new SearchablePresenter(getActivity().getApplicationContext());
     }
@@ -82,9 +101,9 @@ public class SearchableFragment extends StoriesFragment<SearchablePresenter> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(query -> {
                             Timber.d("query received/going to db");
-                            // FIXME: 21.02.2017 shows progress at the bottom
+                            swipe.setEnabled(true);
+                            swipe.setRefreshing(true);
                             this.query = query;
-                            showProgress();
                             getPresenter().findStories(query,
                                     Story.DEFAULT_COUNT,
                                     Story.DEFAULT_OFFSET);

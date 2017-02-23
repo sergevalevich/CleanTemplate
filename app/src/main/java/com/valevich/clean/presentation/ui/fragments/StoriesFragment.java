@@ -9,11 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.valevich.clean.R;
 import com.valevich.clean.domain.model.Story;
@@ -22,8 +20,10 @@ import com.valevich.clean.presentation.presenters.impl.StoriesPresenter;
 import com.valevich.clean.presentation.ui.adapters.StoriesAdapter;
 import com.valevich.clean.presentation.ui.utils.DividerItemDecoration;
 import com.valevich.clean.presentation.ui.utils.ItemClickListener;
+import com.valevich.clean.presentation.ui.utils.OnScrollPaging;
+import com.valevich.clean.presentation.ui.utils.PageBundle;
+import com.valevich.clean.presentation.ui.utils.Pager;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -57,18 +57,13 @@ public abstract class StoriesFragment<P extends StoriesPresenter> extends BaseFr
 
     private StoriesAdapter storiesAdapter;
 
-    abstract void getStories();
+    private Pager pager;
 
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        Timber.d("on create. bundle is %s", bundle);
-        if (bundle == null) {
-            getStories();
-        } else {
-            if (selectedStory != null) {
-                startActionMode();
-            }
+        if (selectedStory != null) {
+            startActionMode();
         }
         //after rotation and process restart bundle should not be null
         //after rotation we don't need to restart
@@ -77,18 +72,19 @@ public abstract class StoriesFragment<P extends StoriesPresenter> extends BaseFr
     }
 
     @Override
-    View createView(LayoutInflater inflater, ViewGroup container) {
-        return inflater.inflate(R.layout.fragment_stories, container, false);
-    }
-
-    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        storiesList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        // TODO: 23.02.2017 RESET
+        pager = new Pager(Story.DEFAULT_COUNT, offset -> {
+            showAdapterProgress();
+            getPresenter().startWith(offset);
+        });
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        storiesList.setLayoutManager(layoutManager);
         storiesList.addItemDecoration(new DividerItemDecoration(getActivity(),LinearLayoutManager.VERTICAL));
         storiesAdapter = new StoriesAdapter(this);
         storiesList.setAdapter(storiesAdapter);
-        showProgress();
+        storiesList.addOnScrollListener(new OnScrollPaging(layoutManager, storiesAdapter, pager::next));
     }
 
     @Override
@@ -144,9 +140,15 @@ public abstract class StoriesFragment<P extends StoriesPresenter> extends BaseFr
     }
 
     public void onStories(List<Story> stories) {
+        hideAdapterProgress();
         Timber.d("Got %d stories", stories.size());
-        storiesAdapter.refresh(new ArrayList<>(stories));
-        hideProgress();
+        pager.received(stories.size());
+        if (pageBundle.offset() != 0)
+            storiesAdapter.add(stories);
+        else {
+            //recyclerView.scrollToPosition(0);
+            storiesAdapter.set(stories);
+        }
     }
 
     public void onStoryUpdated(Story updatedStory) {
@@ -154,17 +156,17 @@ public abstract class StoriesFragment<P extends StoriesPresenter> extends BaseFr
     }
 
     public void onError(Throwable t) {
-        hideProgress();
+        hideAdapterProgress();
         String message = ErrorMessageFactory.createErrorMessage(getActivity(), t);
         showMessage(message);
         Timber.e("Error getting stories %s", t.toString());
     }
 
-    void showProgress() {
+    void showAdapterProgress() {
         storiesAdapter.showProgress();
     }
 
-    void hideProgress() {
+    void hideAdapterProgress() {
         storiesAdapter.hideProgress();
     }
 
