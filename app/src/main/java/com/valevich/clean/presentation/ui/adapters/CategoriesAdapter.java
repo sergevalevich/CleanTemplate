@@ -16,6 +16,8 @@ import com.valevich.clean.presentation.ui.utils.AttributesHelper;
 import com.valevich.clean.presentation.ui.utils.ItemClickListener;
 import com.valevich.clean.presentation.ui.utils.StateListDrawableHelper;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -23,11 +25,10 @@ import butterknife.ButterKnife;
 
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.CategoryHolder> {
 
-    private List<Category> categories;
+    private List<Category> categories = new ArrayList<>();
     private ItemClickListener<Category> listener;
 
-    public CategoriesAdapter(List<Category> categories, ItemClickListener<Category> listener) {
-        this.categories = categories;
+    public CategoriesAdapter(ItemClickListener<Category> listener) {
         this.listener = listener;
     }
 
@@ -51,8 +52,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
     }
 
     public void refresh(List<Category> categories) {
-        this.categories.clear();
-        this.categories.addAll(categories);
+        this.categories = Collections.unmodifiableList(new ArrayList<>(categories));
         notifyDataSetChanged();
     }
 
@@ -70,7 +70,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
         }
 
         private void setColorStateDrawable() {
-            int pressedColor = AttributesHelper.getColorAttribute(itemView.getContext(), R.attr.colorMenu);
+            int pressedColor = AttributesHelper.getColorAttribute(itemView.getContext(), R.attr.colorPressed);
             int normalColor = AttributesHelper.getColorAttribute(itemView.getContext(), R.attr.colorBack);
             itemView.setBackground(StateListDrawableHelper.getDrawable(pressedColor, normalColor));
         }

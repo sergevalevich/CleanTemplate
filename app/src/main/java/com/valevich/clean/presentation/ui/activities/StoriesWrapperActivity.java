@@ -18,7 +18,6 @@ import nucleus.factory.RequiresPresenter;
 
 import static com.valevich.clean.presentation.ui.activities.MainActivity.FRAGMENT_EXTRA;
 import static com.valevich.clean.presentation.ui.fragments.StoriesByCategoryFragment.CATEGORY_KEY;
-import static com.valevich.clean.presentation.ui.fragments.StoriesByCategoryFragment.OFFSET_KEY;
 import static com.valevich.clean.presentation.ui.fragments.StoriesByCategoryFragment.STORIES_COUNT_KEY;
 
 @RequiresPresenter(StoriesWrapperPresenter.class)
@@ -58,8 +57,7 @@ public class StoriesWrapperActivity extends DrawerActivity<StoriesWrapperPresent
         Intent intent = getIntent();
         return StoriesByCategoryFragment.newInstance(
                 intent.getParcelableExtra(CATEGORY_KEY),
-                intent.getIntExtra(STORIES_COUNT_KEY, Story.DEFAULT_COUNT),
-                intent.getIntExtra(OFFSET_KEY, Story.DEFAULT_OFFSET));
+                intent.getIntExtra(STORIES_COUNT_KEY, Story.DEFAULT_COUNT));
     }
 
 }

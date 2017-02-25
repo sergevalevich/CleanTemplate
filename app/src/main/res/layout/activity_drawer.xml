@@ -46,10 +46,9 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:background="?colorMenu"
-            app:itemBackground="@drawable/selected_item_bg"
-            app:itemIconTint="?colorText"
-            app:itemTextColor="?colorText"
+            android:background="?colorDialog"
+            app:itemIconTint="@color/drawer_item"
+            app:itemTextColor="@color/drawer_item"
             app:menu="@menu/drawer_menu">
 
         </android.support.design.widget.NavigationView>

@@ -10,6 +10,8 @@ import com.valevich.clean.R;
 import com.valevich.clean.domain.model.Story;
 import com.valevich.clean.presentation.presenters.impl.BookMarksPresenter;
 
+import java.util.List;
+
 import nucleus.factory.PresenterFactory;
 import nucleus.factory.RequiresPresenter;
 
@@ -20,20 +22,26 @@ public class BookMarksFragment extends StoriesFragment<BookMarksPresenter> {
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         if (bundle == null) {
-            getPresenter().getBookmarkedStories(Story.DEFAULT_COUNT,Story.DEFAULT_OFFSET);
+            getPresenter().getBookmarkedStories();
         }
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_bookmarks,container,false);
+        return inflater.inflate(R.layout.fragment_stories,container,false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        showAdapterProgress();
+        showLoading();
+    }
+
+    @Override
+    public void onStories(List<Story> stories) {
+        super.onStories(stories);
+        hideLoading();
     }
 
     @Override

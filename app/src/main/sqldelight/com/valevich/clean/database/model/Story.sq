@@ -14,19 +14,13 @@ CREATE TABLE story (
 select_by_category:
 SELECT * FROM story
 WHERE site = ? AND category_name = ?
-ORDER BY date DESC, id ASC
-LIMIT ?
-OFFSET ?;
+ORDER BY date DESC, id ASC;
 
 select_bookmarks:
-SELECT * FROM story WHERE isBookMarked = 1
-LIMIT ?
-OFFSET ?;
+SELECT * FROM story WHERE isBookMarked = 1;
 
 select_by_filter:
-SELECT * FROM story WHERE textLow LIKE ?
-LIMIT ?
-OFFSET ?;
+SELECT * FROM story WHERE textLow LIKE ?;
 
 update_row:
 UPDATE story SET isBookMarked = ? WHERE text = ?;

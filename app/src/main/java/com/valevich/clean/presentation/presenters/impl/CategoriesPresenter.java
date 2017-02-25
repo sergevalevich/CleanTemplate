@@ -14,11 +14,15 @@ import com.valevich.clean.domain.repository.impl.CategoriesRepository;
 import com.valevich.clean.domain.repository.impl.SourcesRepository;
 import com.valevich.clean.domain.repository.specification.SqlDelightSpecification;
 import com.valevich.clean.domain.repository.specification.impl.AllCategoriesSqlDSpecification;
+import com.valevich.clean.errors.NetworkUnavailableException;
 import com.valevich.clean.network.RestService;
 import com.valevich.clean.network.converters.PayloadSourcesConverter;
+import com.valevich.clean.network.utils.ConnectivityInspector;
 import com.valevich.clean.presentation.presenters.base.BasePresenter;
 import com.valevich.clean.presentation.ui.fragments.CategoriesFragment;
 import com.valevich.clean.rx.utils.SchedulersTransformer;
+
+import rx.Observable;
 
 
 public class CategoriesPresenter extends BasePresenter<CategoriesFragment> {
@@ -29,12 +33,14 @@ public class CategoriesPresenter extends BasePresenter<CategoriesFragment> {
     private IRepository<Category,SqlDelightSpecification<CategoryEntity>> categoriesRepository;
     private IRepository<Source,SqlDelightSpecification<SourceEntity>> sourcesRepository;
     private RestService restService;
+    private Context context;
 
     public CategoriesPresenter(Context context) {
-        DatabaseHelper databaseHelper = new DatabaseHelper(new DbOpenHelper(context));
+        this.restService = new RestService();
+        this.context = context;
+        DatabaseHelper databaseHelper = new DatabaseHelper(new DbOpenHelper(this.context));
         sourcesRepository = new SourcesRepository(databaseHelper);
         categoriesRepository = new CategoriesRepository(databaseHelper);
-        this.restService = new RestService();
     }
 
     @Override
@@ -49,10 +55,12 @@ public class CategoriesPresenter extends BasePresenter<CategoriesFragment> {
 
         restartableLatestCache(
                 REFRESH_SOURCES_TASK_ID,
-                () -> restService.getSources()
+                () -> ConnectivityInspector.isNetworkAvailable(context)
+                        ? restService.getSources()
                         .map(PayloadSourcesConverter::getSourcesByPayload)
                         .doOnNext(sourcesRepository::add)
-                        .compose(SchedulersTransformer.INSTANCE.applySchedulers()),
+                        .compose(SchedulersTransformer.INSTANCE.applySchedulers())
+                        : Observable.error(new NetworkUnavailableException()),
                 ((f, s) -> f.onSourcesUpToDate()),
                 CategoriesFragment::onError);
     }

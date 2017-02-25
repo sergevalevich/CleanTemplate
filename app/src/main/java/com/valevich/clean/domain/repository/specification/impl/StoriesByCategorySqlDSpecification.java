@@ -9,24 +9,22 @@ import com.valevich.clean.database.model.StoryEntity;
 import com.valevich.clean.domain.model.Category;
 import com.valevich.clean.domain.repository.specification.SqlDelightSpecification;
 
+import static android.R.attr.offset;
+
 @AutoValue
 public abstract class StoriesByCategorySqlDSpecification implements SqlDelightSpecification<StoryEntity>,Parcelable {
 
-    public static StoriesByCategorySqlDSpecification create(Category category, int limit, int offset) {
-        return new AutoValue_StoriesByCategorySqlDSpecification(category,limit,offset);
+    public static StoriesByCategorySqlDSpecification create(Category category) {
+        return new AutoValue_StoriesByCategorySqlDSpecification(category);
     }
 
     abstract Category category();
-    abstract int limit();
-    abstract int offset();
 
     @Override
     public SqlDelightStatement getStatement() {
         return StoryEntity.FACTORY.select_by_category(
                 category().getSite(),
-                category().getName(),
-                limit(),
-                offset());
+                category().getName());
     }
 
     @Override

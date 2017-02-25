@@ -12,7 +12,7 @@ public class BookMarksPresenter extends StoriesPresenter<BookMarksFragment> {
         super(context);
     }
 
-    public void getBookmarkedStories(int limit, int offset) {
-        loadStories(BookMarksSqlDSpecification.create(limit, offset));
+    public void getBookmarkedStories() {
+        loadStories(BookMarksSqlDSpecification.create());
     }
 }

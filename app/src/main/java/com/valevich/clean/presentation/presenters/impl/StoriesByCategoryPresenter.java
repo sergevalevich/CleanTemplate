@@ -5,12 +5,15 @@ import android.os.Bundle;
 
 import com.valevich.clean.domain.model.Category;
 import com.valevich.clean.domain.repository.specification.impl.StoriesByCategorySqlDSpecification;
+import com.valevich.clean.errors.NetworkUnavailableException;
 import com.valevich.clean.network.RestService;
 import com.valevich.clean.network.converters.PayloadStoryConverter;
+import com.valevich.clean.network.utils.ConnectivityInspector;
 import com.valevich.clean.presentation.ui.fragments.StoriesByCategoryFragment;
 import com.valevich.clean.rx.utils.SchedulersTransformer;
 
 import icepick.State;
+import rx.Observable;
 
 
 public class StoriesByCategoryPresenter extends StoriesPresenter<StoriesByCategoryFragment> {
@@ -36,11 +39,12 @@ public class StoriesByCategoryPresenter extends StoriesPresenter<StoriesByCatego
 
         restartableLatestCache(
                 REFRESH_STORIES_TASK_ID,
-                // TODO: 22.02.2017 check connectivity
-                () -> restService.getStories(category.getSite(),category.getName(),storiesCount)
+                () -> ConnectivityInspector.isNetworkAvailable(getContext())
+                        ? restService.getStories(category.getSite(), category.getName(), storiesCount)
                         .map(PayloadStoryConverter::getStoriesByPayload)
                         .doOnNext(getRepository()::add)
-                        .compose(SchedulersTransformer.INSTANCE.applySchedulers()),
+                        .compose(SchedulersTransformer.INSTANCE.applySchedulers())
+                        : Observable.error(new NetworkUnavailableException()),
                 (f,s) -> f.onStoriesRefreshed(),
                 StoriesByCategoryFragment::onError);
     }
@@ -51,7 +55,7 @@ public class StoriesByCategoryPresenter extends StoriesPresenter<StoriesByCatego
         start(REFRESH_STORIES_TASK_ID);
     }
 
-    public void getStoriesByCategory(Category category, int count, int offset) {
-        loadStories(StoriesByCategorySqlDSpecification.create(category,count,offset));
+    public void getStoriesByCategory(Category category) {
+        loadStories(StoriesByCategorySqlDSpecification.create(category));
     }
 }

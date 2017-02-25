@@ -3,7 +3,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
-        <item name="alertDialogTheme">@style/AppCompatAlertDialogStyle</item>
+        <item name="actionModeStyle">@style/MyActionMode</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionModeOverlay">true</item>
@@ -17,8 +17,9 @@
         <item name="colorText">#E6FFFFFF</item>
         <item name="colorTextSecondary">#B3FFFFFF</item>
         <item name="colorBack">#616161</item>
-        <item name="colorMenu">#757575</item>
-        <item name="colorSelected">#40FFFFFF</item>
+        <item name="colorDialog">#757575</item>
+        <item name="colorPressed">#757575</item>
+        <item name="alertDialogTheme">@style/AppCompatAlertDialogStyleDark</item>
     </style>
 
     <style name="Light" parent="AppTheme">
@@ -29,13 +30,18 @@
         <item name="colorText">#CC000000</item>
         <item name="colorTextSecondary">#A6000000</item>
         <item name="colorBack">#F5F5F5</item>
-        <item name="colorMenu">#FAFAFA</item>
-        <item name="colorSelected">#0D000000</item>
+        <item name="colorDialog">#FAFAFA</item>
+        <item name="colorPressed">#E0E0E0</item>
+        <item name="alertDialogTheme">@style/AppCompatAlertDialogStyleLight</item>
     </style>
 
     <style name="TextView">
         <item name="android:textSize">@dimen/primary_text_size</item>
         <item name="android:padding">@dimen/list_item_padding</item>
+    </style>
+
+    <style name="MyActionMode" parent="@style/Widget.AppCompat.ActionMode">
+        <item name="background">?colorPrimary</item>
     </style>
 
     <style name="PreferenceThemeOverlay.v14">
@@ -44,15 +50,16 @@
         <item name="android:padding">@dimen/preference_padding</item>
     </style>
 
-    <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="AppCompatAlertDialogStyleDark" parent="Theme.AppCompat.Dialog.Alert">
         <item name="colorAccent">?colorDialogAccent</item>
         <item name="android:textColorPrimary">?colorText</item>
-        <item name="android:textColorAlertDialogListItem">?colorText</item>
-        <item name="android:background">?colorMenu</item>
+        <item name="android:background">?colorDialog</item>
+    </style>
 
-        <item name="android:color">?colorText</item>
-        <item name="android:textColor">?colorText</item>
-        <item name="android:actionMenuTextColor">?colorText</item>
+    <style name="AppCompatAlertDialogStyleLight" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">?colorDialogAccent</item>
+        <item name="android:textColorPrimary">?colorText</item>
+        <item name="android:background">?colorDialog</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>

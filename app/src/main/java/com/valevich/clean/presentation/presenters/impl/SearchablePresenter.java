@@ -12,7 +12,7 @@ public class SearchablePresenter extends StoriesPresenter<SearchableFragment> {
         super(context);
     }
 
-    public void findStories(String query,int count,int offset) {
-        loadStories(SearchSqlDSpecification.create(query, count, offset));
+    public void findStories(String query) {
+        loadStories(SearchSqlDSpecification.create(query));
     }
 }

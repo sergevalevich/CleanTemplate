@@ -10,7 +10,6 @@ import com.squareup.sqldelight.RowMapper;
 import com.valevich.clean.errors.UpdateDeleteException;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.schedulers.Schedulers;
@@ -24,7 +23,7 @@ public class DatabaseHelper {
     }
 
     public <T> Observable<List<T>> get(String table,String query, String[] args, RowMapper<T> mapper) {
-        return db.createQuery(table, query, args).mapToList(mapper::map).delay(10, TimeUnit.SECONDS);
+        return db.createQuery(table, query, args).mapToList(mapper::map);
     }
 
     public BriteDatabase.Transaction startTransaction() {

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,11 +19,9 @@ import com.valevich.clean.domain.model.Story;
 import com.valevich.clean.errors.ErrorMessageFactory;
 import com.valevich.clean.presentation.presenters.impl.StoriesPresenter;
 import com.valevich.clean.presentation.ui.adapters.StoriesAdapter;
+import com.valevich.clean.presentation.ui.utils.AttributesHelper;
 import com.valevich.clean.presentation.ui.utils.DividerItemDecoration;
 import com.valevich.clean.presentation.ui.utils.ItemClickListener;
-import com.valevich.clean.presentation.ui.utils.OnScrollPaging;
-import com.valevich.clean.presentation.ui.utils.PageBundle;
-import com.valevich.clean.presentation.ui.utils.Pager;
 
 import java.util.List;
 import java.util.Locale;
@@ -41,6 +40,9 @@ public abstract class StoriesFragment<P extends StoriesPresenter> extends BaseFr
     @BindView(R.id.stories_list)
     RecyclerView storiesList;
 
+    @BindView(R.id.swipe)
+    SwipeRefreshLayout swipe;
+
     @BindString(R.string.booked)
     String bookedMessage;
 
@@ -54,10 +56,8 @@ public abstract class StoriesFragment<P extends StoriesPresenter> extends BaseFr
     boolean wasStoryBookMarked;
 
     private ActionMode actionMode;
-
-    private StoriesAdapter storiesAdapter;
-
-    private Pager pager;
+    private boolean isSwipeActionEnabled = false;
+    private StoriesAdapter adapter;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -68,23 +68,18 @@ public abstract class StoriesFragment<P extends StoriesPresenter> extends BaseFr
         //after rotation and process restart bundle should not be null
         //after rotation we don't need to restart
         //after process restart query will restart automatically
-        // TODO: 15.01.2017 test what happens after rotation / process restart
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // TODO: 23.02.2017 RESET
-        pager = new Pager(Story.DEFAULT_COUNT, offset -> {
-            showAdapterProgress();
-            getPresenter().startWith(offset);
-        });
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         storiesList.setLayoutManager(layoutManager);
         storiesList.addItemDecoration(new DividerItemDecoration(getActivity(),LinearLayoutManager.VERTICAL));
-        storiesAdapter = new StoriesAdapter(this);
-        storiesList.setAdapter(storiesAdapter);
-        storiesList.addOnScrollListener(new OnScrollPaging(layoutManager, storiesAdapter, pager::next));
+        adapter = new StoriesAdapter(this);
+        storiesList.setAdapter(adapter);
+        swipe.setColorSchemeColors(AttributesHelper.getColorAttribute(getActivity(),R.attr.colorPrimary));
+        swipe.setEnabled(false);
     }
 
     @Override
@@ -140,15 +135,8 @@ public abstract class StoriesFragment<P extends StoriesPresenter> extends BaseFr
     }
 
     public void onStories(List<Story> stories) {
-        hideAdapterProgress();
         Timber.d("Got %d stories", stories.size());
-        pager.received(stories.size());
-        if (pageBundle.offset() != 0)
-            storiesAdapter.add(stories);
-        else {
-            //recyclerView.scrollToPosition(0);
-            storiesAdapter.set(stories);
-        }
+        adapter.refresh(stories);
     }
 
     public void onStoryUpdated(Story updatedStory) {
@@ -156,18 +144,32 @@ public abstract class StoriesFragment<P extends StoriesPresenter> extends BaseFr
     }
 
     public void onError(Throwable t) {
-        hideAdapterProgress();
+        hideLoading();
         String message = ErrorMessageFactory.createErrorMessage(getActivity(), t);
         showMessage(message);
         Timber.e("Error getting stories %s", t.toString());
     }
 
-    void showAdapterProgress() {
-        storiesAdapter.showProgress();
+    void setSwipeActionEnabled(boolean isEnabled) {
+        isSwipeActionEnabled = isEnabled;
+        swipe.setEnabled(isSwipeActionEnabled);
     }
 
-    void hideAdapterProgress() {
-        storiesAdapter.hideProgress();
+    void showLoading() {
+        if (!isSwipeActionEnabled) {
+            swipe.setEnabled(true);
+        }
+        swipe.setRefreshing(true);
+    }
+
+    void hideLoading() {
+        swipe.setRefreshing(false);
+        if (!isSwipeActionEnabled) {
+            swipe.setEnabled(false);
+        }
+        Timber.d("hide loading. Swipe is %s. Mode is %s",
+                Boolean.toString(swipe.isEnabled()),
+                Boolean.toString(isSwipeActionEnabled));
     }
 
     private void showMessage(String message) {

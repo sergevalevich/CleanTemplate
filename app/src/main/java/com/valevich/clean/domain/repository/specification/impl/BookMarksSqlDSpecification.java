@@ -5,22 +5,22 @@ import android.os.Parcelable;
 import com.google.auto.value.AutoValue;
 import com.squareup.sqldelight.RowMapper;
 import com.squareup.sqldelight.SqlDelightStatement;
+import com.valevich.clean.database.model.CategoryEntity;
 import com.valevich.clean.database.model.StoryEntity;
 import com.valevich.clean.domain.repository.specification.SqlDelightSpecification;
+
+import static android.R.attr.offset;
 
 @AutoValue
 public abstract class BookMarksSqlDSpecification implements SqlDelightSpecification<StoryEntity>,Parcelable {
 
-    public static BookMarksSqlDSpecification create(int limit, int offset) {
-        return new AutoValue_BookMarksSqlDSpecification(limit,offset);
+    public static BookMarksSqlDSpecification create() {
+        return new AutoValue_BookMarksSqlDSpecification();
     }
-
-    abstract int limit();
-    abstract int offset();
 
     @Override
     public SqlDelightStatement getStatement() {
-        return StoryEntity.FACTORY.select_bookmarks(limit(),offset());
+        return new SqlDelightStatement(StoryEntity.SELECT_BOOKMARKS,new String[0],null);
     }
 
     @Override

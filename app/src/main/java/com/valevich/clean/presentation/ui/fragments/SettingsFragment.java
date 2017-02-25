@@ -25,7 +25,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
     private void bindSummaryToValue(Preference preference) {
         preference.setOnPreferenceChangeListener(this);
-        onPreferenceChange(preference, PreferenceManager // immediately set summary when entering fragment not waiting for the preference change
+        onPreferenceChange(preference, PreferenceManager // immediately refresh summary when entering fragment not waiting for the preference change
                 .getDefaultSharedPreferences(preference.getContext())
                 .getString(preference.getKey(),""));
     }

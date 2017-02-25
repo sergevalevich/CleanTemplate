@@ -19,10 +19,10 @@ import com.valevich.clean.presentation.presenters.impl.CategoriesPresenter;
 import com.valevich.clean.presentation.ui.activities.MainActivity;
 import com.valevich.clean.presentation.ui.activities.StoriesWrapperActivity;
 import com.valevich.clean.presentation.ui.adapters.CategoriesAdapter;
+import com.valevich.clean.presentation.ui.utils.AttributesHelper;
 import com.valevich.clean.presentation.ui.utils.DividerItemDecoration;
 import com.valevich.clean.presentation.ui.utils.ItemClickListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -45,6 +45,8 @@ public class CategoriesFragment extends BaseFragment<CategoriesPresenter>
     @BindView(R.id.swipe)
     SwipeRefreshLayout swipe;
 
+    private CategoriesAdapter adapter;
+
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
@@ -66,6 +68,9 @@ public class CategoriesFragment extends BaseFragment<CategoriesPresenter>
         super.onViewCreated(view, savedInstanceState);
         categoriesList.setLayoutManager(new LinearLayoutManager(getActivity()));
         categoriesList.addItemDecoration(new DividerItemDecoration(getActivity(),LinearLayoutManager.VERTICAL));
+        adapter = new CategoriesAdapter(this);//to avoid skipping layout and swipe unavailability when adapter is empty
+        categoriesList.setAdapter(adapter);
+        swipe.setColorSchemeColors(AttributesHelper.getColorAttribute(getActivity(),R.attr.colorPrimary));
         swipe.setOnRefreshListener(this::refreshCategories);
         showLoading(true);
     }
@@ -96,9 +101,10 @@ public class CategoriesFragment extends BaseFragment<CategoriesPresenter>
 
     public void onCategories(List<Category> categories) {
         Timber.d("onCategories %d",categories.size());
-        CategoriesAdapter adapter = (CategoriesAdapter) categoriesList.getAdapter();
-        if (adapter == null) categoriesList.setAdapter(new CategoriesAdapter(categories, this));
-        else adapter.refresh(new ArrayList<>(categories));
+        adapter.refresh(categories);
+//        CategoriesAdapter adapter = (CategoriesAdapter) categoriesList.getAdapter();
+//        if (adapter == null) categoriesList.setAdapter(new CategoriesAdapter(categories, this));
+//        else adapter.refresh(new ArrayList<>(categories));
     }
 
     public void onSourcesUpToDate() {

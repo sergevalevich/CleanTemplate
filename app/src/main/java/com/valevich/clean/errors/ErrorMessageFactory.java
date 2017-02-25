@@ -5,6 +5,7 @@ import android.content.Context;
 import com.valevich.clean.R;
 
 import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 
 public class ErrorMessageFactory {
 
@@ -12,7 +13,7 @@ public class ErrorMessageFactory {
         String message = t.getMessage();
         if (t instanceof SocketTimeoutException)
             return context.getString(R.string.request_timeout);
-        if (t instanceof NetworkUnavailableException)
+        if (t instanceof NetworkUnavailableException || t instanceof UnknownHostException)
             return context.getString(R.string.no_net_error_message);
         if (t instanceof UpdateDeleteException)
             return context.getString(R.string.update_error_message);

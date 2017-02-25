@@ -5,8 +5,7 @@ import android.os.Parcelable;
 
 public class Story implements Parcelable {
 
-    public static final int DEFAULT_COUNT = 10;
-    public static final int DEFAULT_OFFSET = 0;
+    public static final int DEFAULT_COUNT = 100;
 
     private String text;
     private String textLow;

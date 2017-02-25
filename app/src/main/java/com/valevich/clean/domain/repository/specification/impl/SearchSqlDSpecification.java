@@ -16,18 +16,15 @@ import static android.R.attr.offset;
 @AutoValue
 public abstract class SearchSqlDSpecification implements SqlDelightSpecification<StoryEntity>,Parcelable {
 
-    public static SearchSqlDSpecification create(String query,int limit,int offset) {
-        return new AutoValue_SearchSqlDSpecification(query,limit,offset);
+    public static SearchSqlDSpecification create(String query) {
+        return new AutoValue_SearchSqlDSpecification(query);
     }
 
     abstract String query();
-    abstract int limit();
-    abstract int offset();
 
     @Override
     public SqlDelightStatement getStatement() {
-        return StoryEntity.FACTORY
-                .select_by_filter("%" + query().toLowerCase() + "%",limit(),offset());
+        return StoryEntity.FACTORY.select_by_filter("%" + query().toLowerCase() + "%");
     }
 
     @Override

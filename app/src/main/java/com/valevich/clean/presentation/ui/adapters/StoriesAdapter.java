@@ -2,14 +2,12 @@ package com.valevich.clean.presentation.ui.adapters;
 
 
 import android.content.Context;
-import android.os.Handler;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.valevich.clean.R;
@@ -25,84 +23,37 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class StoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
-    private static final int STORY_ITEM_TYPE = 0;
-    private static final int PROGRESS_ITEM_TYPE = 1;
+public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.StoryHolder> {
 
     private List<Story> stories = new ArrayList<>();
     private ItemClickListener<Story> itemClickListener;
-    private boolean progress;
 
     public StoriesAdapter(ItemClickListener<Story> itemClickListener) {
         this.itemClickListener = itemClickListener;
     }
 
     @Override
-    public int getItemViewType(int position) {
-        return position == stories.size() ? PROGRESS_ITEM_TYPE : STORY_ITEM_TYPE;
+    public StoriesAdapter.StoryHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(
+                R.layout.story_item,
+                parent,
+                false);
+        return new StoryHolder(itemView);
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView;
-        switch (viewType) {
-            case STORY_ITEM_TYPE:
-                itemView = LayoutInflater.from(parent.getContext()).inflate(
-                        R.layout.story_item,
-                        parent,
-                        false);
-                return new StoryHolder(itemView);
-
-            case PROGRESS_ITEM_TYPE:
-                itemView = LayoutInflater.from(parent.getContext()).inflate(
-                        R.layout.progress_view,
-                        parent,
-                        false);
-                return new ButtonHolder(itemView);
-        }
-        throw new RuntimeException("No such viewType");
-    }
-
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (position != stories.size())
-            ((StoryHolder) holder).bindContent(stories.get(position));
+    public void onBindViewHolder(StoriesAdapter.StoryHolder holder, int position) {
+        holder.textView.setText(stories.get(position).getText());
     }
 
     @Override
     public int getItemCount() {
-        return stories.size() + (progress ? 1 : 0);
+        return stories.size();
     }
 
-    public void set(List<Story> stories) {
+    public void refresh(List<Story> stories) {
         this.stories = Collections.unmodifiableList(new ArrayList<>(stories));
         notifyDataSetChanged();
-    }
-
-    public void add(List<Story> stories) {
-        int prevSize = this.stories.size();
-        List<Story> list = new ArrayList<>(prevSize + stories.size());
-        list.addAll(this.stories);
-        list.addAll(stories);
-        this.stories = Collections.unmodifiableList(list);
-        notifyItemRangeInserted(prevSize, stories.size());
-    }
-
-    public void showProgress() {
-        if (!progress) {
-            progress = true;
-            Handler handler = new Handler();
-            final Runnable r = () -> notifyItemInserted(getItemCount());
-            handler.post(r);
-        }
-    }
-
-    public void hideProgress() {
-        if (progress) {
-            progress = false;
-            notifyItemRemoved(getItemCount());
-        }
     }
 
     class StoryHolder extends RecyclerView.ViewHolder {
@@ -118,12 +69,8 @@ public class StoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             setTextSize();
         }
 
-        void bindContent(Story story) {
-            textView.setText(story.getText());
-        }
-
         private void setColorStateDrawable() {
-            int pressedColor = AttributesHelper.getColorAttribute(itemView.getContext(), R.attr.colorMenu);
+            int pressedColor = AttributesHelper.getColorAttribute(itemView.getContext(), R.attr.colorPressed);
             int normalColor = AttributesHelper.getColorAttribute(itemView.getContext(), R.attr.colorBack);
             itemView.setBackground(StateListDrawableHelper.getDrawable(pressedColor, normalColor));
         }
@@ -141,23 +88,5 @@ public class StoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                     context.getResources().getDimension(R.dimen.primary_text_size) * multiplier);
         }
-    }
-
-    class ButtonHolder extends RecyclerView.ViewHolder {
-
-        @BindView(R.id.progress)
-        ProgressBar progressBar;
-
-        ButtonHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-            setOnClickListener();
-        }
-
-        private void setOnClickListener() {
-            itemView.setOnClickListener(view -> {
-            });
-        }
-
     }
 }

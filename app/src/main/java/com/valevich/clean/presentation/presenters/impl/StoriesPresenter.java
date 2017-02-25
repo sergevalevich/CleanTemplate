@@ -27,9 +27,11 @@ public abstract class StoriesPresenter<V extends StoriesFragment> extends BasePr
     SqlDelightSpecification<StoryEntity> specification;
 
     private IRepository<Story,SqlDelightSpecification<StoryEntity>> repository;
+    private Context context;
 
     StoriesPresenter(Context context) {
-        repository = new StoriesRepository(new DatabaseHelper(new DbOpenHelper(context)));
+        this.context = context;
+        repository = new StoriesRepository(new DatabaseHelper(new DbOpenHelper(this.context)));
     }
 
     //called in getPresenter first time
@@ -43,13 +45,11 @@ public abstract class StoriesPresenter<V extends StoriesFragment> extends BasePr
                 StoriesFragment::onStoryUpdated,
                 StoriesFragment::onError);
 
-        restartableReplay(
+        restartableLatestCache(
                 LOAD_STORIES_TASK_ID,
                 () -> repository.get(specification),
                 StoriesFragment::onStories,
                 StoriesFragment::onError);
-        // TODO: 23.02.2017 What is after bookmarks adding???
-        //replay
     }
 
     public void updateStory(Story story) {
@@ -57,14 +57,13 @@ public abstract class StoriesPresenter<V extends StoriesFragment> extends BasePr
         start(UPDATE_STORY_TASK_ID);
     }
 
-//    public void startWith(int offset) {
-//        Timber.d("starting with %d",offset);
-//        pageRequests.onNext(offset);
-//    }
-
     void loadStories(SqlDelightSpecification<StoryEntity> specification) {
         this.specification = specification;
         start(LOAD_STORIES_TASK_ID);
+    }
+
+    Context getContext() {
+        return context;
     }
 
     IRepository<Story, SqlDelightSpecification<StoryEntity>> getRepository() {return repository;}

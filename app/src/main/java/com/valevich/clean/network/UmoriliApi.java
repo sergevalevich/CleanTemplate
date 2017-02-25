@@ -12,13 +12,9 @@ import rx.Observable;
 interface UmoriliApi {
     @GET("get")
     Observable<List<StoryPayload>> getStories(@Query("site") String site,
-                                              @Query("name") String name,
-                                              @Query("num") int count);
+                                       @Query("name") String name,
+                                       @Query("num") int count);
 
     @GET("sources")
     Observable<List<List<CategoryPayload>>> getSources();
-
-
-    @GET("random")
-    Observable<List<StoryPayload>> getRandom(@Query("num") int count);
 }

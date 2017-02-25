@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--<attr name="colorPrimary" format="reference|color" />-->
-    <!--<attr name="colorPrimaryDark" format="reference|color" />-->
     <attr name="colorText" format="reference|color" />
     <attr name="colorTextSecondary" format="reference|color" />
     <attr name="colorBack" format="reference|color" />
-    <attr name="colorMenu" format="reference|color" />
-    <attr name="colorSelected" format="reference|color"/>
+    <attr name="colorDialog" format="reference|color" />
+    <attr name="colorPressed" format="reference|color"/>
     <attr name="colorDialogAccent" format="reference|color"/>
 </resources>

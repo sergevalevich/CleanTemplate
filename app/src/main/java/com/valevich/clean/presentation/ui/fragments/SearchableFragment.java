@@ -4,7 +4,6 @@ package com.valevich.clean.presentation.ui.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,12 +16,10 @@ import com.jakewharton.rxbinding.support.v7.widget.RxSearchView;
 import com.valevich.clean.R;
 import com.valevich.clean.domain.model.Story;
 import com.valevich.clean.presentation.presenters.impl.SearchablePresenter;
-import com.valevich.clean.presentation.ui.utils.PageBundle;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import butterknife.BindView;
 import icepick.State;
 import nucleus.factory.PresenterFactory;
 import nucleus.factory.RequiresPresenter;
@@ -32,9 +29,6 @@ import timber.log.Timber;
 
 @RequiresPresenter(SearchablePresenter.class)
 public class SearchableFragment extends StoriesFragment<SearchablePresenter> {
-
-    @BindView(R.id.swipe)
-    SwipeRefreshLayout swipe;
 
     @State
     String query;
@@ -53,7 +47,14 @@ public class SearchableFragment extends StoriesFragment<SearchablePresenter> {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_search,container,false);
+        return inflater.inflate(R.layout.fragment_stories,container,false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (query != null) showLoading();
+        //if( TODO: 25.02.2017 onStories(new ArrayList()) if(query === null)
     }
 
     @Override
@@ -64,10 +65,9 @@ public class SearchableFragment extends StoriesFragment<SearchablePresenter> {
     }
 
     @Override
-    public void onStories(PageBundle<List<Story>> pageBundle) {
-        super.onStories(pageBundle);
-        swipe.setRefreshing(false);
-        swipe.setEnabled(false);
+    public void onStories(List<Story> stories) {
+        super.onStories(stories);
+        hideLoading();
     }
 
     @Override
@@ -97,16 +97,12 @@ public class SearchableFragment extends StoriesFragment<SearchablePresenter> {
         textChangeSubscription = RxSearchView.queryTextChanges(searchView)
                 .debounce(700, TimeUnit.MILLISECONDS)
                 .map(CharSequence::toString)
-                .filter(changes -> !changes.isEmpty())
+                .filter(changes -> !changes.isEmpty() && !changes.equals(query))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(query -> {
-                            Timber.d("query received/going to db");
-                            swipe.setEnabled(true);
-                            swipe.setRefreshing(true);
-                            this.query = query;
-                            getPresenter().findStories(query,
-                                    Story.DEFAULT_COUNT,
-                                    Story.DEFAULT_OFFSET);
+                            Timber.d("%s received",query);
+                            showLoading();
+                            getPresenter().findStories(this.query = query);
                         },
                         throwable -> {
                             Timber.e("search error %s",throwable.getMessage());

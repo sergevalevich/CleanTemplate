@@ -43,10 +43,6 @@ public class RestService {
         return api.getSources();
     }
 
-    public Observable<List<StoryPayload>> getRandom(int count) {
-        return api.getRandom(count);
-    }
-
     private OkHttpClient getOkHttpClient() {
         return new OkHttpClient.Builder()
                 .addInterceptor(getInterceptor())
