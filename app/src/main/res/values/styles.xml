@@ -3,7 +3,6 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
-        <item name="actionModeStyle">@style/MyActionMode</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionModeOverlay">true</item>
@@ -38,10 +37,7 @@
     <style name="TextView">
         <item name="android:textSize">@dimen/primary_text_size</item>
         <item name="android:padding">@dimen/list_item_padding</item>
-    </style>
-
-    <style name="MyActionMode" parent="@style/Widget.AppCompat.ActionMode">
-        <item name="background">?colorPrimary</item>
+        <item name="android:textColor">?colorText</item>
     </style>
 
     <style name="PreferenceThemeOverlay.v14">
