@@ -5,21 +5,21 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
 import com.squareup.sqlbrite.BriteDatabase;
-import com.squareup.sqlbrite.SqlBrite;
 import com.squareup.sqldelight.RowMapper;
 import com.valevich.umora.errors.UpdateDeleteException;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import rx.Observable;
-import rx.schedulers.Schedulers;
 
 public class DatabaseHelper {
     private BriteDatabase db;
 
-    public DatabaseHelper(DbOpenHelper dbOpenHelper) {
-        SqlBrite sqlBrite = new SqlBrite.Builder().build();
-        db = sqlBrite.wrapDatabaseHelper(dbOpenHelper, Schedulers.io());
+    @Inject
+    public DatabaseHelper(BriteDatabase db) {
+        this.db = db;
     }
 
     public <T> Observable<List<T>> get(String table,String query, String[] args, RowMapper<T> mapper) {

@@ -9,7 +9,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name="com.valevich.umora.UmoriApplication"
+        android:name="com.valevich.umora.UmoraApplication"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
@@ -23,7 +23,7 @@
         </activity>
 
         <activity
-            android:name="com.valevich.umora.presentation.ui.activities.StoriesWrapperActivity"/>
+            android:name="com.valevich.umora.presentation.ui.activities.StoriesByCategoryActivity"/>
 
     </application>
 

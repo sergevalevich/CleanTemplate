@@ -1,6 +1,7 @@
 package com.valevich.umora.database.model;
 
 import com.google.auto.value.AutoValue;
+import com.valevich.clean.database.model.StoryModel;
 
 @AutoValue
 public abstract class StoryEntity implements StoryModel {

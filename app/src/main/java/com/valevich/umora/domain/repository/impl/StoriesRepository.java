@@ -12,6 +12,8 @@ import com.valevich.umora.rx.utils.SchedulersTransformer;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import rx.Observable;
 import timber.log.Timber;
 
@@ -22,6 +24,7 @@ public class StoriesRepository implements IRepository<Story,SqlDelightSpecificat
     private final StoryEntity.Update_row rowUpdateStatement;
     private final StoryEntity.Insert_row rowInsertStatement;
 
+    @Inject
     public StoriesRepository(DatabaseHelper databaseHelper) {
         this.databaseHelper = databaseHelper;
         this.rowUpdateStatement = new StoryEntity.Update_row(databaseHelper.getWritableDatabase());
@@ -49,7 +52,8 @@ public class StoriesRepository implements IRepository<Story,SqlDelightSpecificat
                 story.getSite(),
                 story.getCategoryName(),
                 story.getText(),
-                story.getDate());
+                story.getDate(),
+                story.getText());
         databaseHelper.insert(StoryEntity.TABLE_NAME, rowInsertStatement.program);
     }
 
@@ -57,7 +61,7 @@ public class StoriesRepository implements IRepository<Story,SqlDelightSpecificat
     public Observable<Story> update(Story story) {
         return Observable.defer(() -> {
             Timber.d("Updating story on %s", Thread.currentThread().getName());
-            rowUpdateStatement.bind(story.isBookMarked(),story.getText());
+            rowUpdateStatement.bind(story.isBookMarked(),story.getBookMarkDate(),story.getText());
             databaseHelper.updateDelete(StoryEntity.TABLE_NAME,rowUpdateStatement.program);
             return Observable.just(story);
         }).compose(SchedulersTransformer.INSTANCE.applySchedulers());

@@ -17,6 +17,7 @@ public class DbStoryConverter {
                     entity.site(),
                     entity.category_name(),
                     entity.isBookMarked(),
+                    entity.bookMarkDate(),
                     entity.date()));
         }
         return stories;

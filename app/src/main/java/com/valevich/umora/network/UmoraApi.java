@@ -9,7 +9,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 import rx.Observable;
 
-interface UmoriliApi {
+public interface UmoraApi {
     @GET("get")
     Observable<List<StoryPayload>> getStories(@Query("site") String site,
                                        @Query("name") String name,

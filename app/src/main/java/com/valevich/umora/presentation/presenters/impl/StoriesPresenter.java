@@ -1,10 +1,7 @@
 package com.valevich.umora.presentation.presenters.impl;
 
-import android.content.Context;
 import android.os.Bundle;
 
-import com.valevich.umora.database.DatabaseHelper;
-import com.valevich.umora.database.DbOpenHelper;
 import com.valevich.umora.database.model.StoryEntity;
 import com.valevich.umora.domain.model.Story;
 import com.valevich.umora.domain.repository.IRepository;
@@ -13,9 +10,11 @@ import com.valevich.umora.domain.repository.specification.SqlDelightSpecificatio
 import com.valevich.umora.presentation.presenters.base.BasePresenter;
 import com.valevich.umora.presentation.ui.fragments.StoriesFragment;
 
+import javax.inject.Inject;
+
 import icepick.State;
 
-public abstract class StoriesPresenter<V extends StoriesFragment> extends BasePresenter<V> {
+public class StoriesPresenter<V extends StoriesFragment> extends BasePresenter<V> {
 
     private static final int UPDATE_STORY_TASK_ID = 0;
     private static final int LOAD_STORIES_TASK_ID = 1;
@@ -26,13 +25,8 @@ public abstract class StoriesPresenter<V extends StoriesFragment> extends BasePr
     @State
     SqlDelightSpecification<StoryEntity> specification;
 
-    private IRepository<Story,SqlDelightSpecification<StoryEntity>> repository;
-    private Context context;
-
-    StoriesPresenter(Context context) {
-        this.context = context;
-        repository = new StoriesRepository(new DatabaseHelper(new DbOpenHelper(this.context)));
-    }
+    @Inject
+    StoriesRepository repository;
 
     //called in getPresenter first time
     @Override
@@ -60,10 +54,6 @@ public abstract class StoriesPresenter<V extends StoriesFragment> extends BasePr
     void loadStories(SqlDelightSpecification<StoryEntity> specification) {
         this.specification = specification;
         start(LOAD_STORIES_TASK_ID);
-    }
-
-    Context getContext() {
-        return context;
     }
 
     IRepository<Story, SqlDelightSpecification<StoryEntity>> getRepository() {return repository;}

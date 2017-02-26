@@ -8,13 +8,12 @@ import com.valevich.umora.domain.model.Story;
 import com.valevich.umora.network.model.StoryPayload;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class PayloadStoryConverter {
     public static List<Story> getStoriesByPayload(List<StoryPayload> payload) {
         List<Story> stories = new ArrayList<>(payload.size());
-        long date = new Date().getTime();
+        long date = System.currentTimeMillis();
         for (StoryPayload storyPayload : payload) {
             String text = fromHtml(storyPayload.elementPureHtml());
             stories.add(new Story(
@@ -23,6 +22,7 @@ public class PayloadStoryConverter {
                     storyPayload.site(),
                     storyPayload.name(),
                     false,
+                    0,
                     date));
         }
         return stories;

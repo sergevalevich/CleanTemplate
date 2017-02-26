@@ -3,6 +3,7 @@ CREATE TABLE story (
     text TEXT NOT NULL UNIQUE,
     textLow TEXT NOT NULL UNIQUE,
     isBookMarked INTEGER AS Boolean DEFAULT 0,
+    bookMarkDate INTEGER NOT NULL,
     site TEXT NOT NULL,
     category_name TEXT NOT NULL,
     date INTEGER NOT NULL,
@@ -17,14 +18,16 @@ WHERE site = ? AND category_name = ?
 ORDER BY date DESC, id ASC;
 
 select_bookmarks:
-SELECT * FROM story WHERE isBookMarked = 1;
+SELECT * FROM story WHERE isBookMarked = 1
+ORDER BY bookMarkDate DESC;
 
 select_by_filter:
 SELECT * FROM story WHERE textLow LIKE ?;
 
 update_row:
-UPDATE story SET isBookMarked = ? WHERE text = ?;
+UPDATE story SET isBookMarked = ?, bookMarkDate = ? WHERE text = ?;
 
 insert_row:
-INSERT OR REPLACE INTO story(text,textLow,site,category_name,isBookMarked,date)
-VALUES (?,?,?,?,COALESCE((SELECT isBookMarked FROM story WHERE text = ?),0),?);
+INSERT OR REPLACE INTO story(text,textLow,site,category_name,isBookMarked,date,bookMarkDate)
+VALUES (?,?,?,?,COALESCE((SELECT isBookMarked FROM story WHERE text = ?),0),?,
+COALESCE((SELECT bookMarkDate FROM story WHERE text = ?),0));

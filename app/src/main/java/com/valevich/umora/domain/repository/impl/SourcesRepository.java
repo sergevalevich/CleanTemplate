@@ -11,6 +11,8 @@ import com.valevich.umora.domain.repository.specification.SqlDelightSpecificatio
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import rx.Observable;
 
 
@@ -22,10 +24,11 @@ public class SourcesRepository implements IRepository<Source,SqlDelightSpecifica
 
     private final SourceEntity.Insert_row sourceInsertStatement;
 
-    public SourcesRepository(DatabaseHelper databaseHelper) {
+    @Inject
+    public SourcesRepository(DatabaseHelper databaseHelper,CategoriesRepository categoriesRepository) {
         this.databaseHelper = databaseHelper;
+        this.categoriesRepo = categoriesRepository;
         this.sourceInsertStatement = new SourceEntity.Insert_row(databaseHelper.getWritableDatabase());
-        this.categoriesRepo = new CategoriesRepository(this.databaseHelper);
     }
 
     @Override

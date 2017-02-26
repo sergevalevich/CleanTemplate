@@ -1,8 +1,7 @@
 package com.valevich.umora.presentation.ui.adapters;
 
 
-import android.content.Context;
-import android.support.v7.preference.PreferenceManager;
+import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -20,6 +19,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import butterknife.BindDimen;
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -28,7 +31,14 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
     private List<Category> categories = new ArrayList<>();
     private ItemClickListener<Category> listener;
 
-    public CategoriesAdapter(ItemClickListener<Category> listener) {
+    private SharedPreferences preferences;
+
+    @Inject
+    public CategoriesAdapter(SharedPreferences preferences) {
+        this.preferences = preferences;
+    }
+
+    public void setClickListener(ItemClickListener<Category> listener) {
         this.listener = listener;
     }
 
@@ -61,6 +71,15 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
         @BindView(R.id.text)
         TextView textView;
 
+        @BindString(R.string.pref_font_key)
+        String fontKey;
+
+        @BindString(R.string.pref_font_default)
+        String defaultFont;
+
+        @BindDimen(R.dimen.primary_text_size)
+        float textSize;
+
         CategoryHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -81,12 +100,8 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
         }
 
         private void setTextSize() {
-            Context context = textView.getContext();
-            float multiplier = Float.parseFloat(PreferenceManager
-                    .getDefaultSharedPreferences(context)
-                    .getString(context.getString(R.string.pref_font_key), context.getResources().getString(R.string.pref_font_default)));
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
-                    context.getResources().getDimension(R.dimen.primary_text_size) * multiplier);
+            float multiplier = Float.parseFloat(preferences.getString(fontKey, defaultFont));
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize * multiplier);
         }
     }
 }

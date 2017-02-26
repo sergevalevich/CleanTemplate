@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import com.valevich.umora.R;
 import com.valevich.umora.domain.model.Category;
 import com.valevich.umora.domain.model.Story;
-import com.valevich.umora.presentation.presenters.impl.StoriesWrapperPresenter;
+import com.valevich.umora.presentation.presenters.impl.StubPresenter;
 import com.valevich.umora.presentation.ui.fragments.StoriesByCategoryFragment;
 
 import nucleus.factory.RequiresPresenter;
@@ -20,8 +20,8 @@ import static com.valevich.umora.presentation.ui.activities.MainActivity.FRAGMEN
 import static com.valevich.umora.presentation.ui.fragments.StoriesByCategoryFragment.CATEGORY_KEY;
 import static com.valevich.umora.presentation.ui.fragments.StoriesByCategoryFragment.STORIES_COUNT_KEY;
 
-@RequiresPresenter(StoriesWrapperPresenter.class)
-public class StoriesWrapperActivity extends DrawerActivity<StoriesWrapperPresenter> {
+@RequiresPresenter(StubPresenter.class)
+public class StoriesByCategoryActivity extends DrawerActivity<StubPresenter> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import com.valevich.umora.R;
 import com.valevich.umora.presentation.presenters.impl.BookMarksPresenter;
 
-import nucleus.factory.PresenterFactory;
 import nucleus.factory.RequiresPresenter;
 
 @RequiresPresenter(BookMarksPresenter.class)
@@ -29,8 +28,8 @@ public class BookMarksFragment extends StoriesFragment<BookMarksPresenter> {
         return inflater.inflate(R.layout.fragment_list_progress,container,false);
     }
 
-    @Override
-    PresenterFactory<BookMarksPresenter> createPresenterFactory() {
-        return () -> new BookMarksPresenter(getActivity().getApplicationContext());
-    }
+//    @Override
+//    PresenterFactory<BookMarksPresenter> createPresenterFactory() {
+//        return () -> new BookMarksPresenter(getActivity().getApplicationContext());
+//    }
 }

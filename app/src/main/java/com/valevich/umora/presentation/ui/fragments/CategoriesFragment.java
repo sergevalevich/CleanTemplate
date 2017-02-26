@@ -18,7 +18,7 @@ import com.valevich.umora.domain.model.Category;
 import com.valevich.umora.errors.ErrorMessageFactory;
 import com.valevich.umora.presentation.presenters.impl.CategoriesPresenter;
 import com.valevich.umora.presentation.ui.activities.MainActivity;
-import com.valevich.umora.presentation.ui.activities.StoriesWrapperActivity;
+import com.valevich.umora.presentation.ui.activities.StoriesByCategoryActivity;
 import com.valevich.umora.presentation.ui.adapters.CategoriesAdapter;
 import com.valevich.umora.presentation.ui.utils.AttributesHelper;
 import com.valevich.umora.presentation.ui.utils.DividerItemDecoration;
@@ -26,8 +26,9 @@ import com.valevich.umora.presentation.ui.utils.ItemClickListener;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
-import nucleus.factory.PresenterFactory;
 import nucleus.factory.RequiresPresenter;
 import timber.log.Timber;
 
@@ -49,7 +50,8 @@ public class CategoriesFragment extends BaseFragment<CategoriesPresenter>
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
 
-    private CategoriesAdapter adapter;
+    @Inject
+    CategoriesAdapter adapter;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -72,7 +74,7 @@ public class CategoriesFragment extends BaseFragment<CategoriesPresenter>
         super.onViewCreated(view, savedInstanceState);
         categoriesList.setLayoutManager(new LinearLayoutManager(getActivity()));
         categoriesList.addItemDecoration(new DividerItemDecoration(getActivity(),LinearLayoutManager.VERTICAL));
-        adapter = new CategoriesAdapter(this);//to avoid skipping layout and swipe unavailability when adapter is empty
+        adapter.setClickListener(this);
         categoriesList.setAdapter(adapter);
         swipe.setColorSchemeColors(AttributesHelper.getColorAttribute(getActivity(),R.attr.colorPrimary));
         swipe.setOnRefreshListener(this::refreshCategories);
@@ -85,7 +87,7 @@ public class CategoriesFragment extends BaseFragment<CategoriesPresenter>
 
     @Override
     public void onItemClicked(Category category) {
-        Intent intent = new Intent(getActivity(), StoriesWrapperActivity.class);
+        Intent intent = new Intent(getActivity(), StoriesByCategoryActivity.class);
         intent.putExtra(CATEGORY_KEY, category);
         getActivity().startActivityForResult(intent, MainActivity.STORIES_BY_CATEGORY_REQUEST_CODE);
         /*
@@ -102,10 +104,10 @@ public class CategoriesFragment extends BaseFragment<CategoriesPresenter>
         return true;
     }
 
-    @Override
-    PresenterFactory<CategoriesPresenter> createPresenterFactory() {
-        return () -> new CategoriesPresenter(getActivity().getApplicationContext());
-    }
+//    @Override
+//    PresenterFactory<CategoriesPresenter> createPresenterFactory() {
+//        return () -> new CategoriesPresenter(getActivity().getApplicationContext());
+//    }
 
     public void onCategories(List<Category> categories) {
         toggleProgressBar(false);

@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import icepick.State;
-import nucleus.factory.PresenterFactory;
 import nucleus.factory.RequiresPresenter;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -81,10 +80,10 @@ public class SearchableFragment extends StoriesFragment<SearchablePresenter> {
         searchView.setQuery(query, false);
     }
 
-    @Override
-    PresenterFactory<SearchablePresenter> createPresenterFactory() {
-        return () -> new SearchablePresenter(getActivity().getApplicationContext());
-    }
+//    @Override
+//    PresenterFactory<SearchablePresenter> createPresenterFactory() {
+//        return () -> new SearchablePresenter(getActivity().getApplicationContext());
+//    }
 
     private void subscribeToQueryTextChanges(SearchView searchView) {
         textChangeSubscription = RxSearchView.queryTextChanges(searchView)

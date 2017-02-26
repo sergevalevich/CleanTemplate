@@ -26,6 +26,8 @@ import com.valevich.umora.presentation.ui.utils.ItemClickListener;
 import java.util.List;
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 import butterknife.BindString;
 import butterknife.BindView;
 import icepick.State;
@@ -58,11 +60,14 @@ public abstract class StoriesFragment<P extends StoriesPresenter> extends BaseFr
     @State
     boolean wasStoryBookMarked;
 
+    @Inject
+    StoriesAdapter adapter;
+
     private ActionMode actionMode;
-    private StoriesAdapter adapter;
 
     @Override
     public void onCreate(Bundle bundle) {
+//        ((MainActivity) getActivity()).getActivityComponent().inject(this);
         super.onCreate(bundle);
         if (selectedStory != null) {
             startActionMode();
@@ -78,7 +83,7 @@ public abstract class StoriesFragment<P extends StoriesPresenter> extends BaseFr
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         storiesList.setLayoutManager(layoutManager);
         storiesList.addItemDecoration(new DividerItemDecoration(getActivity(),LinearLayoutManager.VERTICAL));
-        adapter = new StoriesAdapter(this);
+        adapter.setClickListener(this);
         storiesList.setAdapter(adapter);
         progressBar.getIndeterminateDrawable().setColorFilter(
                 AttributesHelper.getColorAttribute(getActivity(),R.attr.colorPrimary),
@@ -131,7 +136,9 @@ public abstract class StoriesFragment<P extends StoriesPresenter> extends BaseFr
 
     @Override
     public void onDestroyActionMode(ActionMode mode) {
-        if (selectedStory.isBookMarked() != wasStoryBookMarked) {
+        boolean isBookMarked = selectedStory.isBookMarked();
+        if (isBookMarked != wasStoryBookMarked) {
+            selectedStory.setBookMarkDate(isBookMarked ? System.currentTimeMillis() : 0);
             getPresenter().updateStory(selectedStory);
         }
         actionMode = null;
@@ -139,7 +146,7 @@ public abstract class StoriesFragment<P extends StoriesPresenter> extends BaseFr
     }
 
     public void onStories(List<Story> stories) {
-        Timber.d("Got %d stories", stories.size());
+        Timber.d("on Stories %d",stories.size());
         toggleProgressBar(false);
         adapter.refresh(stories);
     }

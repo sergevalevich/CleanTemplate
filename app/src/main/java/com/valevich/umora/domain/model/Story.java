@@ -12,14 +12,16 @@ public class Story implements Parcelable {
     private String site;
     private String categoryName;
     private boolean isBookMarked;
+    private long bookMarkDate;
     private long date;
 
-    public Story(String text, String textLow, String site, String categoryName, Boolean isBookMarked,long date) {
+    public Story(String text, String textLow, String site, String categoryName, Boolean isBookMarked,long bookMarkDate,long date) {
         this.text = text;
         this.textLow = textLow;
         this.site = site;
         this.categoryName = categoryName;
         this.isBookMarked = isBookMarked;
+        this.bookMarkDate = bookMarkDate;
         this.date = date;
     }
 
@@ -29,6 +31,7 @@ public class Story implements Parcelable {
         site = in.readString();
         categoryName = in.readString();
         isBookMarked = in.readByte() != 0;
+        bookMarkDate = in.readLong();
         date = in.readLong();
     }
 
@@ -92,6 +95,14 @@ public class Story implements Parcelable {
         this.textLow = textLow;
     }
 
+    public long getBookMarkDate() {
+        return bookMarkDate;
+    }
+
+    public void setBookMarkDate(long bookMarkDate) {
+        this.bookMarkDate = bookMarkDate;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -104,6 +115,12 @@ public class Story implements Parcelable {
         parcel.writeString(site);
         parcel.writeString(categoryName);
         parcel.writeByte((byte) (isBookMarked ? 1 : 0));
+        parcel.writeLong(bookMarkDate);
         parcel.writeLong(date);
+    }
+
+    @Override
+    public String toString() {
+        return text;
     }
 }

@@ -12,6 +12,8 @@ import com.valevich.umora.rx.utils.SchedulersTransformer;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import rx.Observable;
 
 
@@ -21,6 +23,7 @@ public class CategoriesRepository implements IRepository<Category,SqlDelightSpec
 
     private final CategoryEntity.Insert_row rowInsertStatement;
 
+    @Inject
     public CategoriesRepository(DatabaseHelper databaseHelper) {
         this.databaseHelper = databaseHelper;
         this.rowInsertStatement = new CategoryEntity.Insert_row(databaseHelper.getWritableDatabase());

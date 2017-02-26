@@ -13,7 +13,6 @@ import com.valevich.umora.presentation.presenters.impl.StoriesByCategoryPresente
 import com.valevich.umora.presentation.ui.utils.AttributesHelper;
 
 import butterknife.BindView;
-import nucleus.factory.PresenterFactory;
 import nucleus.factory.RequiresPresenter;
 import timber.log.Timber;
 
@@ -69,10 +68,10 @@ public class StoriesByCategoryFragment extends StoriesFragment<StoriesByCategory
         super.onError(t);
     }
 
-    @Override
-    PresenterFactory<StoriesByCategoryPresenter> createPresenterFactory() {
-        return () -> new StoriesByCategoryPresenter(getActivity().getApplicationContext());
-    }
+//    @Override
+//    PresenterFactory<StoriesByCategoryPresenter> createPresenterFactory() {
+//        return () -> new StoriesByCategoryPresenter(getActivity().getApplicationContext());
+//    }
 
     private void refreshStories() {
         Bundle args = getArguments();
