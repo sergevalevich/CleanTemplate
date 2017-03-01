@@ -3,13 +3,26 @@ package com.valevich.umora.errors;
 import android.content.Context;
 
 import com.valevich.umora.R;
+import com.valevich.umora.injection.ActivityContext;
+import com.valevich.umora.injection.PerActivity;
 
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
-public class ErrorMessageFactory {
+import javax.inject.Inject;
 
-    public static String createErrorMessage(Context context, Throwable t) {
+@PerActivity
+public class ErrorMessageFactory implements IErrorMessageFactory {
+
+    private Context context;
+
+    @Inject
+    public ErrorMessageFactory (@ActivityContext Context context) {
+        this.context = context;
+    }
+
+    @Override
+    public String createErrorMessage(Throwable t) {
         String message = t.getMessage();
         if (t instanceof SocketTimeoutException)
             return context.getString(R.string.request_timeout);

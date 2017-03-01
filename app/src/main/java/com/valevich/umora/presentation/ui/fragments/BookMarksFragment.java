@@ -28,8 +28,4 @@ public class BookMarksFragment extends StoriesFragment<BookMarksPresenter> {
         return inflater.inflate(R.layout.fragment_list_progress,container,false);
     }
 
-//    @Override
-//    PresenterFactory<BookMarksPresenter> createPresenterFactory() {
-//        return () -> new BookMarksPresenter(getActivity().getApplicationContext());
-//    }
 }

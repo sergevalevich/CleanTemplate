@@ -51,7 +51,6 @@ public class SearchableFragment extends StoriesFragment<SearchablePresenter> {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //if (query != null) showLoading();
         if(query == null) onStories(new ArrayList<>());
     }
 
@@ -80,11 +79,6 @@ public class SearchableFragment extends StoriesFragment<SearchablePresenter> {
         searchView.setQuery(query, false);
     }
 
-//    @Override
-//    PresenterFactory<SearchablePresenter> createPresenterFactory() {
-//        return () -> new SearchablePresenter(getActivity().getApplicationContext());
-//    }
-
     private void subscribeToQueryTextChanges(SearchView searchView) {
         textChangeSubscription = RxSearchView.queryTextChanges(searchView)
                 .debounce(700, TimeUnit.MILLISECONDS)
@@ -92,7 +86,6 @@ public class SearchableFragment extends StoriesFragment<SearchablePresenter> {
                 .filter(changes -> !changes.isEmpty() && !changes.equals(query))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(query -> {
-                            Timber.d("%s received",query);
                             toggleProgressBar(true);
                             getPresenter().findStories(this.query = query);
                         },

@@ -3,6 +3,7 @@ package com.valevich.umora.presentation.ui.activities;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 
 import com.valevich.umora.R;
 import com.valevich.umora.UmoraApplication;
@@ -15,21 +16,16 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import icepick.Icepick;
-import nucleus.presenter.Presenter;
-import nucleus.view.NucleusAppCompatActivity;
 
-public abstract class BaseActivity<P extends Presenter> extends NucleusAppCompatActivity<P> {
+public abstract class BaseActivity extends AppCompatActivity {
 
     @Inject
     SharedPreferences preferences;
 
-    private Injector<ActivityComponent> injector;
+    @Inject
+    ThemeMapper themeMapper;
 
-    //private ActivityComponent activityComponent;
-//
-//    public ActivityComponent getActivityComponent() {
-//        return activityComponent;
-//    }
+    private Injector<ActivityComponent> injector;
 
     public void inject(Object target) {
         injector.inject(target);
@@ -55,7 +51,7 @@ public abstract class BaseActivity<P extends Presenter> extends NucleusAppCompat
 
     private void setTheme() {
         int themeId = Integer.parseInt(preferences.getString(getString(R.string.pref_theme_key), getString(R.string.pref_theme_default)));
-        setTheme(ThemeMapper.getTheme(themeId));
+        setTheme(themeMapper.getTheme(themeId));
     }
 
     private ActivityComponent createComponent() {

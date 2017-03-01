@@ -19,6 +19,7 @@ import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import timber.log.Timber;
 
 @Module
 public class NetworkModule {
@@ -29,13 +30,14 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    public UmoraApi provideApi(Retrofit retrofit) {
+    UmoraApi provideApi(Retrofit retrofit) {
+        Timber.d("creating umoraApi");
         return retrofit.create(UmoraApi.class);
     }
 
     @Provides
     @Singleton
-    public Retrofit provideRetrofit(OkHttpClient okHttpClient, Converter.Factory converterFactory, CallAdapter.Factory callFactory) {
+    Retrofit provideRetrofit(OkHttpClient okHttpClient, Converter.Factory converterFactory, CallAdapter.Factory callFactory) {
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(okHttpClient)
@@ -46,32 +48,32 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    public Converter.Factory provideConverterFactory(Gson gson) {
+    Converter.Factory provideConverterFactory(Gson gson) {
         return GsonConverterFactory.create(gson);
     }
 
     @Provides
     @Singleton
-    public CallAdapter.Factory provideCallAdapterFactory() {
+    CallAdapter.Factory provideCallAdapterFactory() {
         return RxJavaCallAdapterFactory.create();
     }
 
     @Provides
     @Singleton
-    public Gson provideGson(TypeAdapterFactory factory) {
+    Gson provideGson(TypeAdapterFactory factory) {
         return new GsonBuilder().registerTypeAdapterFactory(factory).create();
     }
 
 
     @Provides
     @Singleton
-    public TypeAdapterFactory provideTypeAdapterFactory() {
+    TypeAdapterFactory provideTypeAdapterFactory() {
         return MyAdapterFactory.create();
     }
 
     @Provides
     @Singleton
-    public OkHttpClient provideOkHttpClient(HttpLoggingInterceptor httpLoggingInterceptor,StethoInterceptor stethoInterceptor) {
+    OkHttpClient provideOkHttpClient(HttpLoggingInterceptor httpLoggingInterceptor,StethoInterceptor stethoInterceptor) {
         return new OkHttpClient.Builder()
                 .addInterceptor(httpLoggingInterceptor)
                 .addNetworkInterceptor(stethoInterceptor)
@@ -83,13 +85,13 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    public HttpLoggingInterceptor provideHttpLoggingInterceptor() {
+    HttpLoggingInterceptor provideHttpLoggingInterceptor() {
         return new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
     }
 
     @Provides
     @Singleton
-    public StethoInterceptor provideStethoInterceptor() {
+    StethoInterceptor provideStethoInterceptor() {
         return new StethoInterceptor();
     }
 

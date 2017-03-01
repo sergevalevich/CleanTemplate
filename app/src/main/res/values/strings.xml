@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">Umori</string>
+    <string name="app_name">Umora</string>
     <string name="default_error_message">Ошибка</string>
     <string name="no_net_error_message">Проверьте подключение к сети</string>
     <string name="selected_action_share">Поделиться</string>
     <string name="selected_action_bookmark">В избранное</string>
     <string name="share_action">Поделиться!</string>
-    <string name="app_sign">Отправлено из приложения Umori</string>
+    <string name="app_sign">Отправлено из приложения Umora</string>
     <string name="nav_drawer_settings">Настройки</string>
     <string name="nav_drawer_categories">Категории</string>
     <string name="nav_drawer_bookmarks">Закладки</string>

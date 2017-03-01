@@ -67,10 +67,6 @@ public class Story implements Parcelable {
         return categoryName;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
     public boolean isBookMarked() {
         return isBookMarked;
     }
@@ -83,16 +79,8 @@ public class Story implements Parcelable {
         return date;
     }
 
-    public void setDate(long date) {
-        this.date = date;
-    }
-
     public String getTextLow() {
         return textLow;
-    }
-
-    public void setTextLow(String textLow) {
-        this.textLow = textLow;
     }
 
     public long getBookMarkDate() {

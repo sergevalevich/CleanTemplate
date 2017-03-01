@@ -33,7 +33,7 @@ public class StateListDrawableHelper {
 
 
         /*Now assigning states to StateListDrawable*/
-        StateListDrawable stateListDrawable= new StateListDrawable();
+        StateListDrawable stateListDrawable = new StateListDrawable();
         stateListDrawable.addState(
                 new int[]{android.R.attr.state_pressed},
                 new BitmapDrawable(Resources.getSystem(),imagePressed));

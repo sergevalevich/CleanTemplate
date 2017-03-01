@@ -11,17 +11,13 @@ import android.view.MenuItem;
 import com.valevich.umora.R;
 import com.valevich.umora.domain.model.Category;
 import com.valevich.umora.domain.model.Story;
-import com.valevich.umora.presentation.presenters.impl.StubPresenter;
 import com.valevich.umora.presentation.ui.fragments.StoriesByCategoryFragment;
-
-import nucleus.factory.RequiresPresenter;
 
 import static com.valevich.umora.presentation.ui.activities.MainActivity.FRAGMENT_EXTRA;
 import static com.valevich.umora.presentation.ui.fragments.StoriesByCategoryFragment.CATEGORY_KEY;
 import static com.valevich.umora.presentation.ui.fragments.StoriesByCategoryFragment.STORIES_COUNT_KEY;
 
-@RequiresPresenter(StubPresenter.class)
-public class StoriesByCategoryActivity extends DrawerActivity<StubPresenter> {
+public class StoriesByCategoryActivity extends DrawerActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +26,7 @@ public class StoriesByCategoryActivity extends DrawerActivity<StubPresenter> {
             Category category = getIntent().getParcelableExtra(CATEGORY_KEY);
             title = category.getDescription();
 
-            getSupportFragmentManager().beginTransaction()
+            fragmentManager.beginTransaction()
                     .replace(R.id.main_container, getFragment())
                     .commit();
         }

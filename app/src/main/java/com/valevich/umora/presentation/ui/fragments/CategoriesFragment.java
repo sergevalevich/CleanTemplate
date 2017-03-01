@@ -15,7 +15,7 @@ import android.widget.ProgressBar;
 
 import com.valevich.umora.R;
 import com.valevich.umora.domain.model.Category;
-import com.valevich.umora.errors.ErrorMessageFactory;
+import com.valevich.umora.errors.IErrorMessageFactory;
 import com.valevich.umora.presentation.presenters.impl.CategoriesPresenter;
 import com.valevich.umora.presentation.ui.activities.MainActivity;
 import com.valevich.umora.presentation.ui.activities.StoriesByCategoryActivity;
@@ -53,10 +53,12 @@ public class CategoriesFragment extends BaseFragment<CategoriesPresenter>
     @Inject
     CategoriesAdapter adapter;
 
+    @Inject
+    IErrorMessageFactory errorMessageFactory;
+
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        Timber.d("on create. bundle is %s", bundle);
         if (bundle == null) {
             getCachedCategories();
             refreshCategories();
@@ -104,14 +106,8 @@ public class CategoriesFragment extends BaseFragment<CategoriesPresenter>
         return true;
     }
 
-//    @Override
-//    PresenterFactory<CategoriesPresenter> createPresenterFactory() {
-//        return () -> new CategoriesPresenter(getActivity().getApplicationContext());
-//    }
-
     public void onCategories(List<Category> categories) {
         toggleProgressBar(false);
-        Timber.d("onCategories %d",categories.size());
         adapter.refresh(categories);
     }
 
@@ -122,7 +118,7 @@ public class CategoriesFragment extends BaseFragment<CategoriesPresenter>
     public void onError(Throwable t) {
         toggleProgressBar(false);
         toggleSwipe(false);
-        String message = ErrorMessageFactory.createErrorMessage(getActivity(), t);
+        String message = errorMessageFactory.createErrorMessage(t);
         showMessage(message);
         Timber.e(message);
     }

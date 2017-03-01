@@ -7,8 +7,8 @@ import com.valevich.umora.network.model.CategoryPayload;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PayloadCategoryConverter {
-    public static List<Category> getCategoriesByPayload(List<CategoryPayload> payload) {
+class PayloadCategoryConverter {
+    static List<Category> getCategoriesByPayload(List<CategoryPayload> payload) {
         List<Category> categories = new ArrayList<>(payload.size());
         for (CategoryPayload categoryPayload : payload) {
             categories.add(new Category(

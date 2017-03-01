@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.valevich.umora.R;
 import com.valevich.umora.domain.model.Story;
+import com.valevich.umora.injection.PerActivity;
 import com.valevich.umora.presentation.ui.utils.AttributesHelper;
 import com.valevich.umora.presentation.ui.utils.ItemClickListener;
 import com.valevich.umora.presentation.ui.utils.StateListDrawableHelper;
@@ -26,6 +27,7 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+@PerActivity
 public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.StoryHolder> {
 
     private List<Story> stories = new ArrayList<>();
@@ -33,7 +35,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.StoryHol
     private SharedPreferences preferences;
 
     @Inject
-    public StoriesAdapter(SharedPreferences preferences) {
+    StoriesAdapter(SharedPreferences preferences) {
         this.preferences = preferences;
     }
 

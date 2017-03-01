@@ -5,7 +5,6 @@ import android.os.Bundle;
 import com.valevich.umora.database.model.StoryEntity;
 import com.valevich.umora.domain.model.Story;
 import com.valevich.umora.domain.repository.IRepository;
-import com.valevich.umora.domain.repository.impl.StoriesRepository;
 import com.valevich.umora.domain.repository.specification.SqlDelightSpecification;
 import com.valevich.umora.presentation.presenters.base.BasePresenter;
 import com.valevich.umora.presentation.ui.fragments.StoriesFragment;
@@ -14,7 +13,7 @@ import javax.inject.Inject;
 
 import icepick.State;
 
-public class StoriesPresenter<V extends StoriesFragment> extends BasePresenter<V> {
+public abstract class StoriesPresenter<V extends StoriesFragment> extends BasePresenter<V> {
 
     private static final int UPDATE_STORY_TASK_ID = 0;
     private static final int LOAD_STORIES_TASK_ID = 1;
@@ -26,7 +25,7 @@ public class StoriesPresenter<V extends StoriesFragment> extends BasePresenter<V
     SqlDelightSpecification<StoryEntity> specification;
 
     @Inject
-    StoriesRepository repository;
+    IRepository<Story, SqlDelightSpecification<StoryEntity>> repository;
 
     //called in getPresenter first time
     @Override
@@ -55,6 +54,4 @@ public class StoriesPresenter<V extends StoriesFragment> extends BasePresenter<V
         this.specification = specification;
         start(LOAD_STORIES_TASK_ID);
     }
-
-    IRepository<Story, SqlDelightSpecification<StoryEntity>> getRepository() {return repository;}
 }

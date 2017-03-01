@@ -1,13 +1,15 @@
 package com.valevich.umora.presentation.presenters.impl;
 
-import android.content.Context;
 import android.os.Bundle;
 
-import com.valevich.umora.domain.repository.impl.CategoriesRepository;
-import com.valevich.umora.domain.repository.impl.SourcesRepository;
+import com.valevich.umora.database.model.CategoryEntity;
+import com.valevich.umora.database.model.SourceEntity;
+import com.valevich.umora.domain.model.Category;
+import com.valevich.umora.domain.model.Source;
+import com.valevich.umora.domain.repository.IRepository;
+import com.valevich.umora.domain.repository.specification.SqlDelightSpecification;
 import com.valevich.umora.domain.repository.specification.impl.AllCategoriesSqlDSpecification;
 import com.valevich.umora.errors.NetworkUnavailableException;
-import com.valevich.umora.injection.ApplicationContext;
 import com.valevich.umora.network.UmoraApi;
 import com.valevich.umora.network.converters.PayloadSourcesConverter;
 import com.valevich.umora.network.utils.ConnectivityInspector;
@@ -26,16 +28,19 @@ public class CategoriesPresenter extends BasePresenter<CategoriesFragment> {
     private static final int REFRESH_SOURCES_TASK_ID = 1;
 
     @Inject
-    CategoriesRepository categoriesRepository;
+    IRepository<Category,SqlDelightSpecification<CategoryEntity>> categoriesRepository;
 
     @Inject
-    SourcesRepository sourcesRepository;
+    IRepository<Source,SqlDelightSpecification<SourceEntity>> sourcesRepository;
 
     @Inject
     UmoraApi restApi;
 
     @Inject
-    @ApplicationContext Context context;
+    ConnectivityInspector connectivityInspector;
+
+    @Inject
+    SchedulersTransformer schedulersTransformer;
 
     @Override
     protected void onCreate(Bundle savedState) {
@@ -49,11 +54,11 @@ public class CategoriesPresenter extends BasePresenter<CategoriesFragment> {
 
         restartableLatestCache(
                 REFRESH_SOURCES_TASK_ID,
-                () -> ConnectivityInspector.isNetworkAvailable(context)
+                () -> connectivityInspector.isNetworkAvailable()
                         ? restApi.getSources()
                         .map(PayloadSourcesConverter::getSourcesByPayload)
                         .doOnNext(sourcesRepository::add)
-                        .compose(SchedulersTransformer.INSTANCE.applySchedulers())
+                        .compose(schedulersTransformer.applySchedulers())
                         : Observable.error(new NetworkUnavailableException()),
                 ((f, s) -> f.onSourcesUpToDate()),
                 CategoriesFragment::onError);

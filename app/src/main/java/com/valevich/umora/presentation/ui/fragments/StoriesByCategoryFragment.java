@@ -14,7 +14,6 @@ import com.valevich.umora.presentation.ui.utils.AttributesHelper;
 
 import butterknife.BindView;
 import nucleus.factory.RequiresPresenter;
-import timber.log.Timber;
 
 @RequiresPresenter(StoriesByCategoryPresenter.class)
 public class StoriesByCategoryFragment extends StoriesFragment<StoriesByCategoryPresenter> {
@@ -58,7 +57,6 @@ public class StoriesByCategoryFragment extends StoriesFragment<StoriesByCategory
     }
 
     public void onStoriesRefreshed() {
-        Timber.d("onStoriesRefreshed");
         toggleSwipe(false);
     }
 
@@ -67,11 +65,6 @@ public class StoriesByCategoryFragment extends StoriesFragment<StoriesByCategory
         toggleSwipe(false);
         super.onError(t);
     }
-
-//    @Override
-//    PresenterFactory<StoriesByCategoryPresenter> createPresenterFactory() {
-//        return () -> new StoriesByCategoryPresenter(getActivity().getApplicationContext());
-//    }
 
     private void refreshStories() {
         Bundle args = getArguments();

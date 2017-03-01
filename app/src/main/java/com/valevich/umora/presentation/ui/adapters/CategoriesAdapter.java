@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.valevich.umora.R;
 import com.valevich.umora.domain.model.Category;
+import com.valevich.umora.injection.PerActivity;
 import com.valevich.umora.presentation.ui.utils.AttributesHelper;
 import com.valevich.umora.presentation.ui.utils.ItemClickListener;
 import com.valevich.umora.presentation.ui.utils.StateListDrawableHelper;
@@ -26,6 +27,7 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+@PerActivity
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.CategoryHolder> {
 
     private List<Category> categories = new ArrayList<>();
@@ -34,7 +36,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
     private SharedPreferences preferences;
 
     @Inject
-    public CategoriesAdapter(SharedPreferences preferences) {
+    CategoriesAdapter(SharedPreferences preferences) {
         this.preferences = preferences;
     }
 

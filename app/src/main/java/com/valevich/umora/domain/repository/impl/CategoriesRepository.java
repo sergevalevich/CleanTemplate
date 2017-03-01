@@ -12,10 +12,7 @@ import com.valevich.umora.rx.utils.SchedulersTransformer;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import rx.Observable;
-
 
 public class CategoriesRepository implements IRepository<Category,SqlDelightSpecification<CategoryEntity>> {
 
@@ -23,10 +20,14 @@ public class CategoriesRepository implements IRepository<Category,SqlDelightSpec
 
     private final CategoryEntity.Insert_row rowInsertStatement;
 
-    @Inject
-    public CategoriesRepository(DatabaseHelper databaseHelper) {
+    private SchedulersTransformer schedulersTransformer;
+
+    public CategoriesRepository(DatabaseHelper databaseHelper,
+                                CategoryEntity.Insert_row rowInsertStatement,
+                                SchedulersTransformer schedulersTransformer) {
         this.databaseHelper = databaseHelper;
-        this.rowInsertStatement = new CategoryEntity.Insert_row(databaseHelper.getWritableDatabase());
+        this.rowInsertStatement = rowInsertStatement;
+        this.schedulersTransformer = schedulersTransformer;
     }
 
     @Override
@@ -61,6 +62,6 @@ public class CategoriesRepository implements IRepository<Category,SqlDelightSpec
         SqlDelightStatement statement = specification.getStatement();
         return databaseHelper.get(CategoryEntity.TABLE_NAME, statement.statement, statement.args, CategoryEntity.FACTORY.select_allMapper())
                 .map(DbCategoryConverter::getCategoriesByDbEntity)
-                .compose(SchedulersTransformer.INSTANCE.applySchedulers());
+                .compose(schedulersTransformer.applySchedulers());
     }
 }

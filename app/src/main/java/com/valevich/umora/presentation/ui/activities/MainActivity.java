@@ -10,16 +10,12 @@ import android.support.v4.view.GravityCompat;
 import android.view.MenuItem;
 
 import com.valevich.umora.R;
-import com.valevich.umora.presentation.presenters.impl.MainPresenter;
 import com.valevich.umora.presentation.ui.fragments.BookMarksFragment;
 import com.valevich.umora.presentation.ui.fragments.CategoriesFragment;
 import com.valevich.umora.presentation.ui.fragments.SearchableFragment;
 import com.valevich.umora.presentation.ui.fragments.SettingsFragment;
 
-import nucleus.factory.RequiresPresenter;
-
-@RequiresPresenter(MainPresenter.class)
-public class MainActivity extends DrawerActivity<MainPresenter>
+public class MainActivity extends DrawerActivity
         implements FragmentManager.OnBackStackChangedListener {
 
     public static final int STORIES_BY_CATEGORY_REQUEST_CODE = 100;
@@ -28,10 +24,9 @@ public class MainActivity extends DrawerActivity<MainPresenter>
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportFragmentManager().addOnBackStackChangedListener(this);
         //after config change or process restart
-        //the SYSTEM will recreate fragment
-        //so i don't want to recreate an instance
+        //SYSTEM recreates fragment by itself -> so i do nothing
+        fragmentManager.addOnBackStackChangedListener(this);
         if (savedInstanceState == null)
             replaceFragment(new CategoriesFragment());
         else setTitle(title);
@@ -39,22 +34,11 @@ public class MainActivity extends DrawerActivity<MainPresenter>
 
     @Override
     public void onBackStackChanged() {
-        Fragment f = getSupportFragmentManager()
+        Fragment f = fragmentManager
                 .findFragmentById(R.id.main_container);
 
         if (f != null) {
             changeSelectedItemAndTitle(f.getClass().getName());
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
-            finish();
-        } else {
-            super.onBackPressed();
         }
     }
 
@@ -98,33 +82,36 @@ public class MainActivity extends DrawerActivity<MainPresenter>
     private void replaceFragment(Fragment fragment) {
         String backStackName = fragment.getClass().getName();
 
-        boolean isFragmentPopped = getSupportFragmentManager().popBackStackImmediate(backStackName, 0);
+        boolean isFragmentPopped = fragmentManager.popBackStackImmediate(backStackName, 0);
 
-        if (!isFragmentPopped && getSupportFragmentManager().findFragmentByTag(backStackName) == null) {
+        Fragment current = fragmentManager.findFragmentById(R.id.main_container);
+        String currentFragmentName = current == null ? null : current.getClass().getName();
 
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.main_container, fragment, backStackName);
-            transaction.addToBackStack(backStackName);
-            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            transaction.commit();
+        if (!isFragmentPopped && !backStackName.equals(currentFragmentName)) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.main_container, fragment, backStackName)
+                    .addToBackStack(backStackName)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .commit();
 
         }
     }
 
     private void changeSelectedItemAndTitle(String backStackEntryName) {
+        int menuItemId = R.id.drawer_categories;
         if (backStackEntryName.equals(CategoriesFragment.class.getName())) {
-            setTitle(categoriesTitle);
-            navigationView.setCheckedItem(R.id.drawer_categories);
+            title = categoriesTitle;
         } else if (backStackEntryName.equals(BookMarksFragment.class.getName())) {
-            setTitle(bookMarksTitle);
-            navigationView.setCheckedItem(R.id.drawer_bookmarks);
+            title = bookMarksTitle;
+            menuItemId = R.id.drawer_bookmarks;
         } else if (backStackEntryName.equals(SettingsFragment.class.getName())) {
-            setTitle(settingsTitle);
-            navigationView.setCheckedItem(R.id.drawer_settings);
+            title = settingsTitle;
+            menuItemId = R.id.drawer_settings;
         } else if (backStackEntryName.equals(SearchableFragment.class.getName())) {
-            setTitle(searchTitle);
-            navigationView.setCheckedItem(R.id.drawer_search);
+            title = searchTitle;
+            menuItemId = R.id.drawer_search;
         }
-        title = getTitle().toString();
+        navigationView.setCheckedItem(menuItemId);
+        setTitle(title);
     }
 }

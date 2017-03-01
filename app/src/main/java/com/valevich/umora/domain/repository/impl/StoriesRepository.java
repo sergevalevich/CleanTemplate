@@ -12,10 +12,7 @@ import com.valevich.umora.rx.utils.SchedulersTransformer;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import rx.Observable;
-import timber.log.Timber;
 
 
 public class StoriesRepository implements IRepository<Story,SqlDelightSpecification<StoryEntity>> {
@@ -24,11 +21,16 @@ public class StoriesRepository implements IRepository<Story,SqlDelightSpecificat
     private final StoryEntity.Update_row rowUpdateStatement;
     private final StoryEntity.Insert_row rowInsertStatement;
 
-    @Inject
-    public StoriesRepository(DatabaseHelper databaseHelper) {
+    private SchedulersTransformer schedulersTransformer;
+
+    public StoriesRepository(DatabaseHelper databaseHelper,
+                             StoryEntity.Update_row rowUpdateStatement,
+                             StoryEntity.Insert_row rowInsertStatement,
+                             SchedulersTransformer schedulersTransformer) {
         this.databaseHelper = databaseHelper;
-        this.rowUpdateStatement = new StoryEntity.Update_row(databaseHelper.getWritableDatabase());
-        this.rowInsertStatement = new StoryEntity.Insert_row(databaseHelper.getWritableDatabase());
+        this.rowUpdateStatement = rowUpdateStatement;
+        this.rowInsertStatement = rowInsertStatement;
+        this.schedulersTransformer = schedulersTransformer;
     }
 
     @Override
@@ -42,7 +44,6 @@ public class StoriesRepository implements IRepository<Story,SqlDelightSpecificat
         } finally {
             transaction.end();
         }
-        Timber.d("Stories inserted");
     }
 
     @Override
@@ -60,11 +61,10 @@ public class StoriesRepository implements IRepository<Story,SqlDelightSpecificat
     @Override
     public Observable<Story> update(Story story) {
         return Observable.defer(() -> {
-            Timber.d("Updating story on %s", Thread.currentThread().getName());
             rowUpdateStatement.bind(story.isBookMarked(),story.getBookMarkDate(),story.getText());
             databaseHelper.updateDelete(StoryEntity.TABLE_NAME,rowUpdateStatement.program);
             return Observable.just(story);
-        }).compose(SchedulersTransformer.INSTANCE.applySchedulers());
+        }).compose(schedulersTransformer.applySchedulers());
     }
 
     @Override
@@ -72,6 +72,6 @@ public class StoriesRepository implements IRepository<Story,SqlDelightSpecificat
         SqlDelightStatement statement = specification.getStatement();
         return databaseHelper.get(StoryEntity.TABLE_NAME, statement.statement, statement.args, specification.getMapper())
                 .map(DbStoryConverter::getStoriesByDbEntity)
-                .compose(SchedulersTransformer.INSTANCE.applySchedulers());
+                .compose(schedulersTransformer.applySchedulers());
     }
 }

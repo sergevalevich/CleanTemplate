@@ -1,12 +1,10 @@
 package com.valevich.umora.presentation.presenters.impl;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import com.valevich.umora.domain.model.Category;
 import com.valevich.umora.domain.repository.specification.impl.StoriesByCategorySqlDSpecification;
 import com.valevich.umora.errors.NetworkUnavailableException;
-import com.valevich.umora.injection.ApplicationContext;
 import com.valevich.umora.network.UmoraApi;
 import com.valevich.umora.network.converters.PayloadStoryConverter;
 import com.valevich.umora.network.utils.ConnectivityInspector;
@@ -33,7 +31,10 @@ public class StoriesByCategoryPresenter extends StoriesPresenter<StoriesByCatego
     UmoraApi umoraApi;
 
     @Inject
-    @ApplicationContext Context context;
+    ConnectivityInspector connectivityInspector;
+
+    @Inject
+    SchedulersTransformer schedulersTransformer;
 
     @Override
     protected void onCreate(Bundle savedState) {
@@ -41,11 +42,11 @@ public class StoriesByCategoryPresenter extends StoriesPresenter<StoriesByCatego
 
         restartableLatestCache(
                 REFRESH_STORIES_TASK_ID,
-                () -> ConnectivityInspector.isNetworkAvailable(context)
+                () -> connectivityInspector.isNetworkAvailable()
                         ? umoraApi.getStories(category.getSite(), category.getName(), storiesCount)
                         .map(PayloadStoryConverter::getStoriesByPayload)
-                        .doOnNext(getRepository()::add)
-                        .compose(SchedulersTransformer.INSTANCE.applySchedulers())
+                        .doOnNext(repository::add)
+                        .compose(schedulersTransformer.applySchedulers())
                         : Observable.error(new NetworkUnavailableException()),
                 (f,s) -> f.onStoriesRefreshed(),
                 StoriesByCategoryFragment::onError);

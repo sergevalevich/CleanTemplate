@@ -16,7 +16,7 @@ import android.widget.ProgressBar;
 
 import com.valevich.umora.R;
 import com.valevich.umora.domain.model.Story;
-import com.valevich.umora.errors.ErrorMessageFactory;
+import com.valevich.umora.errors.IErrorMessageFactory;
 import com.valevich.umora.presentation.presenters.impl.StoriesPresenter;
 import com.valevich.umora.presentation.ui.adapters.StoriesAdapter;
 import com.valevich.umora.presentation.ui.utils.AttributesHelper;
@@ -54,6 +54,9 @@ public abstract class StoriesFragment<P extends StoriesPresenter> extends BaseFr
     @BindString(R.string.app_sign)
     String appSignature;
 
+    @BindString(R.string.share_action)
+    String sharingViewTitle;
+
     @State
     Story selectedStory;
 
@@ -63,11 +66,13 @@ public abstract class StoriesFragment<P extends StoriesPresenter> extends BaseFr
     @Inject
     StoriesAdapter adapter;
 
+    @Inject
+    IErrorMessageFactory errorMessageFactory;
+
     private ActionMode actionMode;
 
     @Override
     public void onCreate(Bundle bundle) {
-//        ((MainActivity) getActivity()).getActivityComponent().inject(this);
         super.onCreate(bundle);
         if (selectedStory != null) {
             startActionMode();
@@ -157,7 +162,7 @@ public abstract class StoriesFragment<P extends StoriesPresenter> extends BaseFr
 
     public void onError(Throwable t) {
         toggleProgressBar(false);
-        String message = ErrorMessageFactory.createErrorMessage(getActivity(), t);
+        String message = errorMessageFactory.createErrorMessage(t);
         showMessage(message);
         Timber.e("Error getting stories %s", t.toString());
     }
@@ -199,6 +204,6 @@ public abstract class StoriesFragment<P extends StoriesPresenter> extends BaseFr
 
         getActivity().startActivity(Intent.createChooser(
                 intent,
-                getActivity().getString(R.string.share_action)));
+                sharingViewTitle));
     }
 }

@@ -19,7 +19,7 @@ public class UmoraApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        if (!isInAnalyzerProcess()) initLeakCanary();
+        //if (!isInAnalyzerProcess()) initLeakCanary();
         initTimber();
         initStetho();
         injector = new Injector<>(ApplicationComponent.class, createComponent());
@@ -40,18 +40,16 @@ public class UmoraApplication extends Application {
     }
 
     private void initTimber() {
-        if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree());
-        }
+        if (BuildConfig.DEBUG) Timber.plant(new Timber.DebugTree());
     }
 
     private void initLeakCanary() {
         LeakCanary.install(this);
     }
 
-    private boolean isInAnalyzerProcess() {
-        return LeakCanary.isInAnalyzerProcess(this);
-    }
+//    private boolean isInAnalyzerProcess() {
+//        return LeakCanary.isInAnalyzerProcess(this);
+//    }
 
     private void initStetho() {
         Stetho.initializeWithDefaults(this);

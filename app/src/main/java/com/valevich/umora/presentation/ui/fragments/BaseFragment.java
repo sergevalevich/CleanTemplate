@@ -14,7 +14,6 @@ import icepick.Icepick;
 import nucleus.factory.PresenterFactory;
 import nucleus.presenter.Presenter;
 import nucleus.view.NucleusSupportFragment;
-import timber.log.Timber;
 
 public abstract class BaseFragment<P extends Presenter> extends NucleusSupportFragment<P> {
 
@@ -22,7 +21,6 @@ public abstract class BaseFragment<P extends Presenter> extends NucleusSupportFr
 
     @Override
     public void onCreate(Bundle savedState) {
-        Timber.d("onCreate %s",getClass().getSimpleName());
         BaseActivity activity = (BaseActivity) getActivity();
         final PresenterFactory<P> superFactory = super.getPresenterFactory();
         setPresenterFactory(superFactory == null ? null : (PresenterFactory<P>) () -> {
@@ -52,25 +50,4 @@ public abstract class BaseFragment<P extends Presenter> extends NucleusSupportFr
         unbinder.unbind();
         super.onDestroyView();
     }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Timber.d("onResume %s",getClass().getSimpleName());
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Timber.d("onStop %s",getClass().getSimpleName());
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Timber.d("onDestroy %s",getClass().getSimpleName());
-    }
-
-    //abstract PresenterFactory<P> createPresenterFactory();
 }

@@ -28,7 +28,6 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        // Load the preferences from an XML resource
         setPreferencesFromResource(R.xml.pref_general, rootKey);
         preferences.registerOnSharedPreferenceChangeListener(this);
         bindSummaryToValue(getString(R.string.pref_theme_key));
@@ -45,7 +44,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
         Preference preference = findPreference(key);
         String value = prefs.getString(key,"");
         if(!mBindingPreference) {
-            if (key.equals(getString(R.string.pref_theme_key))) {
+            if (isAdded() && key.equals(getString(R.string.pref_theme_key))) {
                 getActivity().recreate();
             }
 

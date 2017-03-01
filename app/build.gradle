@@ -25,6 +25,47 @@ android {
         }
     }
 
+    signingConfigs {
+        release {
+            def Properties dProps = new Properties()
+            def dpFile = file('release_signing.properties')
+            if (dpFile.canRead()){
+                dProps.load(new FileInputStream(dpFile))
+
+                if (dProps!=null && dProps.containsKey('STORE_FILE') && dProps.containsKey('STORE_PASSWORD') &&
+                        dProps.containsKey('KEY_ALIAS') && dProps.containsKey('KEY_PASSWORD')) {
+                    storeFile = file(dProps['STORE_FILE'])
+                    storePassword = dProps['STORE_PASSWORD']
+                    keyAlias = dProps['KEY_ALIAS']
+                    keyPassword = dProps['KEY_PASSWORD']
+                } else {
+                    throw new GradleException("release_signing.properties found but some entries are missing")
+                }
+            } else {
+                throw new GradleException("release_signing.properties not found")
+            }
+        }
+        debug {
+            def Properties dProps = new Properties()
+            def dpFile = file('debug_signing.properties')
+            if (dpFile.canRead()){
+                dProps.load(new FileInputStream(dpFile))
+
+                if (dProps!=null && dProps.containsKey('STORE_FILE') && dProps.containsKey('STORE_PASSWORD') &&
+                        dProps.containsKey('KEY_ALIAS') && dProps.containsKey('KEY_PASSWORD')) {
+                    storeFile = file(dProps['STORE_FILE'])
+                    storePassword = dProps['STORE_PASSWORD']
+                    keyAlias = dProps['KEY_ALIAS']
+                    keyPassword = dProps['KEY_PASSWORD']
+                } else {
+                    throw new GradleException("debug_signing.properties found but some entries are missing")
+                }
+            } else {
+                throw new GradleException("debug_signing.properties not found")
+            }
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -50,6 +91,7 @@ dependencies {
     final rxJavaVer = '1.1.5'
     final rxAndroidVer = '1.2.0'
     final rxBindingsVer = '1.0.0'
+    final rxJavaProguard = "1.1.5.0"
 
     //Rest
     final okHttpVer = '3.3.1'
@@ -68,7 +110,6 @@ dependencies {
 
     //Other
     final icePickVer = '3.2.0'
-    final busVer = '3.0.0'
 
     //Clean
     final nucleusVer = '4.0.0'
@@ -101,6 +142,7 @@ dependencies {
     compile "io.reactivex:rxjava:$rxJavaVer"
     compile "io.reactivex:rxandroid:$rxAndroidVer"
     compile "com.jakewharton.rxbinding:rxbinding-appcompat-v7:$rxBindingsVer"
+    compile "com.artemzin.rxjava:proguard-rules:$rxJavaProguard"
 
 
     compile "com.squareup.okhttp3:okhttp:$okHttpVer"
@@ -119,8 +161,6 @@ dependencies {
 
     compile "com.jakewharton:butterknife:$butterKnifeVer"
     apt "com.jakewharton:butterknife-compiler:$butterKnifeVer"
-
-    compile "org.greenrobot:eventbus:$busVer"
 
     compile "com.facebook.stetho:stetho:$stethoVer"
     compile "com.facebook.stetho:stetho-okhttp3:$stethoVer"

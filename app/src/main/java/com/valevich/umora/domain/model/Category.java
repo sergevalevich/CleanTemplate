@@ -52,9 +52,6 @@ public class Category implements Parcelable {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     @Override
     public int describeContents() {
