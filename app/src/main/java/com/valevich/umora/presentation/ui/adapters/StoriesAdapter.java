@@ -13,7 +13,7 @@ import com.valevich.umora.R;
 import com.valevich.umora.domain.model.Story;
 import com.valevich.umora.injection.PerActivity;
 import com.valevich.umora.presentation.ui.utils.AttributesHelper;
-import com.valevich.umora.presentation.ui.utils.ItemClickListener;
+import com.valevich.umora.presentation.ui.utils.ItemLongClickListener;
 import com.valevich.umora.presentation.ui.utils.StateListDrawableHelper;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ import butterknife.ButterKnife;
 public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.StoryHolder> {
 
     private List<Story> stories = new ArrayList<>();
-    private ItemClickListener<Story> itemClickListener;
+    private ItemLongClickListener<Story> itemLongClickListener;
     private SharedPreferences preferences;
 
     @Inject
@@ -39,8 +39,8 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.StoryHol
         this.preferences = preferences;
     }
 
-    public void setClickListener(ItemClickListener<Story> itemClickListener) {
-        this.itemClickListener = itemClickListener;
+    public void setLongClickListener(ItemLongClickListener<Story> itemClickListener) {
+        this.itemLongClickListener = itemClickListener;
     }
 
     @Override
@@ -97,7 +97,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesAdapter.StoryHol
 
         private void setOnLongClickListener() {
             itemView.setOnLongClickListener(view ->
-                    itemClickListener.onItemLongClicked(stories.get(getAdapterPosition())));
+                    itemLongClickListener.onItemLongClicked(stories.get(getAdapterPosition())));
         }
 
         private void setTextSize() {

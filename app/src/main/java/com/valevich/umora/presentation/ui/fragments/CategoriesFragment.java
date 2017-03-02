@@ -104,11 +104,6 @@ public class CategoriesFragment extends BaseFragment<CategoriesPresenter>
     }
 
     @Override
-    public boolean onItemLongClicked(Category category) {
-        return true;
-    }
-
-    @Override
     void injectPresenter(CategoriesPresenter presenter) {
         MainActivity activity = (MainActivity) getActivity();
         UmoraApplication.get(activity.get()).getAppComponent().inject(presenter);

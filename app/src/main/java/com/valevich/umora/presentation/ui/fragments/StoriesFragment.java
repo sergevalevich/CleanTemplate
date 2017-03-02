@@ -21,7 +21,7 @@ import com.valevich.umora.presentation.presenters.impl.StoriesPresenter;
 import com.valevich.umora.presentation.ui.adapters.StoriesAdapter;
 import com.valevich.umora.presentation.ui.utils.AttributesHelper;
 import com.valevich.umora.presentation.ui.utils.DividerItemDecoration;
-import com.valevich.umora.presentation.ui.utils.ItemClickListener;
+import com.valevich.umora.presentation.ui.utils.ItemLongClickListener;
 
 import java.util.List;
 import java.util.Locale;
@@ -34,7 +34,7 @@ import icepick.State;
 import timber.log.Timber;
 
 public abstract class StoriesFragment<P extends StoriesPresenter> extends BaseFragment<P>
-        implements ItemClickListener<Story>, ActionMode.Callback {
+        implements ItemLongClickListener<Story>, ActionMode.Callback {
 
     @BindView(R.id.root)
     CoordinatorLayout rootView;
@@ -88,16 +88,12 @@ public abstract class StoriesFragment<P extends StoriesPresenter> extends BaseFr
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         storiesList.setLayoutManager(layoutManager);
         storiesList.addItemDecoration(new DividerItemDecoration(getActivity(),LinearLayoutManager.VERTICAL));
-        adapter.setClickListener(this);
+        adapter.setLongClickListener(this);
         storiesList.setAdapter(adapter);
         progressBar.getIndeterminateDrawable().setColorFilter(
                 AttributesHelper.getColorAttribute(getActivity(),R.attr.colorPrimary),
                 android.graphics.PorterDuff.Mode.SRC_IN);
         toggleProgressBar(true);
-    }
-
-    @Override
-    public void onItemClicked(Story story) {
     }
 
     @Override
