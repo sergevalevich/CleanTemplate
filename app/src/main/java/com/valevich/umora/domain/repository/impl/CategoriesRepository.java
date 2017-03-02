@@ -8,7 +8,7 @@ import com.valevich.umora.database.model.CategoryEntity;
 import com.valevich.umora.domain.model.Category;
 import com.valevich.umora.domain.repository.IRepository;
 import com.valevich.umora.domain.repository.specification.SqlDelightSpecification;
-import com.valevich.umora.rx.utils.SchedulersTransformer;
+import com.valevich.umora.utils.SchedulersTransformer;
 
 import java.util.List;
 

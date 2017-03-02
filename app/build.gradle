@@ -1,7 +1,21 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.21.0'
+    }
+}
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.squareup.sqldelight'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
 
 android {
     compileSdkVersion 25
@@ -17,6 +31,7 @@ android {
     buildTypes {
         release {
             minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
@@ -83,7 +98,7 @@ dependencies {
     final supportLibsVerTestCompat = '23.1.1'
 
     //Dagger
-    final daggerVer = '2.4'
+    final daggerVer = '2.9'
     final javaxVer = '10.0-b28'
     final javaPoet = '1.7.0'
 
@@ -173,4 +188,7 @@ dependencies {
     compile "info.android15.nucleus:nucleus:$nucleusVer"
     compile "info.android15.nucleus:nucleus-support-v7:$nucleusVer"
     compile "info.android15.nucleus:nucleus-support-v4:$nucleusVer"
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.6@aar') {
+        transitive = true;
+    }
 }

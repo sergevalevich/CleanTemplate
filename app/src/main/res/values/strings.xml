@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Umora</string>
+    <string name="app_name">Умора</string>
     <string name="default_error_message">Ошибка</string>
     <string name="no_net_error_message">Проверьте подключение к сети</string>
     <string name="selected_action_share">Поделиться</string>

@@ -1,4 +1,4 @@
-package com.valevich.umora.rx.utils;
+package com.valevich.umora.utils;
 
 
 import javax.inject.Inject;

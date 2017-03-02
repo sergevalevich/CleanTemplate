@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.valevich.umora.R;
+import com.valevich.umora.UmoraApplication;
 import com.valevich.umora.presentation.presenters.impl.BookMarksPresenter;
+import com.valevich.umora.presentation.ui.activities.MainActivity;
 
 import nucleus.factory.RequiresPresenter;
 
@@ -16,6 +18,7 @@ public class BookMarksFragment extends StoriesFragment<BookMarksPresenter> {
 
     @Override
     public void onCreate(Bundle bundle) {
+        ((MainActivity) getActivity()).getActivityComponent().inject(this);
         super.onCreate(bundle);
         if (bundle == null) {
             getPresenter().getBookmarkedStories();
@@ -26,6 +29,12 @@ public class BookMarksFragment extends StoriesFragment<BookMarksPresenter> {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_list_progress,container,false);
+    }
+
+    @Override
+    void injectPresenter(BookMarksPresenter presenter) {
+        MainActivity activity = (MainActivity) getActivity();
+        UmoraApplication.get(activity.get()).getAppComponent().inject(presenter);
     }
 
 }

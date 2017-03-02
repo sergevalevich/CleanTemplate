@@ -52,7 +52,7 @@
 
 
 # ALSO REMEMBER KEEPING YOUR MODEL CLASSES
--keep class com.your.package.model.** { *; }
+-keep class com.valevich.umora.network.model** { *; }
 
 ########--------Stetho--------#########
 -keep class com.facebook.stetho.** { *; }
@@ -84,3 +84,20 @@
 
 ########--------Lambda--------#########
 -dontwarn java.lang.invoke.*
+
+########--------Butterknife--------#########
+-keep class butterknife.** { *; }
+-dontwarn butterknife.internal.**
+-keep class **$$ViewBinder { *; }
+
+-keepclasseswithmembernames class * {
+    @butterknife.* <fields>;
+}
+
+-keepclasseswithmembernames class * {
+    @butterknife.* <methods>;
+}
+
+#########--------SupportLibs-------##########
+-keep class android.support.v7.widget.SearchView { *; }
+

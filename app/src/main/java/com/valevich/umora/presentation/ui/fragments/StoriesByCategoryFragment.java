@@ -8,8 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.valevich.umora.R;
+import com.valevich.umora.UmoraApplication;
 import com.valevich.umora.domain.model.Category;
 import com.valevich.umora.presentation.presenters.impl.StoriesByCategoryPresenter;
+import com.valevich.umora.presentation.ui.activities.StoriesByCategoryActivity;
 import com.valevich.umora.presentation.ui.utils.AttributesHelper;
 
 import butterknife.BindView;
@@ -35,6 +37,7 @@ public class StoriesByCategoryFragment extends StoriesFragment<StoriesByCategory
 
     @Override
     public void onCreate(Bundle bundle) {
+        ((StoriesByCategoryActivity) getActivity()).getActivityComponent().inject(this);
         super.onCreate(bundle);
         if (bundle == null) {
             getCachedStories();
@@ -64,6 +67,12 @@ public class StoriesByCategoryFragment extends StoriesFragment<StoriesByCategory
     public void onError(Throwable t) {
         toggleSwipe(false);
         super.onError(t);
+    }
+
+    @Override
+    void injectPresenter(StoriesByCategoryPresenter presenter) {
+        StoriesByCategoryActivity activity = (StoriesByCategoryActivity) getActivity();
+        UmoraApplication.get(activity.get()).getAppComponent().inject(presenter);
     }
 
     private void refreshStories() {

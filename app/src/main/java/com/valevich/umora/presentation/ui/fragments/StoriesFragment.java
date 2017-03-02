@@ -151,7 +151,7 @@ public abstract class StoriesFragment<P extends StoriesPresenter> extends BaseFr
     }
 
     public void onStories(List<Story> stories) {
-        Timber.d("on Stories %d",stories.size());
+        Timber.d("Got %d stories",stories.size());
         toggleProgressBar(false);
         adapter.refresh(stories);
     }

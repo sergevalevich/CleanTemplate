@@ -12,7 +12,7 @@ import com.valevich.umora.domain.repository.impl.CategoriesRepository;
 import com.valevich.umora.domain.repository.impl.SourcesRepository;
 import com.valevich.umora.domain.repository.impl.StoriesRepository;
 import com.valevich.umora.domain.repository.specification.SqlDelightSpecification;
-import com.valevich.umora.rx.utils.SchedulersTransformer;
+import com.valevich.umora.utils.SchedulersTransformer;
 
 import javax.inject.Singleton;
 

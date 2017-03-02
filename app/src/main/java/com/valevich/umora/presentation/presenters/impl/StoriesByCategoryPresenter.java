@@ -9,7 +9,7 @@ import com.valevich.umora.network.UmoraApi;
 import com.valevich.umora.network.converters.PayloadStoryConverter;
 import com.valevich.umora.network.utils.ConnectivityInspector;
 import com.valevich.umora.presentation.ui.fragments.StoriesByCategoryFragment;
-import com.valevich.umora.rx.utils.SchedulersTransformer;
+import com.valevich.umora.utils.SchedulersTransformer;
 
 import javax.inject.Inject;
 

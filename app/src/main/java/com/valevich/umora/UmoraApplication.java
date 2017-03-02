@@ -2,35 +2,41 @@ package com.valevich.umora;
 
 
 import android.app.Application;
+import android.content.Context;
 
+import com.crashlytics.android.Crashlytics;
 import com.facebook.stetho.Stetho;
 import com.squareup.leakcanary.LeakCanary;
-import com.valevich.umora.injection.Injector;
 import com.valevich.umora.injection.components.ApplicationComponent;
 import com.valevich.umora.injection.components.DaggerApplicationComponent;
 import com.valevich.umora.injection.modules.ApplicationModule;
+import com.valevich.umora.utils.ReleaseTree;
 
+import java.lang.ref.WeakReference;
+
+import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 
 public class UmoraApplication extends Application {
 
-    private Injector<ApplicationComponent> injector;
+    private ApplicationComponent applicationComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
         //if (!isInAnalyzerProcess()) initLeakCanary();
+        initFabric();
         initTimber();
         initStetho();
-        injector = new Injector<>(ApplicationComponent.class, createComponent());
     }
 
-    public void inject(Object target) {
-        injector.inject(target);
+    public static UmoraApplication get(WeakReference<Context> contextWeakReference) {
+        return (UmoraApplication) contextWeakReference.get().getApplicationContext();
     }
 
-    public Injector<ApplicationComponent> getInjector() {
-        return injector;
+    public ApplicationComponent getAppComponent() {
+        if (applicationComponent == null) applicationComponent = createComponent();
+        return applicationComponent;
     }
 
     private ApplicationComponent createComponent() {
@@ -39,8 +45,12 @@ public class UmoraApplication extends Application {
                 .build();
     }
 
+    private void initFabric() {
+        Fabric.with(this, new Crashlytics());
+    }
+
     private void initTimber() {
-        if (BuildConfig.DEBUG) Timber.plant(new Timber.DebugTree());
+        Timber.plant(BuildConfig.DEBUG ? new Timber.DebugTree() : new ReleaseTree());
     }
 
     private void initLeakCanary() {

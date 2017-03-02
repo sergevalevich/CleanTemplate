@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.valevich.umora.R;
+import com.valevich.umora.UmoraApplication;
 import com.valevich.umora.domain.model.Category;
 import com.valevich.umora.errors.IErrorMessageFactory;
 import com.valevich.umora.presentation.presenters.impl.CategoriesPresenter;
@@ -58,6 +59,7 @@ public class CategoriesFragment extends BaseFragment<CategoriesPresenter>
 
     @Override
     public void onCreate(Bundle bundle) {
+        ((MainActivity) getActivity()).getActivityComponent().inject(this);
         super.onCreate(bundle);
         if (bundle == null) {
             getCachedCategories();
@@ -106,7 +108,14 @@ public class CategoriesFragment extends BaseFragment<CategoriesPresenter>
         return true;
     }
 
+    @Override
+    void injectPresenter(CategoriesPresenter presenter) {
+        MainActivity activity = (MainActivity) getActivity();
+        UmoraApplication.get(activity.get()).getAppComponent().inject(presenter);
+    }
+
     public void onCategories(List<Category> categories) {
+        Timber.d("Got %d categories",categories.size());
         toggleProgressBar(false);
         adapter.refresh(categories);
     }
@@ -120,7 +129,7 @@ public class CategoriesFragment extends BaseFragment<CategoriesPresenter>
         toggleSwipe(false);
         String message = errorMessageFactory.createErrorMessage(t);
         showMessage(message);
-        Timber.e(message);
+        Timber.e("Error getting categories %s",message);
     }
 
     private void getCachedCategories() {

@@ -21,6 +21,7 @@ public class StoriesByCategoryActivity extends DrawerActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getActivityComponent().inject(this);
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
             Category category = getIntent().getParcelableExtra(CATEGORY_KEY);

@@ -14,7 +14,9 @@ import android.view.ViewGroup;
 
 import com.jakewharton.rxbinding.support.v7.widget.RxSearchView;
 import com.valevich.umora.R;
+import com.valevich.umora.UmoraApplication;
 import com.valevich.umora.presentation.presenters.impl.SearchablePresenter;
+import com.valevich.umora.presentation.ui.activities.MainActivity;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -38,6 +40,7 @@ public class SearchableFragment extends StoriesFragment<SearchablePresenter> {
 
     @Override
     public void onCreate(Bundle bundle) {
+        ((MainActivity) getActivity()).getActivityComponent().inject(this);
         super.onCreate(bundle);
         setHasOptionsMenu(true);
     }
@@ -72,6 +75,12 @@ public class SearchableFragment extends StoriesFragment<SearchablePresenter> {
             restoreSearchState(searchView, searchItem);
         }
         subscribeToQueryTextChanges(searchView);
+    }
+
+    @Override
+    void injectPresenter(SearchablePresenter presenter) {
+        MainActivity activity = (MainActivity) getActivity();
+        UmoraApplication.get(activity.get()).getAppComponent().inject(presenter);
     }
 
     private void restoreSearchState(SearchView searchView, MenuItem searchItem) {

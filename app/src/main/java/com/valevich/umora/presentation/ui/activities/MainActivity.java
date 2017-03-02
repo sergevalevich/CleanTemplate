@@ -23,6 +23,7 @@ public class MainActivity extends DrawerActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getActivityComponent().inject(this);
         super.onCreate(savedInstanceState);
         //after config change or process restart
         //SYSTEM recreates fragment by itself -> so i do nothing

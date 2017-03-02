@@ -22,7 +22,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        ((MainActivity) getActivity()).inject(this);
+        ((MainActivity) getActivity()).getActivityComponent().inject(this);
         super.onCreate(savedInstanceState);
     }
 

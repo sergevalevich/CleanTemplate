@@ -15,7 +15,7 @@ import com.valevich.umora.network.converters.PayloadSourcesConverter;
 import com.valevich.umora.network.utils.ConnectivityInspector;
 import com.valevich.umora.presentation.presenters.base.BasePresenter;
 import com.valevich.umora.presentation.ui.fragments.CategoriesFragment;
-import com.valevich.umora.rx.utils.SchedulersTransformer;
+import com.valevich.umora.utils.SchedulersTransformer;
 
 import javax.inject.Inject;
 
