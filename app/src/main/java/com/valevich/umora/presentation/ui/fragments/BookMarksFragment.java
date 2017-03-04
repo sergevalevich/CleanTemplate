@@ -33,8 +33,9 @@ public class BookMarksFragment extends StoriesFragment<BookMarksPresenter> {
 
     @Override
     void injectPresenter(BookMarksPresenter presenter) {
-        MainActivity activity = (MainActivity) getActivity();
-        UmoraApplication.get(activity.get()).getAppComponent().inject(presenter);
+        ((UmoraApplication) getContext().getApplicationContext())
+                .getAppComponent()
+                .inject(presenter);
     }
 
 }

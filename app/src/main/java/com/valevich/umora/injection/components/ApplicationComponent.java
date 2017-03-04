@@ -15,17 +15,12 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = {ApplicationModule.class, NetworkModule.class, DbModule.class, RepositoryModule.class})
+@Component(modules = {
+        ApplicationModule.class,
+        NetworkModule.class,
+        DbModule.class,
+        RepositoryModule.class})
 public interface ApplicationComponent {
-
-    //Exposes Application to any component which depends on this
-    //used to reveal this objects to other components
-    //activity component can use these because it is a subcomponent
-
-//    @ApplicationContext
-//    Context context();
-//
-//    Application application();
 
     ActivityComponent plus(ActivityModule activityModule);
 

@@ -79,8 +79,9 @@ public class SearchableFragment extends StoriesFragment<SearchablePresenter> {
 
     @Override
     void injectPresenter(SearchablePresenter presenter) {
-        MainActivity activity = (MainActivity) getActivity();
-        UmoraApplication.get(activity.get()).getAppComponent().inject(presenter);
+        ((UmoraApplication) getContext().getApplicationContext())
+                .getAppComponent()
+                .inject(presenter);
     }
 
     private void restoreSearchState(SearchView searchView, MenuItem searchItem) {

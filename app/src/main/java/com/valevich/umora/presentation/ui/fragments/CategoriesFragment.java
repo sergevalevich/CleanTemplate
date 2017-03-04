@@ -105,8 +105,9 @@ public class CategoriesFragment extends BaseFragment<CategoriesPresenter>
 
     @Override
     void injectPresenter(CategoriesPresenter presenter) {
-        MainActivity activity = (MainActivity) getActivity();
-        UmoraApplication.get(activity.get()).getAppComponent().inject(presenter);
+        ((UmoraApplication) getContext().getApplicationContext())
+                .getAppComponent()
+                .inject(presenter);
     }
 
     public void onCategories(List<Category> categories) {

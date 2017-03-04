@@ -98,7 +98,7 @@ dependencies {
     final supportLibsVerTestCompat = '23.1.1'
 
     //Dagger
-    final daggerVer = '2.9'
+    final daggerVer = '2.10-rc2'
     final javaxVer = '10.0-b28'
     final javaPoet = '1.7.0'
 
@@ -151,6 +151,7 @@ dependencies {
 
     apt "com.squareup:javapoet:$javaPoet"
     compile "com.google.dagger:dagger:$daggerVer"
+    compile "com.google.dagger:dagger-android:$daggerVer"
     provided "org.glassfish:javax.annotation:$javaxVer"
     apt "com.google.dagger:dagger-compiler:$daggerVer"
 

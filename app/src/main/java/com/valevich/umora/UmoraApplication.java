@@ -2,7 +2,6 @@ package com.valevich.umora;
 
 
 import android.app.Application;
-import android.content.Context;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.stetho.Stetho;
@@ -11,8 +10,6 @@ import com.valevich.umora.injection.components.ApplicationComponent;
 import com.valevich.umora.injection.components.DaggerApplicationComponent;
 import com.valevich.umora.injection.modules.ApplicationModule;
 import com.valevich.umora.utils.ReleaseTree;
-
-import java.lang.ref.WeakReference;
 
 import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
@@ -28,10 +25,6 @@ public class UmoraApplication extends Application {
         initFabric();
         initTimber();
         initStetho();
-    }
-
-    public static UmoraApplication get(WeakReference<Context> contextWeakReference) {
-        return (UmoraApplication) contextWeakReference.get().getApplicationContext();
     }
 
     public ApplicationComponent getAppComponent() {

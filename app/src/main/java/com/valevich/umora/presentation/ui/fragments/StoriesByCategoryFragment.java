@@ -71,8 +71,9 @@ public class StoriesByCategoryFragment extends StoriesFragment<StoriesByCategory
 
     @Override
     void injectPresenter(StoriesByCategoryPresenter presenter) {
-        StoriesByCategoryActivity activity = (StoriesByCategoryActivity) getActivity();
-        UmoraApplication.get(activity.get()).getAppComponent().inject(presenter);
+        ((UmoraApplication) getContext().getApplicationContext())
+                .getAppComponent()
+                .inject(presenter);
     }
 
     private void refreshStories() {
