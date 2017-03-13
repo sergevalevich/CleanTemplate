@@ -1,6 +1,5 @@
 package com.valevich.umora.injection.components;
 
-import com.valevich.umora.database.DbModule;
 import com.valevich.umora.domain.repository.RepositoryModule;
 import com.valevich.umora.injection.modules.ActivityModule;
 import com.valevich.umora.injection.modules.ApplicationModule;
@@ -18,7 +17,6 @@ import dagger.Component;
 @Component(modules = {
         ApplicationModule.class,
         NetworkModule.class,
-        DbModule.class,
         RepositoryModule.class})
 public interface ApplicationComponent {
 

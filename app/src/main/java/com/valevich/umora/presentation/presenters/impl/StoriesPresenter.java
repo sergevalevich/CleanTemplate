@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import com.valevich.umora.database.model.StoryEntity;
 import com.valevich.umora.domain.model.Story;
-import com.valevich.umora.domain.repository.IRepository;
+import com.valevich.umora.domain.repository.Repository;
 import com.valevich.umora.domain.repository.specification.SqlDelightSpecification;
 import com.valevich.umora.presentation.presenters.base.BasePresenter;
 import com.valevich.umora.presentation.ui.fragments.StoriesFragment;
@@ -25,7 +25,7 @@ public abstract class StoriesPresenter<V extends StoriesFragment> extends BasePr
     SqlDelightSpecification<StoryEntity> specification;
 
     @Inject
-    IRepository<Story, SqlDelightSpecification<StoryEntity>> repository;
+    Repository<Story, SqlDelightSpecification<StoryEntity>> repository;
 
     //called in getPresenter first time
     @Override

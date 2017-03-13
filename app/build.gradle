@@ -4,7 +4,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'io.fabric.tools:gradle:1.21.0'
+        classpath 'io.fabric.tools:gradle:1.21.6'
     }
 }
 apply plugin: 'com.android.application'
@@ -24,8 +24,8 @@ android {
         applicationId "com.valevich.umora"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -94,7 +94,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    final supportLibsVer = '25.1.0'
+    final supportLibsVer = '25.2.0'
     final supportLibsVerTestCompat = '23.1.1'
 
     //Dagger
@@ -151,7 +151,6 @@ dependencies {
 
     apt "com.squareup:javapoet:$javaPoet"
     compile "com.google.dagger:dagger:$daggerVer"
-    compile "com.google.dagger:dagger-android:$daggerVer"
     provided "org.glassfish:javax.annotation:$javaxVer"
     apt "com.google.dagger:dagger-compiler:$daggerVer"
 

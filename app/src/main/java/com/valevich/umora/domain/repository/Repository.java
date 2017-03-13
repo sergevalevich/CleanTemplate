@@ -5,7 +5,7 @@ import java.util.List;
 
 import rx.Observable;
 
-public interface IRepository<T,Specification> {
+public interface Repository<T,Specification> {
     void add(Iterable<T> items);
 
     void add(T item);

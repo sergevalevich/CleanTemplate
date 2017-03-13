@@ -6,7 +6,7 @@ import com.valevich.umora.database.DatabaseHelper;
 import com.valevich.umora.database.converters.DbCategoryConverter;
 import com.valevich.umora.database.model.CategoryEntity;
 import com.valevich.umora.domain.model.Category;
-import com.valevich.umora.domain.repository.IRepository;
+import com.valevich.umora.domain.repository.Repository;
 import com.valevich.umora.domain.repository.specification.SqlDelightSpecification;
 import com.valevich.umora.utils.SchedulersTransformer;
 
@@ -14,7 +14,7 @@ import java.util.List;
 
 import rx.Observable;
 
-public class CategoriesRepository implements IRepository<Category,SqlDelightSpecification<CategoryEntity>> {
+public class CategoriesRepository implements Repository<Category,SqlDelightSpecification<CategoryEntity>> {
 
     private DatabaseHelper databaseHelper;
 

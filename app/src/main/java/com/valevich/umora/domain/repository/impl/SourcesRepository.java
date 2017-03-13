@@ -6,23 +6,23 @@ import com.valevich.umora.database.model.CategoryEntity;
 import com.valevich.umora.database.model.SourceEntity;
 import com.valevich.umora.domain.model.Category;
 import com.valevich.umora.domain.model.Source;
-import com.valevich.umora.domain.repository.IRepository;
+import com.valevich.umora.domain.repository.Repository;
 import com.valevich.umora.domain.repository.specification.SqlDelightSpecification;
 
 import java.util.List;
 
 import rx.Observable;
 
-public class SourcesRepository implements IRepository<Source,SqlDelightSpecification<SourceEntity>> {
+public class SourcesRepository implements Repository<Source,SqlDelightSpecification<SourceEntity>> {
 
     private DatabaseHelper databaseHelper;
 
-    private IRepository<Category,SqlDelightSpecification<CategoryEntity>> categoriesRepo;
+    private Repository<Category,SqlDelightSpecification<CategoryEntity>> categoriesRepo;
 
     private final SourceEntity.Insert_row sourceInsertStatement;
 
     public SourcesRepository(DatabaseHelper databaseHelper,
-                             IRepository<Category, SqlDelightSpecification<CategoryEntity>> categoriesRepository,
+                             Repository<Category, SqlDelightSpecification<CategoryEntity>> categoriesRepository,
                              SourceEntity.Insert_row sourceInsertStatement) {
         this.databaseHelper = databaseHelper;
         this.categoriesRepo = categoriesRepository;

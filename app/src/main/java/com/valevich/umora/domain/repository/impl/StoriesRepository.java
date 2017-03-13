@@ -6,7 +6,7 @@ import com.valevich.umora.database.DatabaseHelper;
 import com.valevich.umora.database.converters.DbStoryConverter;
 import com.valevich.umora.database.model.StoryEntity;
 import com.valevich.umora.domain.model.Story;
-import com.valevich.umora.domain.repository.IRepository;
+import com.valevich.umora.domain.repository.Repository;
 import com.valevich.umora.domain.repository.specification.SqlDelightSpecification;
 import com.valevich.umora.utils.SchedulersTransformer;
 
@@ -15,7 +15,7 @@ import java.util.List;
 import rx.Observable;
 
 
-public class StoriesRepository implements IRepository<Story,SqlDelightSpecification<StoryEntity>> {
+public class StoriesRepository implements Repository<Story,SqlDelightSpecification<StoryEntity>> {
     private DatabaseHelper databaseHelper;
 
     private final StoryEntity.Update_row rowUpdateStatement;

@@ -2,6 +2,7 @@ package com.valevich.umora.presentation.ui.activities;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
@@ -37,9 +38,13 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedState) {
         super.onCreate(savedState);
         setTheme();
-        setContentView(getLayoutRes());
-        ButterKnife.bind(this);
         Icepick.restoreInstanceState(this, savedState);
+    }
+
+    @Override
+    public void setContentView(@LayoutRes int layoutResID) {
+        super.setContentView(layoutResID);
+        ButterKnife.bind(this);
     }
 
     @Override
@@ -58,6 +63,4 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .getAppComponent()
                 .plus(new ActivityModule(this));
     }
-
-    abstract int getLayoutRes();
 }

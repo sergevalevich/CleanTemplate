@@ -6,7 +6,7 @@ import com.valevich.umora.database.model.CategoryEntity;
 import com.valevich.umora.database.model.SourceEntity;
 import com.valevich.umora.domain.model.Category;
 import com.valevich.umora.domain.model.Source;
-import com.valevich.umora.domain.repository.IRepository;
+import com.valevich.umora.domain.repository.Repository;
 import com.valevich.umora.domain.repository.specification.SqlDelightSpecification;
 import com.valevich.umora.domain.repository.specification.impl.AllCategoriesSqlDSpecification;
 import com.valevich.umora.errors.NetworkUnavailableException;
@@ -28,10 +28,10 @@ public class CategoriesPresenter extends BasePresenter<CategoriesFragment> {
     private static final int REFRESH_SOURCES_TASK_ID = 1;
 
     @Inject
-    IRepository<Category,SqlDelightSpecification<CategoryEntity>> categoriesRepository;
+    Repository<Category,SqlDelightSpecification<CategoryEntity>> categoriesRepository;
 
     @Inject
-    IRepository<Source,SqlDelightSpecification<SourceEntity>> sourcesRepository;
+    Repository<Source,SqlDelightSpecification<SourceEntity>> sourcesRepository;
 
     @Inject
     UmoraApi restApi;

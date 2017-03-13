@@ -51,6 +51,7 @@ public abstract class DrawerActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_drawer);
         setupViews();
     }
 
@@ -63,11 +64,6 @@ public abstract class DrawerActivity extends BaseActivity
         } else {
             super.onBackPressed();
         }
-    }
-
-    @Override
-    int getLayoutRes() {
-        return R.layout.activity_drawer;
     }
 
     private void setupViews() {
